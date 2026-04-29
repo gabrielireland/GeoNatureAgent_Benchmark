@@ -1,0 +1,389 @@
+{
+  "Beja": {
+    "type": "categorical",
+    "total_patches": 14419,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 2.7
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 33.8
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 36.0
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 8.8
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 0.8
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 14.0
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 3.9
+      }
+    ]
+  },
+  "Castelo Branco": {
+    "type": "categorical",
+    "total_patches": 1172,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 11.4
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 28.9
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 15.8
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 16.6
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 1.3
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 14.9
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 11.2
+      }
+    ]
+  },
+  "Faro": {
+    "type": "categorical",
+    "total_patches": 6767,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 2.0
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 35.0
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 39.6
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 8.2
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 0.7
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 9.8
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 4.7
+      }
+    ]
+  },
+  "Leiria": {
+    "type": "categorical",
+    "total_patches": 2351,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 22.5
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 16.9
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 31.4
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 2.8
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 1.2
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 0.0
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 25.2
+      }
+    ]
+  },
+  "Lisboa": {
+    "type": "categorical",
+    "total_patches": 1435,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 23.1
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 22.1
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 47.1
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 0.6
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 0.1
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 4.4
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 2.7
+      }
+    ]
+  },
+  "Portalegre": {
+    "type": "categorical",
+    "total_patches": 6216,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 13.2
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 62.0
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 13.7
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 6.9
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 0.2
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 2.4
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 1.6
+      }
+    ]
+  },
+  "Santarém": {
+    "type": "categorical",
+    "total_patches": 17467,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 10.2
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 38.2
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 33.5
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 2.9
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 0.8
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 4.5
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 10.0
+      }
+    ]
+  },
+  "Setúbal": {
+    "type": "categorical",
+    "total_patches": 12928,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 8.1
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 50.0
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 15.8
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 13.2
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 0.3
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 8.5
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 4.1
+      }
+    ]
+  },
+  "Évora": {
+    "type": "categorical",
+    "total_patches": 12704,
+    "source": "BigEarthNet V2 (Clasen et al. 2024)",
+    "year": "2018",
+    "breakdown": [
+      {
+        "value": 1,
+        "label": "Coniferous Forest",
+        "percentage": 11.1
+      },
+      {
+        "value": 2,
+        "label": "Broadleaf Forest",
+        "percentage": 43.9
+      },
+      {
+        "value": 3,
+        "label": "Shrubland",
+        "percentage": 19.0
+      },
+      {
+        "value": 4,
+        "label": "Grassland",
+        "percentage": 8.0
+      },
+      {
+        "value": 5,
+        "label": "Sparse Vegetation",
+        "percentage": 1.2
+      },
+      {
+        "value": 6,
+        "label": "Water",
+        "percentage": 14.6
+      },
+      {
+        "value": 7,
+        "label": "Urban",
+        "percentage": 2.3
+      }
+    ]
+  }
+}

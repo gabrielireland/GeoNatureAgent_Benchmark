@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "geoagentbench"
+version = "1.0.0"
+description = "Benchmark for evaluating LLM agents on environmental geospatial analysis"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "Gabriel Diaz-Ireland"},
+    {name = "Guillermo Garcia"},
+]
+dependencies = [
+    "anthropic>=0.39.0,<1",
+    "litellm",
+    "PyYAML",
+    "google-cloud-aiplatform",
+    "google-cloud-storage",
+    "matplotlib>=3.7",
+    "pandas",
+    "tabulate",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+include = ["geoagentbench*"]

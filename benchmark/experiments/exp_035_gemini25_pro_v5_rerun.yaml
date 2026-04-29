@@ -1,0 +1,49 @@
+experiment_id: "exp_035_gemini25_pro_v5_rerun"
+description: "Gemini 2.5 Pro via Vertex AI — CLC re-run (20 cases)"
+based_on: "exp_035_gemini25_pro_v5"
+
+model:
+  model_id: "vertex_ai/gemini-2.5-pro"
+  max_tokens: 4096
+
+sampling:
+  temperature: 1.0
+
+vertex:
+  region: us-central1
+
+agent:
+  architecture:    single_agent
+  prompt_strategy: zero_shot
+  prompt_version:  v3
+  max_turns:       10
+
+tasks:
+  case_set: v5
+  ids:
+    - V5_31_habitat_province_single
+    - V5_32_habitat_forest_types
+    - V5_33_habitat_recall_grassland
+    - V5_34_habitat_chart
+    - V5_36_temporal_compare_shrubland
+    - V5_37_temporal_change_visual
+    - V5_38_cross_indicator_habitat_co2
+    - V5_56_habitat_andalucia_forest
+    - V5_57_temporal_multi_year
+    - V5_60_legend_habitat_classes
+    - V5_62_list_layers_habitat_years
+    - V5_67_multi_layer_three_indicators
+    - V5_68_multi_layer_nbs_profile
+    - V5_69_multi_layer_explicit_simultaneous
+    - V5_74_deep_dive_temporal_profile
+    - V5_82_layer_bounds_ceuta_melilla
+    - V5_86_multi_layer_with_chart_huelva
+    - V5_87_multi_layer_comparison_two_provinces
+    - V5_91_deep_dive_temporal_municipality
+    - V5_93_deep_dive_national_policy_brief
+
+output:
+  prefix: "GeoNatureAgent/experiments"
+  log_to_bigquery: true
+  bigquery_dataset: "geoagentbench"
+  bucket: "geonature-agent-results"

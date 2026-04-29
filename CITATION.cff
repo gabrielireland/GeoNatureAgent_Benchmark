@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: "GeoAgentBench: Benchmarking LLM Agents for Environmental Geospatial Analysis"
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+license: Apache-2.0
+url: "https://github.com/darwin-geo/GeoNatureAgent"
+repository-code: "https://github.com/darwin-geo/GeoNatureAgent"
+keywords:
+  - geospatial AI
+  - LLM agents
+  - tool calling
+  - benchmark
+  - environmental analysis
+authors:
+  - family-names: Diaz-Ireland
+    given-names: Gabriel
+    affiliation: "Darwins Geospatial S.L.; Universidad Católica de Ávila"
+  - family-names: Prieto-Herráez
+    given-names: Diego
+    affiliation: Universidad Católica de Ávila
+  - family-names: Velázquez
+    given-names: Javier
+    affiliation: Universidad Católica de Ávila
+  - family-names: García Peces
+    given-names: Mario
+    affiliation: Darwins Geospatial S.L.
+  - family-names: Perez
+    given-names: Guillermo
+    affiliation: Darwins Geospatial S.L.
+date-released: "2026-04-25"
+version: "1.0.0"

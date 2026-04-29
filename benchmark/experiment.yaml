@@ -1,0 +1,73 @@
+# ========================================
+# GeoNatureAgent — Experiment Configuration Template
+# ========================================
+# Copy to benchmark/experiments/exp_<id>_<description>.yaml and edit.
+#
+# Run:
+#   1. Edit _EXPERIMENT_YAML in cloudbuild-benchmark.yaml to point to your file
+#   2. gcloud builds submit --config=GeoNatureAgent/cloudbuild-benchmark.yaml \
+#        --project=local-env-489816-i2
+#
+# Credentials come from infrastructure — not this file:
+#   Anthropic API key  → Secret Manager (ANTHROPIC_KEY_1), injected by Cloud Run Job
+#   Vertex AI          → ADC via VM/Cloud Run service account
+# ========================================
+
+# ── Identity ──────────────────────────────────────────────────────────────────
+experiment_id: "exp_001_sonnet_zeroshot_vegetation"
+description: "Baseline: Claude Sonnet, zero-shot, vegetation tasks"
+enabled: true                            # true | false (deactivated) | stop (permanently retired)
+
+# ── Lineage (optional) ────────────────────────────────────────────────────────
+# Reference the experiment_id this run was derived from.
+# Useful for A/B comparisons: "same as exp_003 but with seed=42"
+# based_on: "exp_001_sonnet_zeroshot_vegetation"
+
+# ── Model ─────────────────────────────────────────────────────────────────────
+model:
+  model_id: "claude-sonnet-4-20250514"   # Claude model ID, or vertex_ai/gemini-...
+  max_tokens: 4096
+
+# ── Sampling (optional — omit any field to use model default) ─────────────────
+# Applies to both Anthropic and Vertex AI backends.
+# temperature range: 0.0–1.0 on Anthropic | 0.0–2.0 on Vertex AI
+# seed: best-effort on Anthropic (not guaranteed); more deterministic on Vertex AI
+# top_k: supported by both; omit unless you have a specific reason
+sampling:
+  # temperature: 1.0
+  # top_p: 0.95
+  # top_k: 40
+  # seed: 42
+
+# ── Vertex AI (optional — overrides VERTEXAI_PROJECT / VERTEXAI_LOCATION env vars) ──
+# Only needed when running locally or when env vars are not set by the VM SA.
+# vertex:
+#   project: "your-gcp-project-id"
+#   region:  "us-central1"           # default: us-central1
+
+# ── Agent ─────────────────────────────────────────────────────────────────────
+agent:
+  architecture:    single_agent   # single_agent | multi_agent_planner_worker
+  prompt_strategy: zero_shot      # zero_shot | chain_of_thought | few_shot
+  prompt_version:  v2             # v1 | v2 | v3 (v3 = PoC tools + chart generation)
+  max_turns:       10             # max tool-use rounds per case
+
+# ── Tasks ─────────────────────────────────────────────────────────────────────
+tasks:
+  case_set: dev                   # dev | poc | poc_v2 | v1 | v2 | all
+  # categories:                   # optional: filter by category
+  #   - vegetation_monitoring
+  # ids:                          # optional: run specific case IDs only
+  #   - poc_001_province_comparison
+
+# ── Output ────────────────────────────────────────────────────────────────────
+output:
+  prefix: "GeoNatureAgent/experiments"   # GCS path prefix under geonature-agent-results/
+  bucket: ""                             # GCS bucket for auto-upload (or set GCS_BUCKET env var)
+  log_to_bigquery: false
+  bigquery_dataset: ""                   # required if log_to_bigquery: true
+  # Auto-generate comparison_report.png against reference experiment results.
+  # Each entry: a gs:// URI or local path to a previous experiment's JSONL file.
+  # compare_with:
+  #   - gs://geonature-agent-results/GeoNatureAgent/experiments/exp_poc_003/20250301_120000_exp_poc_003.jsonl
+  #   - gs://geonature-agent-results/GeoNatureAgent/experiments/exp_poc_004/20250301_130000_exp_poc_004.jsonl

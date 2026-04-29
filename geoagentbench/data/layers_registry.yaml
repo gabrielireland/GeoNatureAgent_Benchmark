@@ -1,0 +1,215 @@
+# Agent-consumable data catalog for GeoNatureAgent.
+#
+# This file documents every data source available to the agent: what each layer
+# contains, how to interpret it, and what context the agent needs to reason correctly.
+#
+# Design rules:
+#   - Never hardcode GCS paths here. Paths are resolved at runtime by darwin_geo_core
+#     via cache_manager.get_tile_url(indicator, year, season).
+#   - To add a new layer: add an entry here AND register it in api/active-layers.json.
+#   - display_only layers can be toggled on the map but cannot produce statistics.
+
+# ---------------------------------------------------------------------------
+# Raster layers — statistics available via analyze_area / analyze_multi_layer
+# ---------------------------------------------------------------------------
+
+raster_layers:
+
+  - id: co2_spain_legislation
+    type: categorical
+    year: 2026
+    season: annual
+    classes:
+      0: "Not eligible"
+      1: "Conditional"
+      2: "Eligible"
+    coverage: Spain
+    resolution_m: 100
+    source: "MITECO + Copernicus CLC"
+    description: >
+      Reforestation CO2 pre-screening based on Spanish MITECO legislation.
+      Classifies land parcels by eligibility for carbon credit projects.
+      Filters applied: fire history (last 10 years), Natura 2000 zones,
+      CLC land cover classification, slope constraints.
+    interpretation:
+      0: "Excluded — fire history, protected status, or land cover mismatch."
+      1: "Conditional — eligible subject to additional field verification."
+      2: "Eligible — meets all current MITECO pre-screening criteria."
+    agent_notes: >
+      Report class 2 (Eligible) + class 1 (Conditional) as the candidate pool.
+      This is a pre-screening tool, NOT a legal determination.
+      A parcel passing this filter still requires on-site due diligence.
+    aoi_confirmed: [Murcia, Córdoba, Jaén, all Spain]
+
+  - id: rf_gully_probability
+    type: continuous
+    year: 2022
+    season: annual
+    raw_range: [0, 255]
+    display_range: [0.0, 100.0]
+    display_scale_factor: 0.3922  # 1/2.55 — byte stored as 0-255, display as 0-100%
+    unit: "%"
+    coverage: "Europe + UK"
+    resolution_m: 100
+    source: "ESDAC/JRC — Random Forest trained on LUCAS 2022 field survey"
+    description: >
+      Probability of gully erosion presence (0–100%). Trained on 399,000 LUCAS 2022
+      field survey points across Europe using a Random Forest classifier.
+      Captures the landscape erosion state at survey time (2022).
+    interpretation:
+      low: "0–25%: Low gully erosion risk. Suitable for reforestation without
+            specific erosion-control measures."
+      moderate: "25–50%: Moderate risk. Reforestation viable; consider species
+                 and planting technique selection."
+      high: "50–75%: High risk. Reforestation beneficial but requires erosion
+             management in the project design."
+      very_high: "75–100%: Very high risk. Priority zone for protective
+                  reforestation; highest carbon and erosion co-benefit potential."
+    agent_notes: >
+      Post-fire areas show significantly elevated values — the 2022 snapshot
+      reflects recent fire history. Mean province value is the primary
+      comparison metric; std indicates spatial heterogeneity within the province.
+    aoi_confirmed: [Murcia, Córdoba, Jaén, all Europe]
+
+  - id: bigearthnet_lulc
+    type: categorical
+    year: 2018
+    season: annual
+    classes:
+      1: "Coniferous Forest"
+      2: "Broadleaf Forest"
+      3: "Shrubland"
+      4: "Grassland"
+      5: "Sparse Vegetation"
+      6: "Water"
+      7: "Urban"
+    coverage: "Portugal (9 mainland districts)"
+    source: "BigEarthNet V2 (Clasen et al. 2024)"
+    description: >
+      Land cover distribution derived from 75k+ labeled Sentinel-2 patches from
+      the BigEarthNet V2 dataset, aggregated by Portuguese district. 7-class scheme
+      mapped from CLC2018 19-class labels. Data served from pre-computed JSON
+      statistics (not COG rasters).
+    interpretation:
+      1: "Coniferous Forest — coniferous tree species, primarily in central districts."
+      2: "Broadleaf Forest — deciduous or evergreen broadleaf trees."
+      3: "Shrubland — dense low shrubby vegetation, dominant in southern districts."
+      4: "Grassland — herbaceous cover."
+      5: "Sparse Vegetation — lichen, moss, or sparse plant cover."
+      6: "Water — permanent or seasonal water bodies."
+      7: "Urban — sealed surfaces, built-up areas."
+    agent_notes: >
+      Only available for 9 Portuguese districts: Beja, Castelo Branco, Évora, Faro,
+      Leiria, Lisboa, Portalegre, Santarém, Setúbal. Use lookup_province to resolve
+      district names before calling analyze_area with indicator=bigearthnet_lulc.
+      Year is fixed at 2018 (Sentinel-2 acquisition period for BigEarthNet V2).
+    aoi_confirmed: [Lisboa, Faro, Évora, Beja, Setúbal, Santarém, Leiria, Castelo Branco, Portalegre]
+
+# ---------------------------------------------------------------------------
+# Display-only layers — can be toggled on the map; no raster statistics
+# ---------------------------------------------------------------------------
+
+display_only_layers:
+
+  - id: habitat_change_clcplus
+    type: pmtiles_vector
+    temporal_range: [2022, 2024]
+    description: >
+      Darwin change detection output — pixel-level habitat class transitions between
+      consecutive years. Shows gains, losses, and stable zones for the Grassland
+      target class (class 4). Visual context only — pixel statistics require
+      analyze_area calls on bigearthnet_lulc.
+    source: "Darwin MLOps Beagle — Stage 4 change detection"
+    coverage: "Spain (study areas)"
+
+  - id: ines_erosion_potencial
+    type: wms
+    description: >
+      RUSLE-based potential sheet and rill erosion (MITECO INES programme).
+      Visual qualitative context only. Cannot compute statistics.
+    source: "MITECO INES"
+    coverage: Spain
+
+  - id: ines_movimientos_masa
+    type: wms
+    description: >
+      Potential landslide and mass movement susceptibility.
+      Visual context only.
+    source: "MITECO INES"
+    coverage: Spain
+
+  - id: ines_erosion_eolica
+    type: wms
+    description: "Wind erosion risk index. Visual context only."
+    source: "MITECO INES"
+    coverage: Spain
+
+  - id: burnt_areas
+    type: pmtiles_vector
+    temporal_range: [2000, 2024]
+    description: >
+      EFFIS fire perimeters 2000–2024. Each polygon has a 'year' attribute.
+      The only temporal dataset available. Visual context only — fire extent
+      per year cannot currently be computed server-side from this vector layer.
+    source: "EFFIS (European Forest Fire Information System)"
+    coverage: Europe
+    future_capability: "Yearly burnt-area statistics per province (requires PMTiles spatial query support)"
+
+  - id: mfe
+    type: pmtiles_vector
+    description: "Spanish Forest Inventory (MFE). Stand-level forest type polygons. Visual only."
+    source: "Spanish Ministry for Ecological Transition"
+    coverage: Spain
+
+  - id: lucas_gully_channels
+    type: pmtiles_vector
+    description: "LUCAS 2022 survey points where gully channels were detected."
+    source: "JRC LUCAS 2022"
+
+  - id: lucas_gully_locations
+    type: pmtiles_vector
+    description: "Actual gully channel location polygons derived from LUCAS field data."
+    source: "JRC LUCAS 2022"
+
+  - id: lucas_survey_points
+    type: pmtiles_vector
+    description: >
+      All 399,000 LUCAS 2022 survey points across Europe.
+      WARNING: 230 MB layer — only toggle for targeted local analysis.
+    source: "JRC LUCAS 2022"
+
+# ---------------------------------------------------------------------------
+# Pre-computed data — available instantly without raster reads
+# ---------------------------------------------------------------------------
+
+precomputed_data:
+
+  - id: province_rankings
+    file: api/agent/province_rankings.json
+    generated: "2026-03-13"
+    coverage: "52 Spanish provinces + Ceuta/Melilla"
+    schema:
+      provinces:
+        - name: string          # Official province name in Spanish
+          code: string          # 2-digit INE province code
+          co2:
+            not_eligible_pct: float   # % of pixels in class 0
+            conditional_pct: float    # % of pixels in class 1
+            eligible_pct: float       # % of pixels in class 2
+          erosion:
+            mean_pct: float    # Mean gully probability across all province pixels (0–100)
+            max_pct: float     # Maximum value in province
+            std_pct: float     # Standard deviation — high = heterogeneous landscape
+      rankings:
+        co2_eligible_top10:    # [{province, eligible_pct}] sorted desc
+        co2_eligible_bottom10: # [{province, eligible_pct}] sorted asc
+        erosion_risk_top10:    # [{province, mean_pct}] sorted desc
+        erosion_risk_bottom10: # [{province, mean_pct}] sorted asc
+    agent_notes: >
+      Use find_top_n tool to query this data — instant, no raster reads needed.
+      Canary Islands (Las Palmas, Santa Cruz de Tenerife) have no erosion data:
+      the rf_gully_probability raster does not cover the Canary Islands.
+    aoi_highlights:
+      Murcia:   {co2_eligible_pct: ~68, erosion_mean_pct: ~62}
+      Córdoba:  {co2_eligible_pct: ~71, erosion_mean_pct: ~55}
+      Jaén:     {co2_eligible_pct: ~69, erosion_mean_pct: ~60}

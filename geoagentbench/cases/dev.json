@@ -1,0 +1,65 @@
+[
+  {
+    "id": "simple_co2_province",
+    "description": "Basic single-province CO2 analysis",
+    "question": "Analyze CO2 suitability in Murcia",
+    "expected_tools": ["lookup_province", "analyze_area"],
+    "expected_actions": ["show_province_boundary", "fly_to_bounds", "chart"],
+    "must_contain": ["Murcia", "%"],
+    "must_not_contain": ["error", "unable to complete"],
+    "max_rounds": 4
+  },
+  {
+    "id": "toggle_erosion",
+    "description": "Toggle a WMS erosion layer on the map",
+    "question": "Show me potential erosion on the map",
+    "expected_tools": ["toggle_layer"],
+    "expected_actions": ["toggle_layer"],
+    "must_contain": ["erosion"],
+    "must_not_contain": ["error"],
+    "max_rounds": 2
+  },
+  {
+    "id": "compare_two_provinces",
+    "description": "Compare CO2 eligibility across two provinces",
+    "question": "Compare CO2 eligibility in Madrid and Valencia",
+    "expected_tools": ["lookup_province", "analyze_area"],
+    "expected_actions": ["show_province_boundary", "fly_to_bounds", "chart", "crop_to_provinces"],
+    "must_contain": ["Madrid", "Valencia", "%"],
+    "must_not_contain": ["error"],
+    "max_rounds": 8
+  },
+  {
+    "id": "erosion_no_stats",
+    "description": "Agent should explain erosion stats are not available yet",
+    "question": "Analyze wind erosion risk in Barcelona",
+    "expected_tools": ["lookup_province"],
+    "must_contain": ["map"],
+    "must_not_contain": ["pixel", "breakdown"],
+    "max_rounds": 4
+  },
+  {
+    "id": "toggle_multiple_layers",
+    "description": "Toggle multiple layers in one request",
+    "question": "Show me CO2 suitability and potential erosion layers",
+    "expected_tools": ["toggle_layer"],
+    "expected_actions": ["toggle_layer"],
+    "must_contain": [],
+    "must_not_contain": ["error"],
+    "max_rounds": 3
+  },
+  {
+    "id": "followup_memory",
+    "description": "Follow-up question relying on conversation memory",
+    "question": "What about Sevilla?",
+    "session_history": [
+      {"role": "user", "content": "Analyze CO2 suitability in Murcia"},
+      {"role": "assistant", "content": "In Murcia, the CO2 absorption suitability analysis shows: Not eligible: 15.2%, Eligible with conditions: 34.8%, Eligible: 50.0%. The province has strong potential for carbon absorption projects."}
+    ],
+    "expected_tools": ["lookup_province", "analyze_area"],
+    "expected_actions": ["show_province_boundary", "fly_to_bounds", "chart"],
+    "must_contain": ["Sevilla", "%"],
+    "must_not_contain": ["error"],
+    "max_rounds": 4
+  }
+]
