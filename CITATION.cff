@@ -3,8 +3,8 @@ title: "GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geos
 message: "If you use this software, please cite it using the metadata from this file."
 type: software
 license: Apache-2.0
-url: "https://github.com/darwin-geo/GeoNatureAgent"
-repository-code: "https://github.com/darwin-geo/GeoNatureAgent"
+url: "https://github.com/gabrielireland/GeoNatureAgent_Benchmark"
+repository-code: "https://github.com/gabrielireland/GeoNatureAgent_Benchmark"
 keywords:
   - geospatial AI
   - LLM agents
@@ -14,7 +14,7 @@ keywords:
 authors:
   - family-names: Diaz-Ireland
     given-names: Gabriel
-    affiliation: "Darwins Geospatial S.L.; Universidad Católica de Ávila"
+    affiliation: "Darwins Geospatial S.L.; Universidad Católica de Ávila; Darwin Analytics LLC"
   - family-names: Prieto-Herráez
     given-names: Diego
     affiliation: Universidad Católica de Ávila
