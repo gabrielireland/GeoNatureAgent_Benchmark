@@ -206,7 +206,7 @@ def run_preflight(experiment_path: str, output_dir: str) -> dict:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="GeoAgentBench preflight checks")
+    parser = argparse.ArgumentParser(description="GeoNatureAgent Benchmark preflight checks")
     parser.add_argument("--experiment", required=True, help="Path to experiment YAML")
     parser.add_argument("--output-dir", required=True, help="Output directory")
     args = parser.parse_args()

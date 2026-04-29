@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "GeoAgentBench: Benchmarking LLM Agents for Environmental Geospatial Analysis"
+title: "GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis"
 message: "If you use this software, please cite it using the metadata from this file."
 type: software
 license: Apache-2.0

@@ -1,12 +1,12 @@
-# How to Use GeoAgentBench
+# How to Use GeoNatureAgent Benchmark
 
-This guide explains how to use GeoAgentBench to evaluate your own LLM agent on environmental geospatial tasks.
+This guide explains how to use GeoNatureAgent Benchmark to evaluate your own LLM agent on environmental geospatial tasks.
 
 ---
 
 ## Architecture Overview
 
-GeoAgentBench has three layers:
+GeoNatureAgent Benchmark has three layers:
 
 ```
 ┌─────────────────────────────────────────┐
@@ -32,7 +32,7 @@ The runner sends each task's question to your agent, collects the output (answer
 
 ## Quick Start: Evaluate an Existing Model
 
-If you just want to benchmark a model that GeoAgentBench already supports (Anthropic or Vertex AI models):
+If you just want to benchmark a model that GeoNatureAgent Benchmark already supports (Anthropic or Vertex AI models):
 
 ```bash
 # Install
@@ -324,7 +324,7 @@ print(f"\nAccuracy: {passed}/{len(results)} = {passed/len(results):.1%}")
 
 ---
 
-## Extending GeoAgentBench
+## Extending GeoNatureAgent Benchmark
 
 ### Adding a new LLM backend
 

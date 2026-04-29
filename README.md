@@ -1,17 +1,17 @@
-# GeoAgentBench
+# GeoNatureAgent Benchmark
 
 A benchmark for evaluating LLM agents on environmental geospatial analysis through structured tool calling against a production API.
 
 **93 tasks** | **18 categories** | **12 tools** | **8 models evaluated**
 
-> **Paper**: *GeoAgentBench: Benchmarking LLM Agents for Environmental Geospatial Analysis*
+> **Paper**: *GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis*
 > Gabriel Diaz-Ireland, Diego Prieto-Herráez, Javier Velázquez, Mario García Peces, Guillermo Perez (2026)
 
 ---
 
-## What is GeoAgentBench?
+## What is GeoNatureAgent Benchmark?
 
-Environmental scientists spend disproportionate effort on data wrangling rather than analysis. GeoAgentBench measures how well AI agents can automate these workflows by orchestrating geospatial tools against a real API serving three environmental indicators across Spain and Portugal.
+Environmental scientists spend disproportionate effort on data wrangling rather than analysis. GeoNatureAgent Benchmark measures how well AI agents can automate these workflows by orchestrating geospatial tools against a real API serving three environmental indicators across Spain and Portugal.
 
 Tasks span municipality-level analysis, multi-turn conversation, spatial reasoning, cross-indicator synthesis, error handling, ranking, comparison, multilingual understanding, habitat analysis, temporal change detection, and more.
 
@@ -57,7 +57,7 @@ See [`geoagentbench/README.md`](geoagentbench/README.md) for full CLI reference 
 ## Repository Structure
 
 ```
-GeoAgentBench/
+GeoNatureAgent Benchmark/
 ├── README.md                    # This file
 ├── HOWTOUSE.md                  # Integration guide
 ├── REPRODUCIBILITY.md           # Reproduction guide
@@ -86,7 +86,7 @@ GeoAgentBench/
 │   ├── results.jsonl            # 744 results (93 x 8 models)
 │   └── README.md                # Dataset card
 ├── paper/                       # LaTeX manuscript + figures
-│   ├── geoagentbench.tex
+│   ├── geonatureagent_benchmark.tex
 │   ├── references.bib
 │   └── figures/                 # 8 publication figures (PDF + PNG)
 └── scripts/                     # Utilities
@@ -116,11 +116,11 @@ GeoAgentBench/
 
 ## Citation
 
-If you use GeoAgentBench in your research, please cite:
+If you use GeoNatureAgent Benchmark in your research, please cite:
 
 ```bibtex
 @article{diazireland2026geoagentbench,
-  title   = {GeoAgentBench: Benchmarking LLM Agents for Environmental Geospatial Analysis},
+  title   = {GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis},
   author  = {Diaz-Ireland, Gabriel and Prieto-Herr{\'a}ez, Diego and Vel{\'a}zquez, Javier and Garc{\'i}a Peces, Mario and Perez, Guillermo},
   year    = {2026},
   url     = {https://github.com/darwin-geo/GeoNatureAgent}

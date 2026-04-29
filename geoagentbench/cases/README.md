@@ -1,4 +1,4 @@
-# GeoAgentBench — Benchmark Cases
+# GeoNatureAgent Benchmark — Benchmark Cases
 
 This directory contains all benchmark case definitions used to evaluate GeoNatureAgent. Each JSON file is a named case set registered in `case_loader.py`.
 

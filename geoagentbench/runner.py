@@ -232,7 +232,7 @@ def run_experiment(
         logger.save_experiment_yaml(config._source_yaml_path)
 
     print(f"\n{'=' * 50}")
-    print(f"  GeoAgentBench Runner")
+    print(f"  GeoNatureAgent Benchmark Runner")
     print(f"  Experiment:  {config.experiment_id}")
     print(f"  Run ID:      {logger.run_id}")
     print(f"  Model:       {config.model_id}")
@@ -390,7 +390,7 @@ def print_results(results: List[ScoredResult]) -> None:
 def main():
     """CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="GeoAgentBench -- Benchmark runner for environmental geospatial AI agents",
+        description="GeoNatureAgent Benchmark -- Benchmark runner for environmental geospatial AI agents",
     )
     parser.add_argument("--experiment", help="Path to experiment YAML config")
     parser.add_argument("--cases", default="dev", help="Case set: dev, v1, v2, all (default: dev)")

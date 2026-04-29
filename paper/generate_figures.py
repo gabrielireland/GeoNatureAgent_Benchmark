@@ -1,4 +1,4 @@
-"""Generate all paper figures for GeoAgentBench v5 (93 tasks, 8 models)."""
+"""Generate all paper figures for GeoNatureAgent Benchmark v5 (93 tasks, 8 models)."""
 
 import matplotlib
 matplotlib.use("Agg")
@@ -108,7 +108,7 @@ def fig1_leaderboard():
     ax.set_yticklabels(models)
     ax.set_xlabel("Accuracy (%)")
     ax.set_xlim(0, 70)
-    ax.set_title("GeoAgentBench v5 — Model Accuracy (93 tasks, 8 models)")
+    ax.set_title("GeoNatureAgent Benchmark v5 — Model Accuracy (93 tasks, 8 models)")
     ax.invert_yaxis()
     for i, (v, c) in enumerate(zip(accuracy, cost_total)):
         cost_str = f"${c:.2f}" if c > 0 else "---"
@@ -296,7 +296,7 @@ def fig6_architecture():
     ax.text(7.0, 3.2, "API", fontsize=7, color=C_GRAY, ha="center")
     ax.text(4.3, 1.9, "log", fontsize=7, color=C_GRAY, rotation=90, va="center")
 
-    ax.set_title("GeoAgentBench — System Architecture", fontsize=11, fontweight="bold", pad=10)
+    ax.set_title("GeoNatureAgent Benchmark — System Architecture", fontsize=11, fontweight="bold", pad=10)
     fig.savefig(OUT / "fig6_architecture.pdf")
     fig.savefig(OUT / "fig6_architecture.png")
     plt.close(fig)

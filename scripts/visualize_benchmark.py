@@ -650,7 +650,7 @@ def _build_figure(records: list[dict], paths: list[Path]) -> plt.Figure:
     )
     fig = plt.figure(figsize=(22, 36))
     fig.suptitle(
-        f"GeoAgentBench — Benchmark Dashboard  ({n} cases, {n_pass}/{n} passed, "
+        f"GeoNatureAgent Benchmark — Benchmark Dashboard  ({n} cases, {n_pass}/{n} passed, "
         f"avg check_score={avg_cs:.2f})  [{model_label}]",
         fontsize=14, fontweight="bold", y=0.988,
     )

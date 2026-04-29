@@ -294,7 +294,7 @@ def generate_batch_summary(
 def _write_readme(root: Path, batch: dict) -> None:
     """Write a human-readable README.txt at the batch root."""
     lines = [
-        f"GeoAgentBench Batch Run: {batch['batch_id']}",
+        f"GeoNatureAgent Benchmark Batch Run: {batch['batch_id']}",
         f"Generated: {batch['timestamp']}",
         f"Git commit: {batch['git_commit']}",
         "",

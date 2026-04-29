@@ -1,6 +1,6 @@
-# GeoAgentBench Dataset
+# GeoNatureAgent Benchmark Dataset
 
-Benchmark tasks and evaluation results from **GeoAgentBench: Benchmarking LLM Agents for Environmental Geospatial Analysis**.
+Benchmark tasks and evaluation results from **GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis**.
 
 ## Files
 
@@ -108,7 +108,7 @@ for model in sorted(set(r["model_id"] for r in results)):
 
 ```bibtex
 @article{diazireland2026geoagentbench,
-  title   = {GeoAgentBench: Benchmarking LLM Agents for Environmental Geospatial Analysis},
+  title   = {GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis},
   author  = {Diaz-Ireland, Gabriel and Prieto-Herr{\'a}ez, Diego and Vel{\'a}zquez, Javier and Garc{\'i}a Peces, Mario and Perez, Guillermo},
   year    = {2026},
   url     = {https://github.com/darwin-geo/GeoNatureAgent}

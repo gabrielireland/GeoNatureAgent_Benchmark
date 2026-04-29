@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Add or validate benchmark cases for GeoAgentBench.
+"""Add or validate benchmark cases for GeoNatureAgent Benchmark.
 
 Interactive workflow to define a new case, validate it against the schema,
 check ID uniqueness across all case files, and append it to a case set.
@@ -344,7 +344,7 @@ def build_case_interactive() -> dict:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Add or validate benchmark cases for GeoAgentBench",
+        description="Add or validate benchmark cases for GeoNatureAgent Benchmark",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(

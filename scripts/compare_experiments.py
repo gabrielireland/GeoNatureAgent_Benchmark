@@ -217,7 +217,7 @@ def _build_comparison_figure(groups: dict[str, list[dict]]) -> plt.Figure:
 
     fig = plt.figure(figsize=(20, 18))
     fig.suptitle(
-        f"GeoAgentBench — Experiment Comparison  ({n_groups} experiments, {total_cases} total cases)",
+        f"GeoNatureAgent Benchmark — Experiment Comparison  ({n_groups} experiments, {total_cases} total cases)",
         fontsize=14, fontweight="bold", y=0.99,
     )
     gs = gridspec.GridSpec(

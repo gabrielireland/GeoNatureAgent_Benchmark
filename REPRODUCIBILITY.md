@@ -1,4 +1,4 @@
-# Reproducing GeoAgentBench Results
+# Reproducing GeoNatureAgent Benchmark Results
 
 This guide covers end-to-end reproduction: from running the benchmark to generating paper figures.
 
@@ -172,11 +172,11 @@ Output: `agentic_documentation/paper/figures/fig{1..8}_*.{pdf,png}`
 ## 7. Compiling the Paper
 
 ```bash
-cd agentic_documentation/paper
-pdflatex geoagentbench.tex
-bibtex geoagentbench
-pdflatex geoagentbench.tex
-pdflatex geoagentbench.tex
+cd paper
+pdflatex geonatureagent_benchmark.tex
+bibtex geonatureagent_benchmark
+pdflatex geonatureagent_benchmark.tex
+pdflatex geonatureagent_benchmark.tex
 ```
 
 ---

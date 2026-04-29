@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify GeoAgentBench publication package consistency.
+"""Verify GeoNatureAgent Benchmark publication package consistency.
 
 Reads from the 4 sources of truth and checks that all derived artifacts
 (READMEs, figures, paper, HuggingFace dataset) are consistent.
@@ -18,7 +18,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 CASES_FILE = REPO / "geoagentbench" / "cases" / "benchmark_v5.json"
-PAPER_TEX = REPO / "agentic_documentation" / "paper" / "geoagentbench.tex"
+PAPER_TEX = REPO / "paper" / "geonatureagent_benchmark.tex"
 REFERENCES_BIB = REPO / "agentic_documentation" / "paper" / "references.bib"
 FIGURES_DIR = REPO / "agentic_documentation" / "paper" / "figures"
 HF_DIR = REPO / "hf_dataset"
@@ -248,7 +248,7 @@ class Checker:
 
     def report(self) -> int:
         print("=" * 60)
-        print("GeoAgentBench Publication Package Verification")
+        print("GeoNatureAgent Benchmark Publication Package Verification")
         print("=" * 60)
         for line in self.details:
             print(line)
@@ -267,7 +267,7 @@ class Checker:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Verify GeoAgentBench publication package")
+    parser = argparse.ArgumentParser(description="Verify GeoNatureAgent Benchmark publication package")
     parser.add_argument(
         "--results-dir",
         type=Path,

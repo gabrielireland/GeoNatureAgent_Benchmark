@@ -1,6 +1,6 @@
-% GeoAgentBench Paper — Preprint format (two-column, 10-page)
+% GeoNatureAgent Benchmark Paper — Preprint format (two-column, 10-page)
 % Target: ACM SIGSPATIAL 2026 (switch to \documentclass[sigconf]{acmart} when acmart.cls is available)
-% Compile: pdflatex geoagentbench && bibtex geoagentbench && pdflatex geoagentbench && pdflatex geoagentbench
+% Compile: pdflatex geonatureagent_benchmark && bibtex geonatureagent_benchmark && pdflatex geonatureagent_benchmark && pdflatex geonatureagent_benchmark
 \documentclass[10pt,twocolumn]{article}
 
 \usepackage[margin=2cm]{geometry}
@@ -23,7 +23,7 @@
 \twocolumn[
 \begin{@twocolumnfalse}
 \begin{center}
-{\LARGE\bfseries GeoAgentBench: Benchmarking LLM Agents for Environmental\\[3pt] Geospatial Analysis Across Eight Foundation Models\par}
+{\LARGE\bfseries GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental\\[3pt] Geospatial Analysis Across Eight Foundation Models\par}
 \vspace{12pt}
 {\large Gabriel Diaz-Ireland$^{1,2}$ \quad Diego Prieto-Herr\'{a}ez$^{2}$ \quad Javier Vel\'{a}zquez$^{2}$\\[4pt] Mario Garc\'{\i}a Peces$^{1}$ \quad Guillermo Perez$^{1}$\par}
 \vspace{6pt}
@@ -36,8 +36,8 @@
 \noindent\rule{\textwidth}{0.4pt}
 \vspace{4pt}
 \noindent\textbf{Abstract.}~
-Environmental scientists spend disproportionate effort on data wrangling rather than analysis, yet no benchmark exists to evaluate AI agents that automate environmental geospatial workflows through structured tool calling against real APIs. We introduce \textbf{GeoAgentBench}, a benchmark for environmental analysis agents comprising 93 tasks across 18 categories---including municipality-level analysis, multi-turn conversation, spatial reasoning, cross-indicator synthesis, error handling and recovery, ranking, comparison, multilingual understanding, habitat analysis, deep-dive profiling, temporal change, and task rejection---evaluated against a production geospatial API serving three environmental indicators across Spain and Portugal using twelve domain-specific tools. We evaluate eight large language models (GLM-5, DeepSeek~V3.2, GPT-OSS-120B, Gemini~2.5~Pro, Qwen3-235B, Llama~4~Scout, Llama~4~Maverick, and Claude~Sonnet~4) across Vertex~AI and Anthropic platforms, finding that: (1)~the best models achieve 58.1\% accuracy (GLM-5 and Claude~Sonnet~4), revealing that environmental geospatial tool orchestration remains an open challenge;
-(2)~cost-accuracy trade-offs vary by two orders of magnitude, with DeepSeek~V3.2 achieving 52.7\% at \$0.008/case while Claude~Sonnet~4 costs 11$\times$ more for the highest accuracy; (3)~comparison tasks remain universally unsolved (0\% across all models), exposing systematic reasoning limitations; and (4)~structured tool calling against a real API provides a more discriminative evaluation signal than synthetic benchmarks. We demonstrate domain and geographic extensibility by incorporating BigEarthNet~V2 land cover data for Portugal as a third indicator alongside Spanish CO2 suitability and gully erosion, enabling cross-country evaluation across three data domains. GeoAgentBench, evaluation code, and the MLOps pipeline are publicly available.\footnote{\url{https://github.com/darwin-geo/GeoNatureAgent}}
+Environmental scientists spend disproportionate effort on data wrangling rather than analysis, yet no benchmark exists to evaluate AI agents that automate environmental geospatial workflows through structured tool calling against real APIs. We introduce \textbf{GeoNatureAgent Benchmark}, a benchmark for environmental analysis agents comprising 93 tasks across 18 categories---including municipality-level analysis, multi-turn conversation, spatial reasoning, cross-indicator synthesis, error handling and recovery, ranking, comparison, multilingual understanding, habitat analysis, deep-dive profiling, temporal change, and task rejection---evaluated against a production geospatial API serving three environmental indicators across Spain and Portugal using twelve domain-specific tools. We evaluate eight large language models (GLM-5, DeepSeek~V3.2, GPT-OSS-120B, Gemini~2.5~Pro, Qwen3-235B, Llama~4~Scout, Llama~4~Maverick, and Claude~Sonnet~4) across Vertex~AI and Anthropic platforms, finding that: (1)~the best models achieve 58.1\% accuracy (GLM-5 and Claude~Sonnet~4), revealing that environmental geospatial tool orchestration remains an open challenge;
+(2)~cost-accuracy trade-offs vary by two orders of magnitude, with DeepSeek~V3.2 achieving 52.7\% at \$0.008/case while Claude~Sonnet~4 costs 11$\times$ more for the highest accuracy; (3)~comparison tasks remain universally unsolved (0\% across all models), exposing systematic reasoning limitations; and (4)~structured tool calling against a real API provides a more discriminative evaluation signal than synthetic benchmarks. We demonstrate domain and geographic extensibility by incorporating BigEarthNet~V2 land cover data for Portugal as a third indicator alongside Spanish CO2 suitability and gully erosion, enabling cross-country evaluation across three data domains. GeoNatureAgent Benchmark, evaluation code, and the MLOps pipeline are publicly available.\footnote{\url{https://github.com/darwin-geo/GeoNatureAgent}}
 
 \vspace{6pt}
 \noindent\textbf{Keywords:} Geospatial AI, LLM Agents, Tool Calling, Benchmark, Environmental Analysis
@@ -59,7 +59,7 @@ However, a critical evaluation gap persists. Existing agent benchmarks target ge
 
 This paper makes four contributions:
 \begin{enumerate}
-  \item \textbf{GeoAgentBench}---the first benchmark for environmental analysis agents using structured tool calling against a production geospatial API, comprising 93 tasks across 18 categories with twelve domain-specific tools.
+  \item \textbf{GeoNatureAgent Benchmark}---the first benchmark for environmental analysis agents using structured tool calling against a production geospatial API, comprising 93 tasks across 18 categories with twelve domain-specific tools.
   \item \textbf{Eight-model evaluation}---the first systematic comparison of eight LLMs on environmental geospatial tool orchestration under identical conditions across Vertex~AI and Anthropic platforms.
   \item \textbf{Cost-efficiency analysis}---quantitative cost-accuracy trade-off mapping revealing two orders of magnitude variation.
   \item \textbf{Reproducible MLOps pipeline}---a fully automated Cloud Build pipeline producing structured results with full conversation traces.
@@ -76,13 +76,13 @@ The literature reveals four paradigms. The \textbf{LLM + Tool Pool} approach pai
 
 \subsection{Benchmarks and Evaluation}
 
-Agent tool-use is evaluated by GeoBenchX~\cite{krechetova2025geobenchx}, ThinkGeo~\cite{shabbir2025thinkgeo} (486 remote sensing tasks), and UnivEARTH~\cite{kao2025univearth} (only 33\% accuracy on Earth Engine code generation, 58\% code failure rate). GeoBenchX is the closest comparable work: 202 tasks across five categories (merge-visualise, process-merge-visualise, spatial operations, heatmaps/contour lines, and control questions), evaluated via 24 general-purpose GIS tools (data loading, filtering, spatial joins, choropleth rendering) with an LLM-as-judge scoring protocol (3-point scale, three independent judges achieving 88--96\% agreement with human annotations). Top performers are o4-mini and Claude~3.5~Sonnet. Crucially, GeoBenchX tools are low-level primitives operating on local files---\texttt{load\_data}, \texttt{filter\_categorical}, \texttt{create\_buffer}, \texttt{make\_choropleth\_map}---whereas GeoAgentBench tools are high-level domain operations against a production cloud API.
+Agent tool-use is evaluated by GeoBenchX~\cite{krechetova2025geobenchx}, ThinkGeo~\cite{shabbir2025thinkgeo} (486 remote sensing tasks), and UnivEARTH~\cite{kao2025univearth} (only 33\% accuracy on Earth Engine code generation, 58\% code failure rate). GeoBenchX is the closest comparable work: 202 tasks across five categories (merge-visualise, process-merge-visualise, spatial operations, heatmaps/contour lines, and control questions), evaluated via 24 general-purpose GIS tools (data loading, filtering, spatial joins, choropleth rendering) with an LLM-as-judge scoring protocol (3-point scale, three independent judges achieving 88--96\% agreement with human annotations). Top performers are o4-mini and Claude~3.5~Sonnet. Crucially, GeoBenchX tools are low-level primitives operating on local files---\texttt{load\_data}, \texttt{filter\_categorical}, \texttt{create\_buffer}, \texttt{make\_choropleth\_map}---whereas GeoNatureAgent Benchmark tools are high-level domain operations against a production cloud API.
 
-To bridge the gap between general-purpose GIS benchmarks and domain-specific environmental analysis, we integrate four tools from GeoBenchX~\cite{krechetova2025geobenchx} into GeoAgentBench's toolset: \texttt{create\_buffer} (proximity queries), \texttt{select\_features\_by\_spatial\_relationship} (spatial predicates), \texttt{get\_centroids} (point geometry extraction), and \texttt{reject\_task} (explicit task rejection to prevent hallucination). These tools are adapted from GeoBenchX's local-file paradigm to operate against GeoAgentBench's cloud API and administrative boundary system. We additionally introduce 10 benchmark cases inspired by GeoBenchX's task patterns---buffer-based proximity analysis, spatial joins, and centroid calculations---applied to Spanish environmental indicators. This creates a direct comparison pathway: models achieving 58\% on GeoBenchX's general GIS tasks can be evaluated on equivalent spatial operations within our domain-specific context, isolating the performance impact of domain complexity from tool-use capability.
+To bridge the gap between general-purpose GIS benchmarks and domain-specific environmental analysis, we integrate four tools from GeoBenchX~\cite{krechetova2025geobenchx} into GeoNatureAgent Benchmark's toolset: \texttt{create\_buffer} (proximity queries), \texttt{select\_features\_by\_spatial\_relationship} (spatial predicates), \texttt{get\_centroids} (point geometry extraction), and \texttt{reject\_task} (explicit task rejection to prevent hallucination). These tools are adapted from GeoBenchX's local-file paradigm to operate against GeoNatureAgent Benchmark's cloud API and administrative boundary system. We additionally introduce 10 benchmark cases inspired by GeoBenchX's task patterns---buffer-based proximity analysis, spatial joins, and centroid calculations---applied to Spanish environmental indicators. This creates a direct comparison pathway: models achieving 58\% on GeoBenchX's general GIS tasks can be evaluated on equivalent spatial operations within our domain-specific context, isolating the performance impact of domain complexity from tool-use capability.
 
 Map reasoning: MapEval~\cite{dihan2025mapeval} (no model exceeds 67\%), MapQA~\cite{arnold2025mapqa} (humans 91\%, models $<$50\%). Spatial reasoning: GPSBench~\cite{truong2026gpsbench}, SpatiaLab~\cite{wasi2026spatialab} (best model 55\% vs human 88\%). Foundation models: GEO-Bench~\cite{lacoste2023geobench} and GEO-Bench-2~\cite{simumba2025geobench2} evaluate \emph{pixel-level} classification/segmentation across 19 datasets; PANGAEA~\cite{marsocci2024pangaea} finds foundation models do not consistently outperform supervised baselines.
 
-\textbf{Key distinction}: GEO-Bench evaluates pixel-level model accuracy (\emph{can this model classify a satellite tile?}); GeoAgentBench evaluates agent-level tool orchestration (\emph{can this agent reason about which tools to call?}). The two are complementary.
+\textbf{Key distinction}: GEO-Bench evaluates pixel-level model accuracy (\emph{can this model classify a satellite tile?}); GeoNatureAgent Benchmark evaluates agent-level tool orchestration (\emph{can this agent reason about which tools to call?}). The two are complementary.
 
 \subsection{Environmental Science AI}
 
@@ -90,19 +90,19 @@ EnvGPT~\cite{zhang2025envgpt} shows focused fine-tuning on environmental tokens 
 
 \subsection{The Missing Benchmark}
 
-No existing benchmark evaluates environmental analysis agents performing structured tool calling against a real geospatial API with multi-turn conversation, multilingual inputs, and cross-indicator synthesis. GeoAgentBench fills this gap.
+No existing benchmark evaluates environmental analysis agents performing structured tool calling against a real geospatial API with multi-turn conversation, multilingual inputs, and cross-indicator synthesis. GeoNatureAgent Benchmark fills this gap.
 
 
 %% ══════════════════════════════════════════════════════════════════════════
-\section{GeoAgentBench}
+\section{GeoNatureAgent Benchmark}
 \label{sec:benchmark}
 
 \subsection{Benchmark Design}
 
-GeoAgentBench comprises 93 tasks organised into 18 categories (Table~\ref{tab:categories}), spanning easy (19\%), medium (45\%), and hard (36\%) difficulty levels.
+GeoNatureAgent Benchmark comprises 93 tasks organised into 18 categories (Table~\ref{tab:categories}), spanning easy (19\%), medium (45\%), and hard (36\%) difficulty levels.
 
 \begin{table}[t]
-\caption{GeoAgentBench v5 task categories (93 tasks, 18 categories).}
+\caption{GeoNatureAgent Benchmark v5 task categories (93 tasks, 18 categories).}
 \label{tab:categories}
 \centering
 \small
@@ -151,7 +151,7 @@ Figure~\ref{fig:architecture} shows the system architecture. The agent operates 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/fig6_architecture.pdf}
-  \caption{GeoAgentBench system architecture. The LLM agent interacts with a production API serving COG data; the eval harness logs all tool calls and scores responses.}
+  \caption{GeoNatureAgent Benchmark system architecture. The LLM agent interacts with a production API serving COG data; the eval harness logs all tool calls and scores responses.}
   \label{fig:architecture}
 \end{figure}
 
@@ -240,7 +240,7 @@ Experiments are defined as YAML configuration files. A Cloud Build pipeline buil
 
 \subsection{Experimental Setup}
 
-We evaluate eight LLMs on GeoAgentBench v5 (93 tasks, 18 categories) across Vertex~AI Model-as-a-Service and the Anthropic native API (Table~\ref{tab:models}). All experiments use the v3 system prompt (zero-shot), \texttt{max\_turns=10}, \texttt{max\_tokens=4096}, and \texttt{temperature=1.0}. Experiments run sequentially inside a single Cloud Run Job to ensure identical infrastructure conditions.
+We evaluate eight LLMs on GeoNatureAgent Benchmark v5 (93 tasks, 18 categories) across Vertex~AI Model-as-a-Service and the Anthropic native API (Table~\ref{tab:models}). All experiments use the v3 system prompt (zero-shot), \texttt{max\_turns=10}, \texttt{max\_tokens=4096}, and \texttt{temperature=1.0}. Experiments run sequentially inside a single Cloud Run Job to ensure identical infrastructure conditions.
 
 \begin{table}[t]
 \caption{Models evaluated. Seven via Vertex AI; Claude via native Anthropic API.}
@@ -269,7 +269,7 @@ Claude Sonnet 4 & Anthropic & --- & Anthropic API \\
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/fig1_leaderboard.pdf}
-  \caption{GeoAgentBench v5 leaderboard. Accuracy (\%) with total cost in parentheses. Dashed line at 50\%.}
+  \caption{GeoNatureAgent Benchmark v5 leaderboard. Accuracy (\%) with total cost in parentheses. Dashed line at 50\%.}
 
   \label{fig:leaderboard}
 \end{figure}
@@ -279,7 +279,7 @@ Table~\ref{tab:leaderboard} and Figure~\ref{fig:leaderboard} present the main re
 Claude~Sonnet~4---the only model accessed via a native provider API rather than Vertex~AI MaaS---ties with GLM-5 for first place with notable strengths on municipality analysis, ranking, threshold tasks, and BigEarthNet land cover cases (83\% on the 24 BigEarthNet-related cases). However, it is the most expensive model at \$0.087/case, making it 3$\times$ costlier than GLM-5.
 
 \begin{table}[t]
-\caption{Leaderboard: 8 models on 93 GeoAgentBench v5 tasks. Cost is total for all 93 cases.}
+\caption{Leaderboard: 8 models on 93 GeoNatureAgent Benchmark v5 tasks. Cost is total for all 93 cases.}
 \label{tab:leaderboard}
 \centering
 \small
@@ -396,7 +396,7 @@ Figure~\ref{fig:heatmap} shows accuracy by category across the six completed mod
 
 \subsection{Comparison with Prior Benchmarks}
 
-GeoAgentBench's 58.1\% best-model accuracy is notably lower than GeoBenchX and GeoJSON~Agents (85--97\%). Table~\ref{tab:benchmark_comparison} summarises the key differences.
+GeoNatureAgent Benchmark's 58.1\% best-model accuracy is notably lower than GeoBenchX and GeoJSON~Agents (85--97\%). Table~\ref{tab:benchmark_comparison} summarises the key differences.
 
 \begin{table}[t]
 \centering
@@ -405,7 +405,7 @@ GeoAgentBench's 58.1\% best-model accuracy is notably lower than GeoBenchX and G
 \label{tab:benchmark_comparison}
 \begin{tabular}{lcc}
 \toprule
-& \textbf{GeoBenchX} & \textbf{GeoAgentBench} \\
+& \textbf{GeoBenchX} & \textbf{GeoNatureAgent Benchmark} \\
 \midrule
 Tasks              & 202            & 93 \\
 Categories         & 5              & 18 \\
@@ -433,7 +433,7 @@ Our 58.1\% on real API tool calls compares favourably with UnivEARTH's 33\% on c
 \subsection{Cross-Dataset Evaluation: BigEarthNet V2}
 \label{sec:validation}
 
-GeoAgentBench is designed to be domain- and geography-agnostic. To demonstrate extensibility beyond Spanish CO2 and erosion indicators, we incorporate BigEarthNet~V2~\cite{clasen2024reben} as a third data domain covering a different country. BigEarthNet~V2 provides 549k labeled Sentinel-2 patches with CLC2018 19-class labels; we aggregate the 75k+ Portuguese patches across 9 mainland districts into a 7-class land cover distribution (Coniferous Forest, Broadleaf Forest, Shrubland, Grassland, Sparse Vegetation, Water, Urban) queryable via the same \texttt{analyze\_area} tool used for Spanish indicators.
+GeoNatureAgent Benchmark is designed to be domain- and geography-agnostic. To demonstrate extensibility beyond Spanish CO2 and erosion indicators, we incorporate BigEarthNet~V2~\cite{clasen2024reben} as a third data domain covering a different country. BigEarthNet~V2 provides 549k labeled Sentinel-2 patches with CLC2018 19-class labels; we aggregate the 75k+ Portuguese patches across 9 mainland districts into a 7-class land cover distribution (Coniferous Forest, Broadleaf Forest, Shrubland, Grassland, Sparse Vegetation, Water, Urban) queryable via the same \texttt{analyze\_area} tool used for Spanish indicators.
 
 This integration tests whether agents generalise from Spanish environmental data to a different country and data domain. The 20 BigEarthNet benchmark cases (Table~\ref{tab:bigearth_cases}) span seven task patterns: single-district breakdown, cross-indicator synthesis (Portuguese land cover with Spanish CO2/erosion), multi-turn recall, chart generation, legend and layer discovery, temporal context, and two-district comparison. Unlike the CO2 and erosion indicators where ground truth depends on live raster geometry, BigEarthNet cases have fixed numeric ground truth derived from pre-computed district-level statistics, enabling deterministic scoring.
 
@@ -470,7 +470,7 @@ The inclusion of BigEarthNet~V2 as a queryable layer rather than merely a valida
 \section{Conclusion}
 \label{sec:conclusion}
 
-We introduce GeoAgentBench, a benchmark for evaluating AI agents on environmental geospatial analysis through structured tool calling against a production API. The benchmark spans three indicators across Spain and Portugal, demonstrating domain and geographic extensibility. Evaluating eight LLMs on 93 tasks across 18 categories with twelve tools:
+We introduce GeoNatureAgent Benchmark, a benchmark for evaluating AI agents on environmental geospatial analysis through structured tool calling against a production API. The benchmark spans three indicators across Spain and Portugal, demonstrating domain and geographic extensibility. Evaluating eight LLMs on 93 tasks across 18 categories with twelve tools:
 
 \begin{enumerate}
   \item \textbf{Environmental geospatial tool orchestration remains open.} The best models (GLM-5 and Claude~Sonnet~4) achieve 58.1\%---well below the 85--97\% on general GIS benchmarks, with only three models exceeding 50\%.
@@ -481,7 +481,7 @@ We introduce GeoAgentBench, a benchmark for evaluating AI agents on environmenta
 
 \noindent\textbf{Future work}: expanding to additional countries and indicators (NDVI, precipitation, biodiversity indices); prompt ablation (zero-shot, CoT, few-shot); multi-run evaluation with confidence intervals; multi-agent architecture comparison following the Planner-Worker paradigm of GeoJSON~Agents~\cite{luo2025geojsonagents}.
 
-GeoAgentBench, evaluation code, and the full MLOps pipeline are publicly available.\footnote{\url{https://github.com/darwin-geo/GeoNatureAgent}}
+GeoNatureAgent Benchmark, evaluation code, and the full MLOps pipeline are publicly available.\footnote{\url{https://github.com/darwin-geo/GeoNatureAgent}}
 
 
 %% ══════════════════════════════════════════════════════════════════════════
