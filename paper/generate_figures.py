@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 from pathlib import Path
+from adjustText import adjust_text
 
 OUT = Path(__file__).parent / "figures"
 OUT.mkdir(exist_ok=True)
@@ -134,35 +135,37 @@ def fig2_cost_accuracy():
     plot_colors = model_colors[:7]
 
     fig, ax = plt.subplots(figsize=(5.5, 4))
+    texts = []
     for i, m in enumerate(plot_models):
         size = max(plot_tokens[i] * 0.12, 30)
         ax.scatter(plot_cost[i], plot_acc[i], s=size, c=plot_colors[i],
                    alpha=0.85, edgecolor=C_DARK, linewidth=0.5, zorder=3)
-        # Smart label placement
-        if m == "Claude Sonnet 4":
-            xytext = (-8, -12)
-            ha = "right"
-        elif m == "Qwen3-235B":
-            xytext = (5, -10)
-            ha = "left"
-        elif m == "Llama 4 Scout":
-            xytext = (5, 5)
-            ha = "left"
-        else:
-            xytext = (5, 5)
-            ha = "left"
-        ax.annotate(m, (plot_cost[i], plot_acc[i]),
-                    textcoords="offset points", xytext=xytext,
-                    fontsize=7.5, ha=ha, color=C_DARK)
+        txt = ax.text(
+            plot_cost[i],
+            plot_acc[i],
+            m,
+            fontsize=9,
+            fontweight="bold"
+            )
+        texts.append(txt)
+
+    adjust_text(texts, ax=ax,
+            expand_text=(4.0, 4.0),
+            expand_points=(4.0, 4.0),
+            force_text=(2.0, 2.0),
+            force_points=(2.0, 2.0))
 
     # Pareto frontier: Qwen3 → DeepSeek → GLM-5
     pareto_x = [0.50, 0.79, 2.54]
     pareto_y = [47.3, 52.7, 58.1]
     ax.plot(pareto_x, pareto_y, "--", color=C_DARK, linewidth=0.8, alpha=0.4, zorder=1)
-    ax.annotate("Pareto frontier", xy=(1.2, 56), fontsize=7, color=C_GRAY, style="italic")
+    ax.annotate("Pareto frontier", xy=(1.2, 56), fontsize=9, fontweight="bold", color=C_GRAY, style="italic")
 
-    ax.set_xlabel("Total Cost (USD)")
-    ax.set_ylabel("Accuracy (%)")
+    ax.set_xlabel("Total Cost (USD)", fontsize=10)
+    ax.set_ylabel("Accuracy (%)", fontsize=10)
+    ax.set_ylim(0, 70)
+    ax.tick_params(axis='x', labelsize=10)
+    ax.tick_params(axis='y', labelsize=10)
     ax.set_title("Cost-Accuracy Trade-off\n(bubble size = total tokens)")
     ax.set_xlim(-0.3, 9.0)
     ax.set_ylim(-2, 68)
@@ -172,6 +175,7 @@ def fig2_cost_accuracy():
     fig.savefig(OUT / "fig2_cost_accuracy.png")
     plt.close(fig)
     print("  fig2_cost_accuracy")
+
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -208,14 +212,14 @@ def fig4_category_heatmap():
     fig, ax = plt.subplots(figsize=(10, 4))
     im = ax.imshow(data, cmap="RdYlGn", aspect="auto", vmin=0, vmax=100)
     ax.set_xticks(np.arange(len(cat_labels)))
-    ax.set_xticklabels(cat_labels, rotation=50, ha="right", fontsize=7.5)
+    ax.set_xticklabels(cat_labels, rotation=50, ha="right", fontsize=10)
     ax.set_yticks(np.arange(len(model_names)))
-    ax.set_yticklabels(model_names, fontsize=9)
+    ax.set_yticklabels(model_names, fontsize=10)
     for i in range(len(model_names)):
         for j in range(len(cat_labels)):
             v = data[i, j]
             color = "white" if v < 25 or v > 80 else "black"
-            ax.text(j, i, f"{v:.0f}", ha="center", va="center", fontsize=7, color=color)
+            ax.text(j, i, f"{v:.0f}", ha="center", va="center", fontsize=10, fontweight='bold', color=color)
     ax.set_title("Accuracy by Category (%) — 18 categories, 6 completed models")
     fig.colorbar(im, ax=ax, label="Accuracy %", shrink=0.8)
     fig.savefig(OUT / "fig4_category_heatmap.pdf")
@@ -230,19 +234,21 @@ def fig4_category_heatmap():
 def fig5_hard_cases():
     # Sort categories by average accuracy
     sorted_cats = sorted(cat_avg.items(), key=lambda x: x[1])
-    labels = [cat_labels[categories_all.index(c)] + f"\n(n={cat_counts[categories_all.index(c)]})"
+    labels = [cat_labels[categories_all.index(c)] + f" (n={cat_counts[categories_all.index(c)]})"
               for c, _ in sorted_cats]
     rates = [v for _, v in sorted_cats]
 
     fig, ax = plt.subplots(figsize=(6.5, 5))
     colors = [C_RED if r < 10 else C_ORANGE if r < 30 else C_GREEN for r in rates]
     ax.barh(labels, rates, color=colors, height=0.6)
-    ax.set_xlabel("Avg Accuracy (%)")
+    ax.set_xlabel("Avg Accuracy (%)", fontsize=10)
     ax.set_xlim(0, 85)
+    ax.tick_params(axis='x', labelsize=10)
+    ax.tick_params(axis='y', labelsize=10)
     ax.set_title("Category Difficulty (avg across 6 completed models)")
     ax.invert_yaxis()
     for i, v in enumerate(rates):
-        ax.text(v + 0.8, i, f"{v:.0f}%", va="center", fontsize=7.5)
+        ax.text(v + 0.8, i, f"{v:.0f}%", va="center", fontsize=10, fontweight='bold')
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     fig.savefig(OUT / "fig5_hard_cases.pdf")
@@ -255,18 +261,18 @@ def fig5_hard_cases():
 # FIGURE 6: Agent architecture diagram
 # ═══════════════════════════════════════════════════════════════════════════
 def fig6_architecture():
-    fig, ax = plt.subplots(figsize=(7, 4))
+    fig, ax = plt.subplots(figsize=(10,7))
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 6)
+    ax.set_ylim(0, 7)
     ax.set_aspect("equal")
     ax.axis("off")
 
     boxes = [
-        (0.5, 4.5, 2.0, 1.0, "User Query\n(NL + history)", "#ecf0f1"),
-        (3.5, 4.5, 3.0, 1.0, "LLM Agent\n(ReAct loop)", "#d5f5e3"),
-        (3.5, 2.5, 3.0, 1.0, "Tool Router\n(12 tools)", "#d6eaf8"),
-        (7.5, 4.5, 2.0, 1.0, "Response\n(NL + data)", "#fdebd0"),
-        (7.5, 2.5, 2.0, 1.0, "Darwin Maps\nAPI (COGs)", "#fadbd8"),
+        (0.5, 5.5, 2.0, 1.0, "User Query\n(NL + history)", "#ecf0f1"),
+        (3.5, 5.5, 3.0, 1.0, "LLM Agent\n(ReAct loop)", "#d5f5e3"),
+        (3.5, 3.0, 3.0, 1.0, "Tool Router\n(12 tools)", "#d6eaf8"),
+        (7.5, 5.5, 2.0, 1.0, "Response\n(NL + data)", "#fdebd0"),
+        (7.5, 3.0, 2.0, 1.0, "Darwin Maps\nAPI (COGs)", "#fadbd8"),
         (3.5, 0.5, 3.0, 1.0, "Eval Harness\n(scoring)", "#e8daef"),
     ]
     for x, y, w, h, text, color in boxes:
@@ -274,29 +280,29 @@ def fig6_architecture():
                                         facecolor=color, edgecolor=C_DARK, linewidth=1.2)
         ax.add_patch(rect)
         ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
-                fontsize=8, fontweight="bold", color=C_DARK)
+                fontsize=11, fontweight="bold", color=C_DARK)
 
     arrows = [
-        (2.5, 5.0, 1.0, 0),
-        (6.5, 5.0, 1.0, 0),
-        (5.0, 4.5, 0, -1.0),
-        (5.0, 3.5, 0, 1.0),
-        (6.5, 3.0, 1.0, 0),
-        (7.5, 3.0, -1.0, 0),
-        (5.0, 2.5, 0, -1.0),
+        (2.5, 6.0, 1.0, 0),
+        (6.5, 6.0, 1.0, 0),
+        (5.0, 5.5, 0, -1.5),
+        (5.0, 4.0, 0, 1.5),
+        (6.5, 3.5, 1.0, 0),
+        (7.5, 3.5, -1.0, 0),
+        (5.0, 3.0, 0, -1.5),
     ]
     for x, y, dx, dy in arrows:
         ax.annotate("", xy=(x + dx, y + dy), xytext=(x, y),
                     arrowprops=dict(arrowstyle="->", color=C_DARK, lw=1.2))
 
-    ax.text(3.0, 5.2, "query", fontsize=7, color=C_GRAY, ha="center")
-    ax.text(7.0, 5.2, "answer", fontsize=7, color=C_GRAY, ha="center")
-    ax.text(4.3, 3.9, "tool calls", fontsize=7, color=C_GRAY, rotation=90, va="center")
-    ax.text(5.7, 3.9, "results", fontsize=7, color=C_GRAY, rotation=90, va="center")
-    ax.text(7.0, 3.2, "API", fontsize=7, color=C_GRAY, ha="center")
-    ax.text(4.3, 1.9, "log", fontsize=7, color=C_GRAY, rotation=90, va="center")
+    ax.text(3.0, 6.2, "query", fontsize=11, color=C_GRAY, ha="center")
+    ax.text(7.0, 6.2, "answer", fontsize=11, color=C_GRAY, ha="center")
+    ax.text(4.6, 4.7, "tool calls", fontsize=11, color=C_GRAY, rotation=90, va="center")
+    ax.text(5.2, 4.7, "results", fontsize=11, color=C_GRAY, rotation=90, va="center")
+    ax.text(7.0, 3.7, "API", fontsize=11, color=C_GRAY, ha="center")
+    ax.text(4.6, 2.2, "log", fontsize=11, color=C_GRAY, rotation=90, va="center")
 
-    ax.set_title("GeoNatureAgent Benchmark — System Architecture", fontsize=11, fontweight="bold", pad=10)
+    ax.set_title("GeoNatureAgent Benchmark — System Architecture", fontsize=13, fontweight="bold", pad=10)
     fig.savefig(OUT / "fig6_architecture.pdf")
     fig.savefig(OUT / "fig6_architecture.png")
     plt.close(fig)
@@ -313,24 +319,30 @@ def fig7_tokens_vs_accuracy():
     plot_tokens = tokens_k[:7]
     plot_colors = model_colors[:7]
 
-    fig, ax = plt.subplots(figsize=(5.5, 3.5))
+    fig, ax = plt.subplots(figsize=(8, 5))
+    texts = []
     for i, m in enumerate(plot_models):
         ax.scatter(plot_tokens[i], plot_acc[i], s=80, c=plot_colors[i],
                    edgecolor=C_DARK, linewidth=0.5, zorder=3)
-        if m == "DeepSeek V3.2":
-            xytext = (-5, -12)
-            ha = "right"
-        elif m == "Claude Sonnet 4":
-            xytext = (5, -10)
-            ha = "left"
-        else:
-            xytext = (5, 5)
-            ha = "left"
-        ax.annotate(m, (plot_tokens[i], plot_acc[i]),
-                    textcoords="offset points", xytext=xytext,
-                    fontsize=7, color=C_DARK, ha=ha)
-    ax.set_xlabel("Total Tokens (K)")
-    ax.set_ylabel("Accuracy (%)")
+        txt = ax.text(
+            plot_tokens[i],
+            plot_acc[i],
+            m,
+            fontsize=9,
+            fontweight="bold"
+            )
+        texts.append(txt)
+
+    adjust_text(texts, ax=ax,
+                expand_text=(4.0, 4.0),
+                expand_points=(4.0, 4.0),
+                force_text=(2.0, 2.0),
+                force_points=(2.0, 2.0))
+    ax.set_xlabel("Total Tokens (K)", fontsize=10)
+    ax.set_ylabel("Accuracy (%)", fontsize=10)
+    ax.set_ylim(0, 65)
+    ax.tick_params(axis='x', labelsize=10)
+    ax.tick_params(axis='y', labelsize=10)
     ax.set_title("Token Usage vs Accuracy (93 tasks)")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -344,13 +356,13 @@ def fig7_tokens_vs_accuracy():
 # FIGURE 8: Scoring pipeline diagram
 # ═══════════════════════════════════════════════════════════════════════════
 def fig8_scoring_pipeline():
-    fig, ax = plt.subplots(figsize=(7, 5.5))
+    fig, ax = plt.subplots(figsize=(10.5, 8.25))
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 8)
     ax.set_aspect("equal")
     ax.axis("off")
 
-    def _box(x, y, w, h, text, color, fs=7.5):
+    def _box(x, y, w, h, text, color, fs=9):
         rect = mpatches.FancyBboxPatch(
             (x, y), w, h, boxstyle="round,pad=0.08",
             facecolor=color, edgecolor=C_DARK, linewidth=1.0,
@@ -367,14 +379,14 @@ def fig8_scoring_pipeline():
             ax.text(mx, my, label, fontsize=6.5, color=C_GRAY, ha="center", va="center")
 
     # ── Row 1: Input ──
-    _box(0.3, 7.0, 2.0, 0.7, "Task\n(benchmark_v5.json)", "#ecf0f1")
-    _box(3.8, 7.0, 2.4, 0.7, "Agent Output\n(answer, tools, actions)", "#d5f5e3")
+    _box(1.25, 7.0, 2.5, 0.7, "Task\n(benchmark_v5.json)", "#ecf0f1")
+    _box(4.75, 7.0, 3.0, 0.7, "Agent Output\n(answer, tools, actions)", "#d5f5e3")
 
     # ── Row 2: Check gate ──
-    _arrow(1.3, 7.0, 3.5, 6.3)
-    _arrow(5.0, 7.0, 5.0, 6.3)
+    _arrow(2.5, 7.0, 3.5, 6.3)
+    _arrow(6.25, 7.0, 5.0, 6.3)
 
-    _box(1.0, 5.5, 7.0, 0.8, "8 Scoring Checks", "#d6eaf8", fs=9)
+    _box(1.0, 5.5, 7.0, 0.8, "8 Scoring Checks", "#d6eaf8", fs=10)
 
     # ── Row 3: Individual checks (two columns) ──
     checks_left = [
@@ -391,11 +403,11 @@ def fig8_scoring_pipeline():
     ]
     for i, txt in enumerate(checks_left):
         yy = 5.1 - i * 0.45
-        ax.text(1.2, yy, f"• {txt}", fontsize=6.5, color=C_DARK, va="center",
+        ax.text(1.2, yy, f"• {txt}", fontsize=9, color=C_DARK, va="center",
                 fontfamily="monospace")
     for i, txt in enumerate(checks_right):
         yy = 5.1 - i * 0.45
-        ax.text(5.2, yy, f"• {txt}", fontsize=6.5, color=C_DARK, va="center",
+        ax.text(5.2, yy, f"• {txt}", fontsize=9, color=C_DARK, va="center",
                 fontfamily="monospace")
 
     # ── Row 4: Decision ──
@@ -411,7 +423,7 @@ def fig8_scoring_pipeline():
         (diamond_x - dw, diamond_y),
     ], closed=True, facecolor="#fef9e7", edgecolor=C_DARK, linewidth=1.0)
     ax.add_patch(diamond)
-    ax.text(diamond_x, diamond_y, "ALL\npass?", fontsize=6.5, ha="center",
+    ax.text(diamond_x, diamond_y, "ALL\npass?", fontsize=9, ha="center",
             va="center", fontweight="bold", color=C_DARK)
 
     # ── Row 5: Outputs ──
@@ -426,7 +438,7 @@ def fig8_scoring_pipeline():
     # Partial credit (always computed)
     _arrow(diamond_x, diamond_y - dh, 4.5, 1.3)
     _box(3.2, 0.2, 2.6, 1.2, "Partial Credit\n(always computed)\n\n"
-         "check_score\ntool_f1\nkeyword_coverage", "#e8daef", fs=6.5)
+         "check_score\ntool_f1\nkeyword_coverage", "#e8daef")
 
     ax.set_title("Scoring Pipeline — Per-Case Evaluation", fontsize=11,
                  fontweight="bold", pad=10)
