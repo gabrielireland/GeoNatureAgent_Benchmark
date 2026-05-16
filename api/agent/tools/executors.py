@@ -1,6 +1,6 @@
 """Tool executor functions — direct Python calls (no HTTP round-trips).
 
-Ported from darwin_maps V2. Each exec_* function implements a single tool.
+Each exec_* function implements a single tool.
 All functions return a dict (serialized to JSON by the dispatcher).
 """
 
@@ -231,17 +231,8 @@ def exec_analyze_area(
     if not tile_url:
         return {"error": "Could not resolve layer source."}
 
-    # Convert gs:// URIs to authenticated HTTPS URLs for GDAL /vsicurl/
-    if isinstance(tile_url, str) and tile_url.startswith("gs://"):
-        try:
-            from darwin_geo_core.gcs_auth import gs_to_authenticated_url, get_gdal_header_file
-            header_file = get_gdal_header_file()
-            if header_file:
-                os.environ["GDAL_HTTP_HEADER_FILE"] = header_file
-            tile_url = f"/vsicurl/{gs_to_authenticated_url(tile_url)}"
-        except Exception as exc:
-            logger.error("[AGENT] Failed to convert gs:// URL: %s", exc)
-            return {"error": "Failed to authenticate to cloud storage."}
+    # Open-source build: layers always resolve to local files via the
+    # vendored cache_manager. No gs:// URLs are produced at this point.
 
     # Build shapes list from AOI geometry
     geom_type = (aoi.get("type") or "").lower()

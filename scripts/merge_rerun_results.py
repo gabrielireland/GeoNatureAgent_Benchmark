@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
-"""Merge re-run results into existing per-model results files.
+"""[DEPRECATED] Merge re-run results into existing per-model results files.
 
-After re-running the 13 restored CLC/habitat cases with the updated agent
-prompt (bigearthnet_lulc wired in), this script replaces the old failing
-entries in each model's results.jsonl with the new re-run results.
+DEPRECATION NOTE
+================
+This script implements the legacy `_v5 + _v5_rerun` merge workflow used during
+the BigEarthNet integration phase. The paper now uses the `_v5_seeds5` runs as
+the single source of truth (see `paper/final_results/sources.yaml`), so no
+rerun merging is required. The YAMLs this script was designed to merge have
+been archived under `benchmark/experiments/archive/`.
 
-Usage:
+The script is retained for reference and historical reproducibility. New work
+should use `scripts/compile_final_results.py` against the seeds5 runs instead.
+
+Original usage (now obsolete):
     # Step 1: Download re-run results from GCS
     python scripts/merge_rerun_results.py --download \
         --gcs-run gs://geonature-agent-results/GeoNatureAgent/experiments/run_YYYYMMDD_HHMMSS
@@ -18,14 +25,6 @@ Usage:
 
     # Step 4: Propagate changes
     python scripts/merge_rerun_results.py --propagate
-
-After merging, --propagate will:
-    1. Update EXPECTED_ACCURACY in scripts/verify_package.py
-    2. Regenerate HF dataset
-    3. Regenerate figures
-    4. Update leaderboard numbers in READMEs and paper
-    5. Sync to final_package
-    6. Run verify_package.py
 """
 from __future__ import annotations
 
@@ -68,7 +67,6 @@ RERUN_CASE_IDS = {
 RERUN_TO_ORIGINAL = {
     "exp_035_gemini25_pro_v5_rerun": "exp_035_gemini25_pro_v5",
     "exp_036_deepseek_v32_v5_rerun": "exp_036_deepseek_v32_v5",
-    "exp_037_llama4_maverick_v5_rerun": "exp_037_llama4_maverick_v5",
     "exp_038_gpt_oss_120b_v5_rerun": "exp_038_gpt_oss_120b_v5",
     "exp_039_glm5_v5_rerun": "exp_039_glm5_v5",
     "exp_040_qwen3_235b_v5_rerun": "exp_040_qwen3_235b_v5",
@@ -226,7 +224,6 @@ def propagate(summaries: list[dict]) -> None:
     model_names = {
         "exp_035_gemini25_pro_v5": "Gemini 2.5 Pro",
         "exp_036_deepseek_v32_v5": "DeepSeek V3.2",
-        "exp_037_llama4_maverick_v5": "Llama 4 Maverick",
         "exp_038_gpt_oss_120b_v5": "GPT-OSS-120B",
         "exp_039_glm5_v5": "GLM-5",
         "exp_040_qwen3_235b_v5": "Qwen3-235B",

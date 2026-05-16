@@ -1,0 +1,40 @@
+# Self-hosted GeoNatureAgent API for the benchmark.
+#
+# Usage:
+#   1. export ANTHROPIC_API_KEY=sk-...
+#   2. ./scripts/download_data.sh   (fetches the 3 data files into api/data/)
+#   3. docker compose up --build
+#
+# The benchmark harness should then point at http://localhost:8080.
+# There is no centrally-hosted public endpoint — everyone runs their own.
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    image: geonatureagent-api:local
+    ports:
+      - "8080:8080"
+    environment:
+      - LOCAL_DEV_MODE=true
+      - AGENT_PROMPT_VERSION=v3
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:?ANTHROPIC_API_KEY must be set}
+    volumes:
+      # Mount data read-only so the container reads files the user fetched.
+      - ./api/data:/app/api/data:ro
+      # Local writable volumes for chart outputs and event logs
+      # (the container's WORKDIR is /app/api, so relative writes land here).
+      - ./charts:/app/api/charts
+      - ./logs:/app/api/logs
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8080/health').read()"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

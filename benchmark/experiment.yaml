@@ -6,7 +6,7 @@
 # Run:
 #   1. Edit _EXPERIMENT_YAML in cloudbuild-benchmark.yaml to point to your file
 #   2. gcloud builds submit --config=GeoNatureAgent/cloudbuild-benchmark.yaml \
-#        --project=local-env-489816-i2
+#        --project=YOUR_GCP_PROJECT_ID
 #
 # Credentials come from infrastructure — not this file:
 #   Anthropic API key  → Secret Manager (ANTHROPIC_KEY_1), injected by Cloud Run Job

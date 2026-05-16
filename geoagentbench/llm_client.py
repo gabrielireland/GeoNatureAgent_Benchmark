@@ -89,11 +89,12 @@ class AnthropicClient(BaseLLMClient):
 
     def create_message(self, system, messages, tools, max_tokens=2048):
         t0 = time.time()
+        # Anthropic Messages API does not support `seed`; pinning randomness
+        # for Claude is done implicitly by temperature sampling across seeds.
         sampling_kwargs = {k: v for k, v in {
             "temperature": self._temperature,
             "top_p": self._top_p,
             "top_k": self._top_k,
-            "seed": self._seed,
         }.items() if v is not None}
         response = self.client.messages.create(
             model=self.model_id,
@@ -338,10 +339,9 @@ class LiteLLMClient(BaseLLMClient):
     def _parse_python_tool_calls(text: str) -> list[dict]:
         """Parse tool calls from <|python_start|>func(k=v, ...)<|python_end|> format.
 
-        Some models (e.g. Llama-4-Maverick) emit tool invocations as
-        Python-style function calls wrapped in special tokens instead of
-        structured tool_calls. This extracts them so the benchmark can
-        execute the tools normally.
+        Some Llama 4 models emit tool invocations as Python-style function
+        calls wrapped in special tokens instead of structured tool_calls.
+        This extracts them so the benchmark can execute the tools normally.
         """
         pattern = r"<\|python_start\|>\s*(.+?)\s*<\|python_end\|>"
         matches = re.findall(pattern, text, re.DOTALL)
@@ -386,8 +386,8 @@ class LiteLLMClient(BaseLLMClient):
                     input=args,
                 ))
         elif choice.message.content and "<|python_start|>" in choice.message.content:
-            # Fallback: parse tool calls from models that emit Python-style
-            # invocations (e.g. Llama-4-Maverick) instead of structured tool_calls.
+            # Fallback: parse tool calls from Llama 4 models that emit
+            # Python-style invocations instead of structured tool_calls.
             parsed_calls = self._parse_python_tool_calls(choice.message.content)
             if parsed_calls:
                 stop_reason = "tool_use"

@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68.0"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "geoagentbench"
@@ -9,8 +9,11 @@ description = "Benchmark for evaluating LLM agents on environmental geospatial a
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 authors = [
-    {name = "Gabriel Diaz-Ireland"},
-    {name = "Guillermo Garcia"},
+    {name = "Gabriel Diaz-Ireland", email = "gabriel.ireland@darwingeospatial.com"},
+    {name = "Devika Kakkar", email = "kakkar@fas.harvard.edu"},
+    {name = "Diego Prieto-Herráez"},
+    {name = "Mario García Peces"},
+    {name = "Javier Velázquez"},
 ]
 dependencies = [
     "anthropic>=0.39.0,<1",

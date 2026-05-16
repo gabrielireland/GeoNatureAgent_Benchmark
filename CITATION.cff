@@ -14,18 +14,20 @@ keywords:
 authors:
   - family-names: Diaz-Ireland
     given-names: Gabriel
-    affiliation: "Darwins Geospatial S.L.; Universidad Católica de Ávila; Darwin Analytics LLC"
+    affiliation: "Universidad Católica de Ávila; Johns Hopkins University"
+    email: gabriel.ireland@darwingeospatial.com
+  - family-names: Kakkar
+    given-names: Devika
+    affiliation: "Center for Geographic Analysis, Harvard University"
+    email: kakkar@fas.harvard.edu
   - family-names: Prieto-Herráez
     given-names: Diego
     affiliation: Universidad Católica de Ávila
+  - family-names: García Peces
+    given-names: Mario
+    affiliation: "Independent Researcher"
   - family-names: Velázquez
     given-names: Javier
     affiliation: Universidad Católica de Ávila
-  - family-names: García Peces
-    given-names: Mario
-    affiliation: Darwins Geospatial S.L.
-  - family-names: Perez
-    given-names: Guillermo
-    affiliation: Darwins Geospatial S.L.
 date-released: "2026-04-25"
 version: "1.0.0"

@@ -16,9 +16,9 @@ GeoNatureAgent Benchmark has three layers:
 │    runner.py      → orchestrates cases  │
 │    scoring.py     → evaluates results   │
 │    llm_client.py  → talks to LLM APIs   │
-│    case_loader.py → loads task JSON      │
+│    case_loader.py → loads task JSON     │
 │    config.py      → parses YAML config  │
-│    metrics.py     → cost calculation     │
+│    metrics.py     → cost calculation    │
 ├─────────────────────────────────────────┤
 │  Your Agent                             │  ← The system under test
 │    receives questions, calls tools,     │
@@ -30,28 +30,225 @@ The runner sends each task's question to your agent, collects the output (answer
 
 ---
 
-## Quick Start: Evaluate an Existing Model
+## Repository Layout
 
-If you just want to benchmark a model that GeoNatureAgent Benchmark already supports (Anthropic or Vertex AI models):
+A folder-by-folder map of what ships with the repo and what each piece is for. Reading this once is enough to feel oriented before running anything.
 
-```bash
-# Install
-pip install -e .
+### `api/` — the system under test (FastAPI service)
 
-# Run 6 dev cases with Claude Sonnet 4
-export ANTHROPIC_API_KEY=sk-...
-python -m geoagentbench --cases dev --model claude-sonnet-4-20250514
+The agent's "world". Boots via `docker compose up` on `:8080` and exposes the endpoints the LLM calls through tools.
 
-# Run 6 dev cases with Gemini via Vertex AI
-export VERTEXAI_PROJECT=your-project
-export VERTEXAI_LOCATION=us-central1
-python -m geoagentbench --cases dev --model vertex_ai/gemini-2.5-pro
-
-# Full v5 benchmark (93 cases)
-python -m geoagentbench --cases v5 --model vertex_ai/zai-org/glm-5-maas
+```
+api/
+├─ main.py              FastAPI app entry. Endpoints: /health, /agent/ask,
+│                       /indicators, /cog/bounds, /admin/*, /tiles/*
+├─ Dockerfile           python:3.11-slim + GDAL stack
+├─ requirements.txt     Pinned API deps (fastapi, rasterio, anthropic, rio-tiler)
+├─ active-layers.json   Layer catalog: id → COG path, type, year. Read by cache_manager
+├─ cache_manager.py     Loads active-layers.json, opens COGs lazily
+├─ admin_manager.py     Loads Spain/Portugal province + municipality GeoJSON
+├─ rate_limiter.py      No-op stub in the OSS build
+│
+├─ agent/               Agent runtime — everything the LLM "sees"
+│  ├─ agent.py             ReAct loop (model picks tool → executor runs → loop)
+│  ├─ tools/
+│  │   ├─ tools.json       JSON schemas the LLM receives
+│  │   ├─ executors.py     Python implementation of each tool
+│  │   └─ models.py        Pydantic argument/result types
+│  ├─ prompts/
+│  │   ├─ v1.md / v2.md    Historical prompts (NOT loaded by current code)
+│  │   └─ v3.md            Production prompt (default, see AGENT_PROMPT_VERSION)
+│  ├─ security.py          Input sanitizer + output identity scrub
+│  ├─ session.py           In-memory multi-turn session store
+│  ├─ provinces.py         Province lookup helper
+│  ├─ charts.py            Bar/stacked-bar chart generation
+│  ├─ event_logger.py      JSONL event log (no-op if log dir missing)
+│  ├─ province_rankings.json         Pre-computed top-N rankings per indicator
+│  ├─ province_rankings_prompt.txt   Prompt fragment listing rankings to the LLM
+│  └─ data/                Compact JSON stats baked into the agent (CO2, fire, MFE)
+│
+├─ data/                Static geospatial data
+│  ├─ cogs/                Raster COGs the agent reads — fetched via
+│  │                       scripts/download_data.sh (see "Data files" below)
+│  ├─ municipalities/      52 GeoJSONs (one per Spanish province)
+│  ├─ spain_provinces.geojson, spain_ccaa.geojson, spain_admin_index.json
+│  ├─ portugal_districts.json
+│  └─ bigearthnet_portugal_stats.json   Pre-computed Portugal LULC stats
+│
+├─ endpoints/           Extra route module(s); currently just erosion.py
+├─ services/            tile_tenant.py — passthrough access control in OSS build
+└─ symbology/           Layer styling + legend gen, loaded from symbologies.json
 ```
 
-**Important**: The benchmark requires a running geospatial API (QGIS + MCP server) to execute tool calls. Without it, all tool-dependent cases will fail. The Cloud Build pipeline (`cloudbuild-benchmark.yaml` in the parent repo) automates this infrastructure.
+### `geoagentbench/` — the examiner (Python package)
+
+What you run to score an LLM. Invoked as `python -m geoagentbench --cases v5 --experiment <yaml>`.
+
+```
+geoagentbench/
+├─ __main__.py          CLI entry (parses --cases, --experiment, --output-dir)
+├─ runner.py            Per-experiment orchestration: case loop, LLM call, scoring
+├─ llm_client.py        AnthropicClient (native) + LiteLLMClient (Vertex MaaS)
+├─ scoring.py           The 8 check types (must_contain, expected_tools, …)
+├─ metrics.py           Aggregation: per-seed mean+std, partial credit, tool F1
+├─ case_loader.py       Resolves --cases name → JSON file
+├─ config.py            Experiment YAML schema (pydantic)
+├─ preflight.py         Validates config before running anything
+├─ run_meta.py          Freezes config + env into _run_meta.json (provenance)
+├─ batch_summary.py     Builds _batch_summary.json across experiments
+├─ gcs_upload.py        Uploads results to GCS  (GCP-only, optional)
+├─ bq_logger.py         Per-case rows → BigQuery     (GCP-only, optional)
+├─ logging_structured.py
+│
+├─ cases/
+│  ├─ benchmark_v5.json    The 93 evaluated cases
+│  ├─ dev.json             Smoke-test subset for `--cases dev`
+│  └─ README.md            Schema + category docs
+└─ data/
+   ├─ layers_registry.yaml   Human-readable layer catalog (docs only)
+   └─ README.md
+```
+
+### `benchmark/` — what to evaluate
+
+```
+benchmark/
+├─ experiment.yaml                       Schema reference / template
+└─ experiments/
+   ├─ exp_035_gemini25_pro_v5_seeds5.yaml      \
+   ├─ exp_036_deepseek_v32_v5_seeds5.yaml       |
+   ├─ exp_038_gpt_oss_120b_v5_seeds5.yaml       | One per evaluated model.
+   ├─ exp_039_glm5_v5_seeds5.yaml               | These ARE the paper's runs.
+   ├─ exp_040_qwen3_235b_v5_seeds5.yaml         |
+   ├─ exp_041_llama4_scout_v5_seeds5.yaml       |
+   ├─ exp_042_claude_sonnet4_v5_seeds5.yaml    /
+   └─ archive/   14 legacy single-seed + rerun YAMLs (provenance only)
+```
+
+### `hf_dataset/` — Hugging Face export
+
+```
+hf_dataset/
+├─ tasks.jsonl       93 cases in HF format
+├─ results.jsonl     Per-seed per-model results
+└─ README.md         Dataset card
+```
+
+### `scripts/` — utilities
+
+```
+scripts/
+├─ download_data.sh           Fetches raster COGs → api/data/cogs/
+├─ compile_final_results.py   GCS results → paper CSVs (single source of truth)
+├─ prepare_hf_dataset.py      GCS + cases → hf_dataset/
+├─ verify_package.py          Sanity check repo invariants
+├─ visualize_benchmark.py     Plotting helpers
+├─ compare_experiments.py     Diff two runs
+├─ add_benchmark_case.py      Helper to add a case
+└─ merge_rerun_results.py     [DEPRECATED] legacy _v5_rerun merge workflow
+```
+
+### Data files
+
+Two raster COGs do **not** ship in the repo because of size (several hundred MB each):
+
+| File | Indicator | Source |
+|------|-----------|--------|
+| `api/data/cogs/co2_spain.tif`     | `co2_spain_legislation`     | MITECO, processed by the authors |
+| `api/data/cogs/gully_europe.tif`  | `rf_gully_probability`      | JRC LUCAS 2022 + random forest model |
+
+`scripts/download_data.sh` is idempotent and supports two modes:
+
+- **Automated**: set `CO2_SPAIN_URL` and `GULLY_EUROPE_URL` to public download URLs and re-run.
+- **Manual**: place the files directly under `api/data/cogs/` and re-run to verify.
+
+The script fails loudly (exit 1) with the exact missing-file list if neither is satisfied — the API will start without these files but tool calls targeting those two indicators will fail. See the script header for file specifications.
+
+The third data file, `api/data/bigearthnet_portugal_stats.json`, ships in-repo and needs no download step.
+
+---
+
+## Quick Start
+
+Two paths, pick whichever matches your infrastructure. They produce the same scientific output — the only difference is where things run.
+
+- **Path A — Bring Your Own Infrastructure**: everything on a single machine (laptop, on-prem VM, any cloud). No Google Cloud account required.
+- **Path B — Google Cloud**: parallel evaluation on Cloud Run Jobs, results streamed to GCS and BigQuery. This is how the paper's runs were produced.
+
+### Path A — Bring Your Own Infrastructure
+
+Single-machine setup. Anything that can run Docker and Python 3.11 works.
+
+```bash
+# 1. Configure environment
+cp .env.example .env
+# Edit .env and set ANTHROPIC_API_KEY=sk-ant-...
+# (optional) set VERTEXAI_PROJECT if you'll evaluate Vertex MaaS models
+
+# 2. Fetch the two raster COGs (see "Data files" above for source info)
+CO2_SPAIN_URL=https://...      \
+GULLY_EUROPE_URL=https://...   \
+  ./scripts/download_data.sh
+# OR: place co2_spain.tif and gully_europe.tif manually under api/data/cogs/
+# then re-run ./scripts/download_data.sh to verify.
+
+# 3. Start the API
+docker compose up --build           # serves http://localhost:8080
+
+# 4. In a separate shell, install the harness and run the benchmark
+pip install -e .
+
+# Smoke test (6 cases, ~$0.10):
+python -m geoagentbench --cases dev --model claude-sonnet-4-20250514
+
+# Full v5 benchmark (93 cases):
+python -m geoagentbench \
+  --cases v5 \
+  --experiment benchmark/experiments/exp_042_claude_sonnet4_v5_seeds5.yaml \
+  --output-dir results/
+```
+
+Results land locally under `results/`. No GCS upload, no BigQuery — `geoagentbench/gcs_upload.py` and `bq_logger.py` are skipped when the relevant env vars are unset.
+
+To evaluate a Vertex MaaS model (Gemini, Llama 4 Scout, etc.), set `VERTEXAI_PROJECT` and `VERTEXAI_LOCATION` in `.env`, authenticate with `gcloud auth application-default login`, and point `--experiment` at one of the `vertex_ai/` experiment YAMLs. The harness reads the same YAMLs whether you run locally or on Cloud Run.
+
+### Path B — Google Cloud (Cloud Build + Cloud Run Jobs)
+
+How the paper's runs were produced. You need a GCP project with Cloud Build, Cloud Run, GCS, Artifact Registry, and optionally BigQuery enabled.
+
+```bash
+# 1. One-time GCP setup
+#    - Create a GCS bucket for results       (e.g. geonature-agent-results)
+#    - Create an Artifact Registry repo      (e.g. agent-images)
+#    - Create a service account with roles: Cloud Run Admin, Storage Admin,
+#      BigQuery Data Editor (if streaming), Vertex AI User (for MaaS models)
+#    - Store the Anthropic API key in Secret Manager as ANTHROPIC_KEY_1
+
+# 2. Edit cloudbuild-benchmark.yaml
+#    Replace all YOUR_GCP_PROJECT_ID placeholders with your project id.
+#    Set _EXPERIMENT_YAMLS to a comma-separated list of YAMLs to run.
+#    Set _BUCKET to your results bucket and _AR_REGION/_AR_REPO accordingly.
+
+# 3. Submit the build
+gcloud builds submit \
+  --config=cloudbuild-benchmark.yaml \
+  --project=YOUR_GCP_PROJECT_ID
+```
+
+Cloud Build builds the API image, deploys a Cloud Run Job that runs every experiment in `_EXPERIMENT_YAMLS` sequentially, and writes:
+
+- `gs://_BUCKET/<run-prefix>/<exp_id>/results.jsonl` — per-case results
+- `gs://_BUCKET/<run-prefix>/<exp_id>/_run_meta.json` — frozen config + environment
+- `gs://_BUCKET/<run-prefix>/_batch_summary.json` — cross-experiment summary
+- BigQuery rows (if `BQ_LOG_TABLE` is set in the job env)
+
+After the run completes, pull the results down and regenerate the paper artifacts:
+
+```bash
+python scripts/compile_final_results.py    # GCS results → paper/final_results/*.csv
+```
+
+`cloudbuild-benchmark.yaml` is heavily commented — edit it directly rather than passing `--substitutions=` on the command line.
 
 ---
 

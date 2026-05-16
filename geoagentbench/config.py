@@ -31,6 +31,10 @@ class ExperimentConfig:
     top_k: Optional[int] = None
     seed: Optional[int] = None
 
+    # Multi-seed: list of seeds to iterate over. [None] = single un-seeded run
+    # (backward compatible). Each entry becomes config.seed at runtime.
+    seeds: List[Optional[int]] = field(default_factory=lambda: [None])
+
     # Agent
     architecture: str = "single_agent"
     prompt_strategy: str = "zero_shot"
@@ -140,6 +144,28 @@ def load_experiment_config(path: str) -> ExperimentConfig:
     sampling = data.get("sampling", {})
     vertex = data.get("vertex", {})
 
+    # Resolve seed list. Precedence:
+    #   1. sampling.seeds: [int, int, ...]  → explicit multi-seed
+    #   2. sampling.seed: int               → single-seed (back-compat)
+    #   3. neither                           → [None] (model default, single run)
+    raw_seeds = sampling.get("seeds")
+    raw_seed = sampling.get("seed")
+    if raw_seeds is not None:
+        if not isinstance(raw_seeds, list) or not raw_seeds:
+            raise ValueError(
+                f"sampling.seeds must be a non-empty list in {filepath}"
+            )
+        seeds_list: List[Optional[int]] = [
+            (None if s is None else int(s)) for s in raw_seeds
+        ]
+        seed_default = seeds_list[0]
+    elif raw_seed is not None:
+        seeds_list = [int(raw_seed)]
+        seed_default = int(raw_seed)
+    else:
+        seeds_list = [None]
+        seed_default = None
+
     return ExperimentConfig(
         experiment_id=data.get("experiment_id", filepath.stem),
         description=data.get("description", ""),
@@ -149,7 +175,8 @@ def load_experiment_config(path: str) -> ExperimentConfig:
         temperature=sampling.get("temperature"),
         top_p=sampling.get("top_p"),
         top_k=sampling.get("top_k"),
-        seed=sampling.get("seed"),
+        seed=seed_default,
+        seeds=seeds_list,
         architecture=agent.get("architecture", "single_agent"),
         prompt_strategy=agent.get("prompt_strategy", "zero_shot"),
         prompt_version=agent.get("prompt_version", "v2"),

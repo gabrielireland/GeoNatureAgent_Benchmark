@@ -1473,7 +1473,7 @@
     "id": "V5_39_error_unavailable_year",
     "category": "error_handling",
     "difficulty": "easy",
-    "description": "Request habitat data for a year outside the Darwin pipeline range",
+    "description": "Request habitat data for a year outside the indicator's temporal coverage",
     "question": "What was the land cover classification in Seville in 2015?",
     "expected_tools": [],
     "must_contain": [
@@ -1489,7 +1489,7 @@
     "max_rounds": 3,
     "max_cost_usd": 0.05,
     "ground_truth": [],
-    "ground_truth_notes": "Darwin predictions start from 2021. Agent must report data unavailability for 2015 without fabricating percentages."
+    "ground_truth_notes": "The bigearthnet_lulc indicator covers 2021 onwards. Agent must report data unavailability for 2015 without fabricating percentages."
   },
   {
     "id": "V5_40_error_wrong_layer",

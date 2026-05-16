@@ -1,5 +1,14 @@
-"""Generate all paper figures for GeoNatureAgent Benchmark v5 (93 tasks, 8 models)."""
+"""Generate all paper figures for GeoNatureAgent Benchmark v5.
 
+Numbers are loaded from `paper/final_results/leaderboard.csv` and
+`paper/final_results/per_category.csv`, which are produced by
+`scripts/compile_final_results.py`. To refresh after a new model run:
+
+    python scripts/compile_final_results.py
+    python paper/generate_figures.py
+"""
+
+import csv
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -10,60 +19,107 @@ from adjustText import adjust_text
 
 OUT = Path(__file__).parent / "figures"
 OUT.mkdir(exist_ok=True)
+RESULTS = Path(__file__).parent / "final_results"
 
-# ── Shared style ──────────────────────────────────────────────────────────
+
+def _load_leaderboard():
+    with (RESULTS / "leaderboard.csv").open() as f:
+        return list(csv.DictReader(f))
+
+
+def _load_per_category():
+    with (RESULTS / "per_category.csv").open() as f:
+        return {row["model"]: row for row in csv.DictReader(f)}
+
+# ── Shared style — academic / SIGSPATIAL register ────────────────────────
+# Hybrid approach: austere grayscale for single-series bars/diagrams,
+# ColorBrewer Dark2 (7-class qualitative, print-safe) where categorical
+# model identity is shown, viridis for the sequential heatmap.
 plt.rcParams.update({
     "font.family": "serif",
+    "font.serif": ["Computer Modern Roman", "STIX Two Text", "DejaVu Serif", "Times New Roman"],
+    "mathtext.fontset": "stix",
     "font.size": 10,
     "axes.titlesize": 11,
     "axes.labelsize": 10,
+    "axes.edgecolor": "#333333",
+    "axes.linewidth": 0.8,
+    "axes.labelcolor": "#222222",
     "xtick.labelsize": 9,
     "ytick.labelsize": 9,
+    "xtick.direction": "in",
+    "ytick.direction": "in",
+    "xtick.color": "#333333",
+    "ytick.color": "#333333",
     "legend.fontsize": 9,
+    "legend.frameon": False,
     "figure.dpi": 300,
     "savefig.bbox": "tight",
-    "savefig.pad_inches": 0.1,
+    "savefig.pad_inches": 0.05,
 })
 
-# Color palette
-C_GREEN = "#2ecc71"
-C_ORANGE = "#f39c12"
-C_RED = "#e74c3c"
-C_BLUE = "#3498db"
-C_PURPLE = "#9b59b6"
-C_TEAL = "#1abc9c"
-C_DARK = "#2c3e50"
-C_GRAY = "#95a5a6"
-C_PINK = "#e91e63"
-C_INDIGO = "#3f51b5"
-
-# ── v5 Data (93 tasks, 8 models) ─────────────────────────────────────────
-# Sorted by accuracy (descending) for leaderboard
-models = [
-    "GLM-5",
-    "DeepSeek V3.2",
-    "Claude Sonnet 4",
-    "Qwen3-235B",
-    "GPT-OSS-120B",
-    "Gemini 2.5 Pro",
-    "Llama 4 Scout",
-    "Llama 4 Maverick",
+# ── ColorBrewer Dark2 — 8-class qualitative, designed for print ──────────
+DARK2 = [
+    "#1b9e77",  # teal-green
+    "#d95f02",  # orange
+    "#7570b3",  # slate purple
+    "#e7298a",  # magenta
+    "#66a61e",  # olive green
+    "#e6ab02",  # ochre
+    "#a6761d",  # brown
+    "#666666",  # neutral gray (8th class)
 ]
-accuracy = [58.1, 52.7, 58.1, 47.3, 39.8, 39.8, 5.4, 0.0]
-check_score = [0.864, 0.871, 0.870, 0.825, 0.780, 0.787, 0.511, 0.460]
-kw_coverage = [0.772, 0.834, 0.801, 0.772, 0.636, 0.689, 0.127, 0.000]
-cost_total = [2.54, 0.79, 8.13, 0.50, 4.77, 2.99, 0.04, 0.00]
-cost_per_case = [0.027, 0.008, 0.087, 0.005, 0.051, 0.032, 0.000, 0.000]
-tokens_k = [2242, 2732, 2502, 1596, 1260, 1442, 252, 0]
 
-# Model colors (consistent across all figures)
-model_colors = [C_PURPLE, C_GREEN, C_INDIGO, C_TEAL, C_BLUE, C_ORANGE, C_RED, C_PINK]
+# ── Grayscale tones ───────────────────────────────────────────────────────
+GRAY_BAR = "#4a4a4a"        # primary single-series bar fill
+GRAY_BAR_ALT = "#9a9a9a"    # secondary paired-bar fill
+GRAY_LINE = "#333333"       # axis / annotation
+GRAY_AXIS = "#888888"       # reference lines, light annotations
 
-# 6 completed models (excluding Maverick 0% infra failure and Scout 5.4%)
-completed_models = models[:6]
-completed_accuracy = accuracy[:6]
+# Diagram fill tones — soft pastel palette (print-safe, academic).
+# Each hue marks a distinct semantic role; dark edge is shared across all.
+DIAG_INPUT    = "#dbe8f4"   # soft blue   — origin / source data
+DIAG_PROCESS  = "#e8def0"   # soft lavender — computation
+DIAG_DATA     = "#fce9c6"   # soft peach  — storage / aggregator
+DIAG_OUTPUT   = "#dbeed1"   # soft green  — result / answer
+DIAG_DECISION = "#fff2cc"   # soft yellow — branching decision
 
-# Category data — all 18 categories, 6 completed models (excl Scout/Maverick)
+# Legacy aliases — preserved so existing figure code still resolves.
+C_DARK = GRAY_LINE
+C_GRAY = GRAY_AXIS
+C_BLUE = GRAY_BAR
+C_TEAL = GRAY_BAR_ALT
+C_GREEN = DARK2[0]
+C_ORANGE = DARK2[1]
+C_RED = DARK2[3]
+C_PURPLE = DARK2[2]
+C_PINK = DARK2[3]
+C_INDIGO = DARK2[2]
+
+# ── v5 Data — loaded from paper/final_results/*.csv ──────────────────────
+# Single source of truth: scripts/compile_final_results.py produced these CSVs
+# from raw GCS results.jsonl files. No hand-edited numbers below this line.
+_LB = _load_leaderboard()
+_CAT = _load_per_category()
+
+models = [r["model"] for r in _LB]                              # sorted by accuracy desc
+accuracy = [float(r["accuracy_mean"]) * 100 for r in _LB]       # percent
+accuracy_std = [float(r["accuracy_std"]) * 100 for r in _LB]    # variance bars
+check_score = [float(r["check_score_mean"]) for r in _LB]
+kw_coverage = [float(r["keyword_coverage_mean"]) for r in _LB]
+cost_total = [float(r["cost_per_seed_mean"]) for r in _LB]      # one-seed equivalent
+cost_per_case = [float(r["cost_per_case"]) for r in _LB]
+tokens_k = [float(r["tokens_per_seed_mean"]) / 1000 for r in _LB]
+
+# Per-model categorical colors — ColorBrewer Dark2, applied in leaderboard order
+# (fig2 cost-accuracy, fig7 tokens-accuracy use these).
+_PALETTE = DARK2[:7]
+model_colors = _PALETTE[: len(models)]
+
+# All models go into every figure; no historical exclusion is applied.
+completed_models = models[:]
+completed_accuracy = accuracy[:]
+
 categories_all = [
     "tool_selection", "cross_indicator", "interpretation", "deep_dive",
     "error_handling", "habitat_analysis", "language", "municipality",
@@ -80,21 +136,16 @@ cat_labels = [
 ]
 cat_counts = [21, 8, 7, 6, 6, 7, 6, 4, 6, 4, 1, 3, 3, 3, 2, 2, 2, 2]
 
-# Per-model category accuracy (%) — 6 completed models
+# Per-model category accuracy (%) — restricted to completed_models for heatmap
 cat_data = {
-    "GLM-5":          [67, 100, 43, 33, 67, 14, 50, 50, 83, 75, 100, 0, 67, 67, 0, 100, 50, 50],
-    "DeepSeek V3.2":  [48, 100, 43, 33, 50, 14, 67, 75, 83, 75, 100, 0, 67, 67, 0, 50, 0, 50],
-    "Claude Sonnet 4":[52, 100, 29, 50, 33, 86, 50, 100, 83, 50, 100, 0, 33, 100, 0, 100, 50, 0],
-    "Qwen3-235B":     [29, 38, 29, 33, 100, 71, 50, 75, 67, 50, 100, 33, 33, 67, 0, 50, 100, 0],
-    "GPT-OSS-120B":   [33, 62, 29, 0, 67, 43, 50, 75, 67, 0, 0, 33, 0, 67, 0, 50, 50, 50],
-    "Gemini 2.5 Pro": [38, 50, 14, 33, 67, 57, 50, 50, 67, 25, 100, 0, 0, 33, 0, 0, 50, 50],
+    m: [round(float(_CAT[m][cat]) * 100) for cat in categories_all]
+    for m in completed_models if m in _CAT
 }
 
-# Hard categories — average accuracy across 6 completed models
-cat_avg = {}
-for j, cat in enumerate(categories_all):
-    vals = [cat_data[m][j] for m in cat_data]
-    cat_avg[cat] = sum(vals) / len(vals)
+cat_avg = {
+    cat: sum(cat_data[m][j] for m in cat_data) / len(cat_data)
+    for j, cat in enumerate(categories_all)
+}
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -103,17 +154,22 @@ for j, cat in enumerate(categories_all):
 def fig1_leaderboard():
     fig, ax = plt.subplots(figsize=(6.5, 3.8))
     y = np.arange(len(models))
-    colors = [C_GREEN if a >= 40 else C_ORANGE if a >= 25 else C_RED for a in accuracy]
-    ax.barh(y, accuracy, color=colors, edgecolor="white", linewidth=0.5, height=0.65)
+    ax.barh(y, accuracy, color=model_colors, edgecolor="white", linewidth=0.5, height=0.65)
     ax.set_yticks(y)
     ax.set_yticklabels(models)
     ax.set_xlabel("Accuracy (%)")
     ax.set_xlim(0, 70)
-    ax.set_title("GeoNatureAgent Benchmark v5 — Model Accuracy (93 tasks, 8 models)")
+    ax.set_title(f"GeoNatureAgent Benchmark v5 — Model Accuracy (93 tasks, {len(models)} models)")
     ax.invert_yaxis()
-    for i, (v, c) in enumerate(zip(accuracy, cost_total)):
+    # Variance bars (per-seed standard deviation) where available.
+    for i, (v, sd) in enumerate(zip(accuracy, accuracy_std)):
+        if sd > 0:
+            ax.errorbar(v, i, xerr=sd, fmt="none", ecolor=C_DARK, capsize=3,
+                        elinewidth=0.8, alpha=0.8)
+    for i, (v, c, sd) in enumerate(zip(accuracy, cost_total, accuracy_std)):
         cost_str = f"${c:.2f}" if c > 0 else "---"
-        ax.text(v + 0.5, i, f"{v:.1f}%  ({cost_str})", va="center", fontsize=8, color=C_DARK)
+        label = f"{v:.1f}% ±{sd:.1f}  ({cost_str})" if sd > 0 else f"{v:.1f}%  ({cost_str})"
+        ax.text(v + sd + 0.5, i, label, va="center", fontsize=8, color=C_DARK)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.axvline(50, color=C_GRAY, linestyle="--", linewidth=0.7, alpha=0.5)
@@ -127,12 +183,11 @@ def fig1_leaderboard():
 # FIGURE 2: Cost-Accuracy scatter (Pareto frontier)
 # ═══════════════════════════════════════════════════════════════════════════
 def fig2_cost_accuracy():
-    # Exclude Maverick (0 cost, 0 accuracy — infra failure)
-    plot_models = models[:7]
-    plot_acc = accuracy[:7]
-    plot_cost = cost_total[:7]
-    plot_tokens = tokens_k[:7]
-    plot_colors = model_colors[:7]
+    plot_models = models[:]
+    plot_acc = accuracy[:]
+    plot_cost = cost_total[:]
+    plot_tokens = tokens_k[:]
+    plot_colors = model_colors[:]
 
     fig, ax = plt.subplots(figsize=(5.5, 4))
     texts = []
@@ -155,20 +210,32 @@ def fig2_cost_accuracy():
             force_text=(2.0, 2.0),
             force_points=(2.0, 2.0))
 
-    # Pareto frontier: Qwen3 → DeepSeek → GLM-5
-    pareto_x = [0.50, 0.79, 2.54]
-    pareto_y = [47.3, 52.7, 58.1]
-    ax.plot(pareto_x, pareto_y, "--", color=C_DARK, linewidth=0.8, alpha=0.4, zorder=1)
-    ax.annotate("Pareto frontier", xy=(1.2, 56), fontsize=9, fontweight="bold", color=C_GRAY, style="italic")
+    # Pareto frontier — computed from the data rather than hard-coded.
+    pts = sorted(zip(plot_cost, plot_acc))
+    pareto = []
+    best_acc = -1.0
+    for x, y in pts:
+        if y > best_acc:
+            pareto.append((x, y))
+            best_acc = y
+    if pareto:
+        px, py = zip(*pareto)
+        ax.plot(px, py, "--", color=C_DARK, linewidth=0.8, alpha=0.4, zorder=1)
+        # Place the label near the upper-right end of the frontier.
+        ax.annotate("Pareto frontier",
+                    xy=(px[-1] * 0.6, py[-1] - 4),
+                    fontsize=9, fontweight="bold",
+                    color=C_GRAY, style="italic")
 
-    ax.set_xlabel("Total Cost (USD)", fontsize=10)
+    x_max = max(plot_cost) * 1.25 + 0.3
+    y_max = max(plot_acc) * 1.15 + 3
+    ax.set_xlabel("Cost per Seed Run (USD, 93 cases)", fontsize=10)
     ax.set_ylabel("Accuracy (%)", fontsize=10)
-    ax.set_ylim(0, 70)
     ax.tick_params(axis='x', labelsize=10)
     ax.tick_params(axis='y', labelsize=10)
     ax.set_title("Cost-Accuracy Trade-off\n(bubble size = total tokens)")
-    ax.set_xlim(-0.3, 9.0)
-    ax.set_ylim(-2, 68)
+    ax.set_xlim(-0.3, x_max)
+    ax.set_ylim(-2, y_max)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     fig.savefig(OUT / "fig2_cost_accuracy.pdf")
@@ -185,9 +252,13 @@ def fig3_binary_vs_partial():
     fig, ax = plt.subplots(figsize=(7, 3.5))
     x = np.arange(len(models))
     w = 0.35
-    ax.bar(x - w / 2, accuracy, w, label="Binary Accuracy (%)", color=C_BLUE, alpha=0.85)
+    # Per-model color identity stays consistent with fig1/fig2/fig7.
+    # Binary bars at full saturation; partial-credit bars at alpha=0.55 for contrast.
+    ax.bar(x - w / 2, accuracy, w, label="Binary Accuracy (%)",
+           color=model_colors, edgecolor="white", linewidth=0.4)
     ax.bar(x + w / 2, [s * 100 for s in check_score], w,
-           label="Avg Check Score (%)", color=C_TEAL, alpha=0.85)
+           label="Avg Check Score (%)",
+           color=model_colors, edgecolor="white", linewidth=0.4, alpha=0.55)
     ax.set_xticks(x)
     ax.set_xticklabels(models, rotation=35, ha="right", fontsize=8)
     ax.set_ylabel("Score (%)")
@@ -210,7 +281,7 @@ def fig4_category_heatmap():
     data = np.array([cat_data[m] for m in model_names])
 
     fig, ax = plt.subplots(figsize=(10, 4))
-    im = ax.imshow(data, cmap="RdYlGn", aspect="auto", vmin=0, vmax=100)
+    im = ax.imshow(data, cmap="viridis", aspect="auto", vmin=0, vmax=100)
     ax.set_xticks(np.arange(len(cat_labels)))
     ax.set_xticklabels(cat_labels, rotation=50, ha="right", fontsize=10)
     ax.set_yticks(np.arange(len(model_names)))
@@ -218,9 +289,10 @@ def fig4_category_heatmap():
     for i in range(len(model_names)):
         for j in range(len(cat_labels)):
             v = data[i, j]
-            color = "white" if v < 25 or v > 80 else "black"
+            # viridis: dark (purple/blue) at low values, bright (yellow) at high.
+            color = "white" if v < 55 else "#222222"
             ax.text(j, i, f"{v:.0f}", ha="center", va="center", fontsize=10, fontweight='bold', color=color)
-    ax.set_title("Accuracy by Category (%) — 18 categories, 6 completed models")
+    ax.set_title(f"Accuracy by Category (%) — 18 categories, {len(model_names)} models")
     fig.colorbar(im, ax=ax, label="Accuracy %", shrink=0.8)
     fig.savefig(OUT / "fig4_category_heatmap.pdf")
     fig.savefig(OUT / "fig4_category_heatmap.png")
@@ -239,13 +311,13 @@ def fig5_hard_cases():
     rates = [v for _, v in sorted_cats]
 
     fig, ax = plt.subplots(figsize=(6.5, 5))
-    colors = [C_RED if r < 10 else C_ORANGE if r < 30 else C_GREEN for r in rates]
-    ax.barh(labels, rates, color=colors, height=0.6)
+    # Soft amber accent — categorical-difficulty axis, not model identity.
+    ax.barh(labels, rates, color="#d97706", height=0.6, edgecolor="white", linewidth=0.5)
     ax.set_xlabel("Avg Accuracy (%)", fontsize=10)
     ax.set_xlim(0, 85)
     ax.tick_params(axis='x', labelsize=10)
     ax.tick_params(axis='y', labelsize=10)
-    ax.set_title("Category Difficulty (avg across 6 completed models)")
+    ax.set_title(f"Category Difficulty (avg across {len(cat_data)} models)")
     ax.invert_yaxis()
     for i, v in enumerate(rates):
         ax.text(v + 0.8, i, f"{v:.0f}%", va="center", fontsize=10, fontweight='bold')
@@ -261,35 +333,37 @@ def fig5_hard_cases():
 # FIGURE 6: Agent architecture diagram
 # ═══════════════════════════════════════════════════════════════════════════
 def fig6_architecture():
-    fig, ax = plt.subplots(figsize=(10,7))
+    fig, ax = plt.subplots(figsize=(8.5, 6.0))
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 7)
     ax.set_aspect("equal")
     ax.axis("off")
 
+    PAD = 0.1  # FancyBboxPatch round-pad; arrows must compensate to land on visible edges.
     boxes = [
-        (0.5, 5.5, 2.0, 1.0, "User Query\n(NL + history)", "#ecf0f1"),
-        (3.5, 5.5, 3.0, 1.0, "LLM Agent\n(ReAct loop)", "#d5f5e3"),
-        (3.5, 3.0, 3.0, 1.0, "Tool Router\n(12 tools)", "#d6eaf8"),
-        (7.5, 5.5, 2.0, 1.0, "Response\n(NL + data)", "#fdebd0"),
-        (7.5, 3.0, 2.0, 1.0, "Darwin Maps\nAPI (COGs)", "#fadbd8"),
-        (3.5, 0.5, 3.0, 1.0, "Eval Harness\n(scoring)", "#e8daef"),
+        (0.5, 5.5, 2.0, 1.0, "User Query\n(NL + history)", DIAG_INPUT),
+        (3.5, 5.5, 3.0, 1.0, "LLM Agent\n(ReAct loop)", DIAG_PROCESS),
+        (3.5, 3.0, 3.0, 1.0, "Tool Router\n(12 tools)", DIAG_PROCESS),
+        (7.5, 5.5, 2.0, 1.0, "Response\n(NL + data)", DIAG_OUTPUT),
+        (7.5, 3.0, 2.0, 1.0, "Geospatial\nAPI (COGs)", DIAG_DATA),
+        (3.5, 0.5, 3.0, 1.0, "Eval Harness\n(scoring)", DIAG_DECISION),
     ]
     for x, y, w, h, text, color in boxes:
-        rect = mpatches.FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.1",
+        rect = mpatches.FancyBboxPatch((x, y), w, h, boxstyle=f"round,pad={PAD}",
                                         facecolor=color, edgecolor=C_DARK, linewidth=1.2)
         ax.add_patch(rect)
         ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
                 fontsize=11, fontweight="bold", color=C_DARK)
 
+    # Arrows land on visible box edges: original edge ± PAD.
     arrows = [
-        (2.5, 6.0, 1.0, 0),
-        (6.5, 6.0, 1.0, 0),
-        (5.0, 5.5, 0, -1.5),
-        (5.0, 4.0, 0, 1.5),
-        (6.5, 3.5, 1.0, 0),
-        (7.5, 3.5, -1.0, 0),
-        (5.0, 3.0, 0, -1.5),
+        (2.5 + PAD, 6.0, 1.0 - 2 * PAD,  0),         # User → LLM
+        (6.5 + PAD, 6.0, 1.0 - 2 * PAD,  0),         # LLM → Response
+        (5.0,       5.5 - PAD, 0, -(1.5 - 2 * PAD)), # LLM ↓ Tool Router
+        (5.0,       4.0 + PAD, 0,  (1.5 - 2 * PAD)), # Tool Router ↑ LLM
+        (6.5 + PAD, 3.5, 1.0 - 2 * PAD,  0),         # Tool Router → Geo API
+        (7.5 - PAD, 3.5, -(1.0 - 2 * PAD), 0),       # Geo API → Tool Router
+        (5.0,       3.0 - PAD, 0, -(1.5 - 2 * PAD)), # Tool Router → Eval Harness
     ]
     for x, y, dx, dy in arrows:
         ax.annotate("", xy=(x + dx, y + dy), xytext=(x, y),
@@ -313,11 +387,10 @@ def fig6_architecture():
 # FIGURE 7: Token usage vs accuracy
 # ═══════════════════════════════════════════════════════════════════════════
 def fig7_tokens_vs_accuracy():
-    # Exclude Maverick (0 tokens, infra failure)
-    plot_models = models[:7]
-    plot_acc = accuracy[:7]
-    plot_tokens = tokens_k[:7]
-    plot_colors = model_colors[:7]
+    plot_models = models[:]
+    plot_acc = accuracy[:]
+    plot_tokens = tokens_k[:]
+    plot_colors = model_colors[:]
 
     fig, ax = plt.subplots(figsize=(8, 5))
     texts = []
@@ -356,89 +429,83 @@ def fig7_tokens_vs_accuracy():
 # FIGURE 8: Scoring pipeline diagram
 # ═══════════════════════════════════════════════════════════════════════════
 def fig8_scoring_pipeline():
-    fig, ax = plt.subplots(figsize=(10.5, 8.25))
+    fig, ax = plt.subplots(figsize=(8.0, 4.5))
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 8)
+    ax.set_ylim(0, 5.8)
     ax.set_aspect("equal")
     ax.axis("off")
 
+    PAD = 0.08  # FancyBboxPatch round-pad; arrows must compensate to land on visible edges.
+
     def _box(x, y, w, h, text, color, fs=9):
         rect = mpatches.FancyBboxPatch(
-            (x, y), w, h, boxstyle="round,pad=0.08",
+            (x, y), w, h, boxstyle=f"round,pad={PAD}",
             facecolor=color, edgecolor=C_DARK, linewidth=1.0,
         )
         ax.add_patch(rect)
         ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
                 fontsize=fs, fontweight="bold", color=C_DARK)
 
-    def _arrow(x1, y1, x2, y2, label="", label_offset=(0, 4)):
+    def _arrow(x1, y1, x2, y2, label="", label_offset=(0, 0)):
         ax.annotate("", xy=(x2, y2), xytext=(x1, y1),
                     arrowprops=dict(arrowstyle="->", color=C_DARK, lw=1.0))
         if label:
-            mx, my = (x1 + x2) / 2 + label_offset[0], (y1 + y2) / 2 + label_offset[1] * 0.02
-            ax.text(mx, my, label, fontsize=6.5, color=C_GRAY, ha="center", va="center")
+            mx = (x1 + x2) / 2 + label_offset[0]
+            my = (y1 + y2) / 2 + label_offset[1]
+            ax.text(mx, my, label, fontsize=8, color=C_DARK,
+                    ha="center", va="center", fontweight="bold")
 
-    # ── Row 1: Input ──
-    _box(1.25, 7.0, 2.5, 0.7, "Task\n(benchmark_v5.json)", "#ecf0f1")
-    _box(4.75, 7.0, 3.0, 0.7, "Agent Output\n(answer, tools, actions)", "#d5f5e3")
+    # ── Row 1: Inputs ──
+    # Task box:     x=0.8..2.8,  y=4.8..5.5 (visible y=4.72..5.58)
+    # Agent Output: x=3.3..5.8,  y=4.8..5.5 (visible y=4.72..5.58)
+    _box(0.8, 4.8, 2.0, 0.7, "Task\n(benchmark_v5.json)", DIAG_INPUT)
+    _box(3.3, 4.8, 2.5, 0.7, "Agent Output\n(answer, tools, actions)", DIAG_PROCESS)
 
-    # ── Row 2: Check gate ──
-    _arrow(2.5, 7.0, 3.5, 6.3)
-    _arrow(6.25, 7.0, 5.0, 6.3)
+    # ── Row 2: Scoring checks + parallel Partial-Credit output (same y level) ──
+    # 8 Checks:       x=0.5..6.1, y=3.2..4.0  (visible top y=4.08)
+    # Partial Credit: x=6.7..9.7, y=3.1..4.1  (visible left edge x=6.62)
+    _box(0.5, 3.2, 5.6, 0.8,
+         "8 Scoring Checks   (each produces pass / fail)",
+         DIAG_DATA, fs=10)
+    _box(6.6, 3.05, 3.2, 1.1,
+         "Partial Credit\n(always computed)\n"
+         "check_score · tool_f1 · keyword_coverage",
+         DIAG_INPUT, fs=8)
 
-    _box(1.0, 5.5, 7.0, 0.8, "8 Scoring Checks", "#d6eaf8", fs=10)
+    # Inputs → 8 Checks: arrows land on the visible top edge of the checks box.
+    _arrow(1.8, 4.8 - PAD, 2.3, 4.0 + PAD)
+    _arrow(4.55, 4.8 - PAD, 4.3, 4.0 + PAD)
 
-    # ── Row 3: Individual checks (two columns) ──
-    checks_left = [
-        "expected_tools  (recall = 1.0)",
-        "expected_actions  (recall = 1.0)",
-        "must_contain  (substring match)",
-        "must_not_contain  (absence)",
-    ]
-    checks_right = [
-        "numeric_accuracy  (label + %)",
-        "chart_generated  (URL present)",
-        "max_rounds  (budget gate)",
-        "max_cost_usd  (budget gate)",
-    ]
-    for i, txt in enumerate(checks_left):
-        yy = 5.1 - i * 0.45
-        ax.text(1.2, yy, f"• {txt}", fontsize=9, color=C_DARK, va="center",
-                fontfamily="monospace")
-    for i, txt in enumerate(checks_right):
-        yy = 5.1 - i * 0.45
-        ax.text(5.2, yy, f"• {txt}", fontsize=9, color=C_DARK, va="center",
-                fontfamily="monospace")
+    # 8 Checks → Partial Credit: horizontal arrow between visible edges.
+    _arrow(6.1 + PAD, 3.6, 6.6 - PAD, 3.6)
 
-    # ── Row 4: Decision ──
-    _arrow(4.5, 3.2, 4.5, 2.7)
-
-    # Diamond shape for ALL pass decision
-    diamond_x, diamond_y = 4.5, 2.3
-    dw, dh = 0.8, 0.4
+    # ── Row 3: Decision diamond ──
+    diamond_x, diamond_y = 3.3, 1.95
+    dw, dh = 0.9, 0.45
     diamond = plt.Polygon([
         (diamond_x, diamond_y + dh),
         (diamond_x + dw, diamond_y),
         (diamond_x, diamond_y - dh),
         (diamond_x - dw, diamond_y),
-    ], closed=True, facecolor="#fef9e7", edgecolor=C_DARK, linewidth=1.0)
+    ], closed=True, facecolor=DIAG_DECISION, edgecolor=C_DARK, linewidth=1.0)
     ax.add_patch(diamond)
     ax.text(diamond_x, diamond_y, "ALL\npass?", fontsize=9, ha="center",
             va="center", fontweight="bold", color=C_DARK)
 
-    # ── Row 5: Outputs ──
-    # Yes branch
-    _arrow(diamond_x - dw, diamond_y, 1.5, 1.3, "yes", label_offset=(-0.4, 0))
-    _box(0.5, 0.7, 2.0, 0.6, "PASS\nbinary = 1", "#d5f5e3")
+    # 8 Checks bottom-center → diamond top vertex.
+    _arrow(diamond_x, 3.2 - PAD, diamond_x, diamond_y + dh)
 
-    # No branch
-    _arrow(diamond_x + dw, diamond_y, 7.5, 1.3, "no", label_offset=(0.4, 0))
-    _box(6.5, 0.7, 2.0, 0.6, "FAIL\nerror_category", "#fadbd8")
+    # ── Row 4: Binary outcomes — PASS / FAIL ──
+    # PASS: x=0.5..2.0, y=0.4..1.0 (visible top y=1.08)
+    # FAIL: x=4.6..6.1, y=0.4..1.0 (visible top y=1.08)
+    _box(0.5, 0.4, 1.5, 0.6, "PASS\nbinary = 1", DIAG_OUTPUT)
+    _box(4.6, 0.4, 1.5, 0.6, "FAIL\nerror_category", DIAG_OUTPUT)
 
-    # Partial credit (always computed)
-    _arrow(diamond_x, diamond_y - dh, 4.5, 1.3)
-    _box(3.2, 0.2, 2.6, 1.2, "Partial Credit\n(always computed)\n\n"
-         "check_score\ntool_f1\nkeyword_coverage", "#e8daef")
+    # Diamond → PASS / FAIL: tips land on each visible top edge.
+    _arrow(diamond_x - dw, diamond_y, 1.25, 1.0 + PAD,
+           "yes", label_offset=(-0.45, 0.2))
+    _arrow(diamond_x + dw, diamond_y, 5.35, 1.0 + PAD,
+           "no",  label_offset=(0.45, 0.2))
 
     ax.set_title("Scoring Pipeline — Per-Case Evaluation", fontsize=11,
                  fontweight="bold", pad=10)

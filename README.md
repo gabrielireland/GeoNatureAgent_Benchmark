@@ -99,18 +99,23 @@ GeoNatureAgent Benchmark/
 
 ---
 
-## Leaderboard (v5, 93 tasks)
+## Capability Leaderboard (v5, 93 tasks, mean ± std across seeds)
 
-| # | Model | Accuracy | Cost/case | Access |
-|---|-------|----------|-----------|--------|
-| 1 | GLM-5 | 58.1% | $0.027 | Vertex AI MaaS |
-| 1 | Claude Sonnet 4 | 58.1% | $0.087 | Anthropic API |
-| 3 | DeepSeek V3.2 | 52.7% | $0.008 | Vertex AI MaaS |
-| 4 | Qwen3-235B | 47.3% | $0.005 | Vertex AI MaaS |
-| 5 | Gemini 2.5 Pro | 39.8% | $0.032 | Vertex AI native |
-| 5 | GPT-OSS-120B | 39.8% | $0.051 | Vertex AI MaaS |
-| 7 | Llama 4 Scout | 5.4% | $0.000 | Vertex AI MaaS |
-| 8 | Llama 4 Maverick | 0.0% | --- | Vertex AI MaaS |
+Capability and cost are reported as orthogonal axes — `max_cost_usd` is logged but not gated on binary pass/fail (see paper §3.3).
+
+| # | Model | Capability | Cost/case | Access |
+|---|-------|------------|-----------|--------|
+| 1 | Claude Sonnet 4 | 60.8% ± 0.8† | $0.127 | Anthropic API |
+| 2 | DeepSeek V3.2 | 56.3% ± 3.1 | $0.011 | Vertex AI MaaS |
+| 3 | GLM-5 | 50.2% ± 2.2 | $0.038 | Vertex AI MaaS |
+| 4 | Gemini 2.5 Pro | 48.0% ± 3.3 | $0.052 | Vertex AI native |
+| 5 | Qwen3-235B | 41.2% ± 4.3 | $0.010 | Vertex AI MaaS |
+| 6 | GPT-OSS-120B | 34.1% ± 1.2 | $0.089 | Vertex AI MaaS |
+| 7 | Llama 4 Scout | 26.9% ± 2.1 | $0.003 | Vertex AI MaaS |
+
+† Claude Sonnet 4 is reported from two temperature-1.0 samples (the Anthropic Messages API does not implement deterministic seeding); the other six models are evaluated under three seeds {42, 1337, 2024}.
+
+**Cost–accuracy Pareto frontier:** Llama 4 Scout → Qwen3-235B → DeepSeek V3.2 → Claude Sonnet 4. Three of the four frontier models are open-weight.
 
 ---
 
@@ -121,9 +126,9 @@ If you use GeoNatureAgent Benchmark in your research, please cite:
 ```bibtex
 @article{diazireland2026geoagentbench,
   title   = {GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis},
-  author  = {Diaz-Ireland, Gabriel and Prieto-Herr{\'a}ez, Diego and Vel{\'a}zquez, Javier and Garc{\'i}a Peces, Mario and Perez, Guillermo},
+  author  = {Diaz-Ireland, Gabriel and Kakkar, Devika and Prieto-Herr{\'a}ez, Diego and Garc{\'i}a Peces, Mario and Vel{\'a}zquez, Javier},
   year    = {2026},
-  url     = {https://github.com/darwin-geo/GeoNatureAgent}
+  url     = {https://github.com/gabrielireland/GeoNatureAgent_Benchmark}
 }
 ```
 

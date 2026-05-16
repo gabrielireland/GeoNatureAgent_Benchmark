@@ -1,0 +1,210 @@
+{
+  "Ciudad Real": {
+    "score": 89,
+    "grade": "A"
+  },
+  "Sevilla": {
+    "score": 86,
+    "grade": "A"
+  },
+  "Albacete": {
+    "score": 82,
+    "grade": "A"
+  },
+  "Badajoz": {
+    "score": 80,
+    "grade": "A"
+  },
+  "Cordoba": {
+    "score": 79,
+    "grade": "B"
+  },
+  "Murcia": {
+    "score": 78,
+    "grade": "B"
+  },
+  "Toledo": {
+    "score": 77,
+    "grade": "B"
+  },
+  "Malaga": {
+    "score": 76,
+    "grade": "B"
+  },
+  "Granada": {
+    "score": 75,
+    "grade": "B"
+  },
+  "Valladolid": {
+    "score": 74,
+    "grade": "B"
+  },
+  "Salamanca": {
+    "score": 73,
+    "grade": "B"
+  },
+  "Cuenca": {
+    "score": 72,
+    "grade": "B"
+  },
+  "Zaragoza": {
+    "score": 71,
+    "grade": "B"
+  },
+  "Palencia": {
+    "score": 70,
+    "grade": "B"
+  },
+  "Burgos": {
+    "score": 69,
+    "grade": "B"
+  },
+  "Alicante": {
+    "score": 68,
+    "grade": "B"
+  },
+  "Zamora": {
+    "score": 67,
+    "grade": "B"
+  },
+  "Ourense": {
+    "score": 66,
+    "grade": "B"
+  },
+  "Almeria": {
+    "score": 65,
+    "grade": "B"
+  },
+  "Jaen": {
+    "score": 64,
+    "grade": "B"
+  },
+  "Caceres": {
+    "score": 63,
+    "grade": "B"
+  },
+  "Cadiz": {
+    "score": 62,
+    "grade": "B"
+  },
+  "Soria": {
+    "score": 61,
+    "grade": "B"
+  },
+  "Lugo": {
+    "score": 60,
+    "grade": "B"
+  },
+  "Teruel": {
+    "score": 59,
+    "grade": "C"
+  },
+  "Segovia": {
+    "score": 58,
+    "grade": "C"
+  },
+  "Pontevedra": {
+    "score": 57,
+    "grade": "C"
+  },
+  "A Coruna": {
+    "score": 56,
+    "grade": "C"
+  },
+  "Tarragona": {
+    "score": 55,
+    "grade": "C"
+  },
+  "Leon": {
+    "score": 54,
+    "grade": "C"
+  },
+  "Huesca": {
+    "score": 53,
+    "grade": "C"
+  },
+  "Navarra": {
+    "score": 52,
+    "grade": "C"
+  },
+  "Guadalajara": {
+    "score": 51,
+    "grade": "C"
+  },
+  "La Rioja": {
+    "score": 50,
+    "grade": "C"
+  },
+  "Avila": {
+    "score": 49,
+    "grade": "C"
+  },
+  "Lleida": {
+    "score": 48,
+    "grade": "C"
+  },
+  "Huelva": {
+    "score": 47,
+    "grade": "C"
+  },
+  "Valencia": {
+    "score": 46,
+    "grade": "C"
+  },
+  "Castellon": {
+    "score": 45,
+    "grade": "C"
+  },
+  "Illes Balears": {
+    "score": 44,
+    "grade": "C"
+  },
+  "Las Palmas": {
+    "score": 43,
+    "grade": "C"
+  },
+  "Asturias": {
+    "score": 42,
+    "grade": "C"
+  },
+  "Madrid": {
+    "score": 41,
+    "grade": "C"
+  },
+  "Cantabria": {
+    "score": 40,
+    "grade": "C"
+  },
+  "Alava": {
+    "score": 39,
+    "grade": "D"
+  },
+  "Santa Cruz de Tenerife": {
+    "score": 38,
+    "grade": "D"
+  },
+  "Bizkaia": {
+    "score": 36,
+    "grade": "D"
+  },
+  "Barcelona": {
+    "score": 35,
+    "grade": "D"
+  },
+  "Girona": {
+    "score": 32,
+    "grade": "D"
+  },
+  "Gipuzkoa": {
+    "score": 28,
+    "grade": "D"
+  },
+  "Melilla": {
+    "score": 18,
+    "grade": "E"
+  },
+  "Ceuta": {
+    "score": 14,
+    "grade": "E"
+  }
+}

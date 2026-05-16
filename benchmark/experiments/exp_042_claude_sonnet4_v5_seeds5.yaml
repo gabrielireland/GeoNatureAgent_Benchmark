@@ -1,0 +1,29 @@
+experiment_id: "exp_042_claude_sonnet4_v5_seeds5"
+description: "Claude Sonnet 4 via Anthropic API — Full v5 benchmark, 5 seeds for variance"
+based_on: "exp_042_claude_sonnet4_v5"
+
+model:
+  model_id: "claude-sonnet-4-20250514"
+  max_tokens: 4096
+
+sampling:
+  temperature: 1.0
+  # Anthropic's API does not support a `seed` parameter — these values are
+  # recorded for grouping purposes only. Variance comes from temperature=1.0
+  # sampling, not from a deterministic seed.
+  seeds: [42, 1337, 2024]
+
+agent:
+  architecture:    single_agent
+  prompt_strategy: zero_shot
+  prompt_version:  v3
+  max_turns:       10
+
+tasks:
+  case_set: v5
+
+output:
+  prefix: "GeoNatureAgent/experiments_seeds5"
+  log_to_bigquery: true
+  bigquery_dataset: "geoagentbench"
+  bucket: "geonature-agent-results"

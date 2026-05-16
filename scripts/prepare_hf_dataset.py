@@ -20,14 +20,13 @@ CASES_FILE = REPO / "geoagentbench" / "cases" / "benchmark_v5.json"
 HF_DIR = REPO / "hf_dataset"
 
 MODEL_MAP = {
-    "exp_035_gemini25_pro_v5": "gemini-2.5-pro",
-    "exp_036_deepseek_v32_v5": "deepseek-v3.2",
-    "exp_037_llama4_maverick_v5": "llama-4-maverick",
-    "exp_038_gpt_oss_120b_v5": "gpt-oss-120b",
-    "exp_039_glm5_v5": "glm-5",
-    "exp_040_qwen3_235b_v5": "qwen3-235b",
-    "exp_041_llama4_scout_v5": "llama-4-scout",
-    "exp_042_claude_sonnet4_v5": "claude-sonnet-4",
+    "exp_035_gemini25_pro_v5_seeds5":   "gemini-2.5-pro",
+    "exp_036_deepseek_v32_v5_seeds5":   "deepseek-v3.2",
+    "exp_038_gpt_oss_120b_v5_seeds5":   "gpt-oss-120b",
+    "exp_039_glm5_v5_seeds5":           "glm-5",
+    "exp_040_qwen3_235b_v5_seeds5":     "qwen3-235b",
+    "exp_041_llama4_scout_v5_seeds5":   "llama-4-scout",
+    "exp_042_claude_sonnet4_v5_seeds5": "claude-sonnet-4",
 }
 
 TASK_FIELDS = [

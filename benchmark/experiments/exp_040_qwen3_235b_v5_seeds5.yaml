@@ -1,0 +1,29 @@
+experiment_id: "exp_040_qwen3_235b_v5_seeds5"
+description: "Qwen3-235B via Vertex AI MaaS — Full v5 benchmark, 5 seeds for variance"
+based_on: "exp_040_qwen3_235b_v5"
+
+model:
+  model_id: "vertex_ai/qwen/qwen3-235b-a22b-instruct-2507-maas"
+  max_tokens: 4096
+
+sampling:
+  temperature: 1.0
+  seeds: [42, 1337, 2024]
+
+vertex:
+  region: us-central1
+
+agent:
+  architecture:    single_agent
+  prompt_strategy: zero_shot
+  prompt_version:  v3
+  max_turns:       10
+
+tasks:
+  case_set: v5
+
+output:
+  prefix: "GeoNatureAgent/experiments_seeds5"
+  log_to_bigquery: true
+  bigquery_dataset: "geoagentbench"
+  bucket: "geonature-agent-results"

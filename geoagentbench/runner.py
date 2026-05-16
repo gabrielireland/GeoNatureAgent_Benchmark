@@ -222,6 +222,8 @@ def run_experiment(
         print("No cases to run.")
         return []
 
+    # Initial client uses the first seed (or no seed if config.seeds == [None]).
+    config.seed = config.seeds[0]
     client = create_client(config.model_id, **config.client_kwargs)
     logger = BenchmarkLogger(output_dir, config)
     meta = RunMeta(output_dir, logger.run_id, config, git_commit=logger.git_commit)
@@ -231,6 +233,8 @@ def run_experiment(
     if config._source_yaml_path:
         logger.save_experiment_yaml(config._source_yaml_path)
 
+    seeds_display = ", ".join("none" if s is None else str(s) for s in config.seeds)
+
     print(f"\n{'=' * 50}")
     print(f"  GeoNatureAgent Benchmark Runner")
     print(f"  Experiment:  {config.experiment_id}")
@@ -239,46 +243,64 @@ def run_experiment(
     print(f"  Prompt:      {config.prompt_version} ({config.prompt_strategy})")
     print(f"  Architecture:{config.architecture}")
     print(f"  Cases:       {len(cases)}")
+    print(f"  Seeds:       {len(config.seeds)} ({seeds_display})")
+    print(f"  Total runs:  {len(cases) * len(config.seeds)}")
     print(f"  Output:      {output_dir}")
     print(f"{'=' * 50}\n")
 
-    meta.start(n_cases=len(cases))
+    meta.start(n_cases=len(cases) * len(config.seeds))
 
     results = []
     run_error = None
     try:
-        for i, case in enumerate(cases, 1):
-            print(f"\n  [{i}/{len(cases)}] {case['id']}")
-            agent_output = run_single_case(case, config, llm_client=client)
+        for seed_idx, seed in enumerate(config.seeds, 1):
+            # Per-seed setup: refresh client so the new seed is picked up
+            # (LiteLLM/Anthropic clients pin seed at construction time).
+            config.seed = seed
+            if seed_idx > 1:
+                client = create_client(config.model_id, **config.client_kwargs)
+            logger.set_seed(seed)
 
-            duration_ms = agent_output.get("_duration_ms", 0)
-            usage = agent_output.get("usage", {})
-            cost = compute_cost(
-                config.model_id,
-                usage.get("input_tokens", 0),
-                usage.get("output_tokens", 0),
+            seed_label = "no-seed" if seed is None else f"seed={seed}"
+            print(
+                f"\n{'-' * 50}\n"
+                f"  Seed {seed_idx}/{len(config.seeds)} ({seed_label})\n"
+                f"{'-' * 50}"
             )
 
-            scored = score_result(
-                case, agent_output, duration_ms, cost,
-                question=case.get("question", ""),
-            )
+            for i, case in enumerate(cases, 1):
+                print(f"\n  [s{seed_idx}/{len(config.seeds)} c{i}/{len(cases)}] {case['id']}")
+                agent_output = run_single_case(case, config, llm_client=client)
 
-            # Extract chart GCS URIs populated by generate_chart tool calls
-            chart_urls = agent_output.get("chart_urls", [])
+                duration_ms = agent_output.get("_duration_ms", 0)
+                usage = agent_output.get("usage", {})
+                cost = compute_cost(
+                    config.model_id,
+                    usage.get("input_tokens", 0),
+                    usage.get("output_tokens", 0),
+                )
 
-            scored.metadata = {
-                "category": case.get("category", ""),
-                "difficulty": case.get("difficulty", ""),
-                "ground_truth_notes": case.get("ground_truth_notes", ""),
-                "chart_urls": chart_urls,
-            }
+                scored = score_result(
+                    case, agent_output, duration_ms, cost,
+                    question=case.get("question", ""),
+                )
 
-            status = "PASS" if scored.passed else "FAIL"
-            print(f"  Result: {status} | {duration_ms}ms | ${cost:.4f}")
+                # Extract chart GCS URIs populated by generate_chart tool calls
+                chart_urls = agent_output.get("chart_urls", [])
 
-            logger.log(scored)
-            results.append(scored)
+                scored.metadata = {
+                    "category": case.get("category", ""),
+                    "difficulty": case.get("difficulty", ""),
+                    "ground_truth_notes": case.get("ground_truth_notes", ""),
+                    "chart_urls": chart_urls,
+                    "seed": seed,
+                }
+
+                status = "PASS" if scored.passed else "FAIL"
+                print(f"  Result: {status} | {duration_ms}ms | ${cost:.4f}")
+
+                logger.log(scored)
+                results.append(scored)
 
         summary_path = logger.write_summary()
         print_results(results)

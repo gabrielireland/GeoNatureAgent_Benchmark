@@ -21,7 +21,6 @@ PRICING: Dict[str, Dict[str, float]] = {
     "vertex_ai/gemini-2.5-flash-lite": {"input": 0.075, "output": 0.30},
     # Meta Llama 4 (Vertex AI MaaS)
     "vertex_ai/meta/llama-4-scout-17b-16e-instruct-maas": {"input": 0.17, "output": 0.66},
-    "vertex_ai/meta/llama-4-maverick-17b-128e-instruct-maas": {"input": 0.17, "output": 0.66},
     # DeepSeek (Vertex AI MaaS)
     "vertex_ai/deepseek-ai/deepseek-v3.2-maas": {"input": 0.27, "output": 1.10},
     "vertex_ai/deepseek-ai/deepseek-r1-0528-maas": {"input": 0.55, "output": 2.19},

@@ -1,6 +1,6 @@
-"""Darwin Maps — Agentic Advisor (V2)
+"""GeoNatureAgent — Agentic Advisor
 
-Main agent loop with tool-use orchestration. All V2 features from darwin_maps:
+Main agent loop with tool-use orchestration. Features:
 - Parallel tool execution (state-setting sequential, independent concurrent)
 - Language detection for bilingual responses
 - Input/output sanitization (security)

@@ -82,8 +82,7 @@ Each line is a JSON object with:
 | Qwen3-235B | 47.3% | $0.005 |
 | Gemini 2.5 Pro | 39.8% | $0.032 |
 | GPT-OSS-120B | 39.8% | $0.051 |
-| Llama 4 Scout | 5.4% | $0.000 |
-| Llama 4 Maverick | 0.0% | --- |
+| Llama 4 Scout | 26.9% | $0.003 |
 
 ## Usage
 

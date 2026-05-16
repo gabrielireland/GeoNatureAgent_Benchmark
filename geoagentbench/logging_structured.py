@@ -34,6 +34,10 @@ class BenchmarkLogger:
         self._run_id = f"{config.experiment_id}_{self._timestamp}_{uuid.uuid4().hex[:8]}"
         self._jsonl_path = self.output_dir / "results.jsonl"
         self._jsonl_file = open(self._jsonl_path, "w")
+        # Current seed for multi-seed experiments; updated via set_seed().
+        # Annotated on every result so downstream analysis can group runs.
+        self._current_seed: Optional[int] = config.seed
+        self._current_seed_run_id: Optional[str] = None
 
         # BigQuery streaming (non-fatal)
         self._bq_table_ref: Optional[str] = None
@@ -54,6 +58,16 @@ class BenchmarkLogger:
     def jsonl_path(self) -> Path:
         """Path to the JSONL results file for this run."""
         return self._jsonl_path
+
+    def set_seed(self, seed: Optional[int]) -> None:
+        """Record which seed the upcoming log() calls belong to.
+
+        Updates a fresh per-seed sub-run id so each (case_id, seed) pair has
+        a unique identifier even within one experiment run.
+        """
+        self._current_seed = seed
+        seed_tag = "noseed" if seed is None else str(seed)
+        self._current_seed_run_id = f"{self._run_id}_s{seed_tag}_{uuid.uuid4().hex[:6]}"
 
     @staticmethod
     def _get_git_commit() -> str:
@@ -114,6 +128,8 @@ class BenchmarkLogger:
         record["timestamp"] = datetime.now(timezone.utc).isoformat()
         record["git_commit"] = self._git_commit
         record["run_id"] = self._run_id
+        record["seed"] = self._current_seed
+        record["seed_run_id"] = self._current_seed_run_id or self._run_id
         # Surface chart_urls at the top level for easy discovery
         record["chart_urls"] = (result.metadata or {}).get("chart_urls", [])
 

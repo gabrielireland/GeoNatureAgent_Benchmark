@@ -1,0 +1,53 @@
+# Source-of-truth manifest for the paper's final benchmark numbers.
+#
+# Each entry pins a model's published leaderboard number to a specific
+# Cloud Run results folder in GCS. Re-running scripts/compile_final_results.py
+# against this file regenerates leaderboard.csv / per_category.csv / per_case.csv
+# byte-for-byte (modulo float formatting), enabling reviewer-side reproducibility.
+#
+# Six models (those whose provider implements deterministic seeding via Vertex
+# MaaS) are evaluated under three seeds {42, 1337, 2024}. Claude Sonnet 4 is
+# accessed via the Anthropic Messages API, which does not expose a `seed`
+# parameter; we therefore use two independent temperature-1.0 samples for that
+# model. The compile script honors the optional `seeds` filter when present.
+
+bucket: geonature-agent-results
+
+models:
+  Gemini 2.5 Pro:
+    experiment_id: exp_035_gemini25_pro_v5_seeds5
+    run_dir: run_20260512_205246
+    cloudbuild_id: 87d411f7-8328-456f-b350-e3f334172eb6
+
+  DeepSeek V3.2:
+    experiment_id: exp_036_deepseek_v32_v5_seeds5
+    run_dir: run_20260512_205259
+    cloudbuild_id: 15bb6797-e9ed-4549-976e-b4acee11d48e
+
+  GPT-OSS-120B:
+    experiment_id: exp_038_gpt_oss_120b_v5_seeds5
+    run_dir: run_20260512_205327
+    cloudbuild_id: ab42f9ac-de6c-4659-b583-65c04b51e3ac
+
+  GLM-5:
+    experiment_id: exp_039_glm5_v5_seeds5
+    run_dir: run_20260512_205403
+    cloudbuild_id: 9dd5c809-4f3b-44ba-9943-cff2a636d705
+
+  Qwen3-235B:
+    experiment_id: exp_040_qwen3_235b_v5_seeds5
+    run_dir: run_20260512_205350
+    cloudbuild_id: 8b324d60-865e-4252-8909-028af58a3c93
+
+  Llama 4 Scout:
+    experiment_id: exp_041_llama4_scout_v5_seeds5
+    run_dir: run_20260512_211239
+    cloudbuild_id: 36865586-5ce2-4443-87ff-89088a03a8e0
+
+  Claude Sonnet 4:
+    experiment_id: exp_042_claude_sonnet4_v5_seeds5
+    run_dir: run_20260514_041957
+    cloudbuild_id: cd5aa65c-61fa-4b09-967a-1f36ae97ad0e
+    # Anthropic Messages API does not implement deterministic seeding; we
+    # use two independent temperature-1.0 samples for variance estimation.
+    seeds: [42, 1337]

@@ -1,0 +1,8 @@
+model,experiment_id,accuracy_mean,accuracy_std,accuracy_seed_42,accuracy_seed_1337,accuracy_seed_2024,cost_per_seed_mean,cost_per_case,tokens_per_seed_mean,check_score_mean,keyword_coverage_mean,n_seeds,n_cases_per_seed
+Claude Sonnet 4,exp_042_claude_sonnet4_v5_seeds5,0.6075,0.0076,0.6022,0.6129,,11.8429,0.12734,3740586,0.8618,0.8522,2,93
+DeepSeek V3.2,exp_036_deepseek_v32_v5_seeds5,0.5627,0.0310,0.5269,0.5806,0.5806,1.0524,0.01132,3734193,0.8958,0.8569,3,93
+GLM-5,exp_039_glm5_v5_seeds5,0.5018,0.0224,0.4946,0.4839,0.5269,3.5757,0.03845,3259677,0.8761,0.8106,3,93
+Gemini 2.5 Pro,exp_035_gemini25_pro_v5_seeds5,0.4803,0.0329,0.4731,0.4516,0.5161,4.8653,0.05231,2859275,0.8647,0.7742,3,93
+Qwen3-235B,exp_040_qwen3_235b_v5_seeds5,0.4122,0.0435,0.4194,0.3656,0.4516,0.8902,0.00957,2899378,0.8225,0.6891,3,93
+GPT-OSS-120B,exp_038_gpt_oss_120b_v5_seeds5,0.3405,0.0124,0.3333,0.3548,0.3333,8.2744,0.08897,2378012,0.7935,0.6392,3,93
+Llama 4 Scout,exp_041_llama4_scout_v5_seeds5,0.2688,0.0215,0.2688,0.2903,0.2473,0.3221,0.00346,1836864,0.7709,0.6947,3,93

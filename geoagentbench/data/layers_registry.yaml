@@ -115,11 +115,11 @@ display_only_layers:
     type: pmtiles_vector
     temporal_range: [2022, 2024]
     description: >
-      Darwin change detection output — pixel-level habitat class transitions between
+      Change-detection output — pixel-level habitat class transitions between
       consecutive years. Shows gains, losses, and stable zones for the Grassland
       target class (class 4). Visual context only — pixel statistics require
       analyze_area calls on bigearthnet_lulc.
-    source: "Darwin MLOps Beagle — Stage 4 change detection"
+    source: "Habitat change detection pipeline (Stage 4)"
     coverage: "Spain (study areas)"
 
   - id: ines_erosion_potencial

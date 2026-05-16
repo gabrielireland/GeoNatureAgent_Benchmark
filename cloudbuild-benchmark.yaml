@@ -1,0 +1,310 @@
+# ========================================
+# Cloud Build Configuration — GeoNatureAgent Benchmark (Cloud Run)
+# ========================================
+#
+# Builds the eval image and runs ALL experiments as a single Cloud Run Job.
+# Each pipeline submission = one run folder containing all experiment results.
+#
+# USAGE
+# ========================================
+#   Edit _EXPERIMENT_YAMLS to list your experiment files (comma-separated), then:
+#     gcloud builds submit --config=GeoNatureAgent/cloudbuild-benchmark.yaml \
+#       --project=YOUR_GCP_PROJECT_ID
+#
+#   Never pass --substitutions= on the command line.
+#   Always edit parameters directly in this file.
+#
+# ========================================
+substitutions:
+  # Comma-separated experiment YAMLs (relative to repo root).
+  # Each experiment runs sequentially inside a single Cloud Run Job.
+  # All results are grouped under one run folder in GCS.
+  # Claude Sonnet 4 rerun (2026-05-13): yesterday's run scored 9% because the
+  # multi-seed refactor passed `seed=` to client.messages.create(), which
+  # Anthropic does not support. Fix landed in geoagentbench/llm_client.py
+  # (AnthropicClient.create_message no longer forwards `seed`). Re-runs the
+  # 3-seed × 93-case sweep.
+  _EXPERIMENT_YAMLS: "benchmark/experiments/exp_042_claude_sonnet4_v5_seeds5.yaml"
+
+  # ---- Infrastructure ----
+  _REGION: "europe-southwest1"
+  _BUCKET: "geonature-agent-results"
+  _SERVICE_ACCOUNT: "projects/YOUR_GCP_PROJECT_ID/serviceAccounts/sa-geonature@YOUR_GCP_PROJECT_ID.iam.gserviceaccount.com"
+  _VM_SERVICE_ACCOUNT: "sa-geonature@YOUR_GCP_PROJECT_ID.iam.gserviceaccount.com"
+
+  # ---- Artifact Registry ----
+  _AR_REGION: "europe-west1"
+  _AR_REPO: "geonature"
+
+  # ---- Tiles bucket (raster data copied into the project bucket) ----
+  _BUCKET_TILES: "geonature-agent-results"
+
+  # ---- Vertex AI (for Gemini models via LiteLLM) ----
+  # Set project ID and region when running vertex_ai/ models; leave project blank for Anthropic-only runs.
+  _VERTEX_PROJECT_ID: "YOUR_GCP_PROJECT_ID"
+  _VERTEX_REGION: "us-central1"
+
+  # ---- Cloud Run Job ----
+  _JOB_NAME: "geoagentbench-benchmark"
+
+  # ---- Image build ----
+  # Set to 'true' on first run or after changing Python dependencies.
+  # Set to 'false' on subsequent runs to reuse the cached base image.
+  _UPDATE_BASE: "false"
+
+# ========================================
+# PIPELINE STEPS
+# ========================================
+steps:
+  # ========================================
+  # Step 0: Init Submodules
+  # ========================================
+  # Clones cicd (public HTTPS). darwin_geo_core is vendored directly in the repo.
+  # SKIPPED: when submitting via `gcloud builds submit` (tarball), .git/ is not
+  # present. Submodule dirs are already populated in the uploaded source.
+  # - name: "gcr.io/cloud-builders/git"
+  #   id: "init-submodules"
+  #   args: ["submodule", "update", "--init", "--recursive"]
+
+  # ========================================
+  # Step 1: Setup Workspace
+  # ========================================
+  # Generates a unique run-level GCS prefix for all experiments in this pipeline.
+  # Validates that all experiment YAMLs exist.
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "setup-workspace"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        set -euo pipefail
+
+        YAMLS="${_EXPERIMENT_YAMLS}"
+
+        echo "=========================================="
+        echo "Benchmark Setup — Multi-Experiment Pipeline"
+        echo "Experiments: $$YAMLS"
+        echo "=========================================="
+
+        # Generate run-level prefix: run_YYYYMMDD_HHMMSS
+        RUN_TAG="run_$$(date -u +%Y%m%d_%H%M%S)"
+        RUN_PREFIX="GeoNatureAgent/experiments/$$RUN_TAG"
+
+        echo "Run tag:        $$RUN_TAG"
+        echo "Run GCS prefix: gs://${_BUCKET}/$$RUN_PREFIX/"
+
+        # Validate all experiment YAMLs exist
+        IFS=',' read -ra YAML_ARRAY <<< "$$YAMLS"
+        EXPERIMENT_IDS=""
+        for YAML_PATH in "$${YAML_ARRAY[@]}"; do
+          YAML_PATH=$$(echo "$$YAML_PATH" | xargs)
+          if [[ ! -f "$$YAML_PATH" ]]; then
+            echo "ERROR: Experiment YAML not found: $$YAML_PATH"
+            exit 1
+          fi
+          # Extract experiment_id from YAML
+          EXP_ID=$$(grep -E "^[[:space:]]*experiment_id:" "$$YAML_PATH" \
+            | head -1 | cut -d':' -f2- \
+            | sed "s/[[:space:]]*#.*$$//" | xargs \
+            | sed "s/^['\"]//;s/['\"]$$//")
+          echo "  ✓ $$YAML_PATH (experiment_id: $$EXP_ID)"
+          if [[ -n "$$EXPERIMENT_IDS" ]]; then
+            EXPERIMENT_IDS="$$EXPERIMENT_IDS,$$EXP_ID"
+          else
+            EXPERIMENT_IDS="$$EXP_ID"
+          fi
+        done
+
+        echo ""
+        echo "Experiments: $${#YAML_ARRAY[@]}"
+        echo "GCS output:  gs://${_BUCKET}/$$RUN_PREFIX/"
+        echo "=========================================="
+
+        echo "$$RUN_TAG" > /workspace/run_tag.txt
+        echo "$$RUN_PREFIX" > /workspace/run_prefix.txt
+        echo "$$EXPERIMENT_IDS" > /workspace/experiment_ids.txt
+
+        echo "Workspace ready."
+    waitFor: ["-"]
+
+  # ========================================
+  # Step 2: Build Base Image
+  # ========================================
+  # Python venv + all pip dependencies. Slow to build; cached between runs.
+  # Only rebuilds when _UPDATE_BASE='true'.
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-base-image"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        set -euo pipefail
+
+        BASE_IMAGE="${_AR_REGION}-docker.pkg.dev/${PROJECT_ID}/${_AR_REPO}/geoagentbench-base:latest"
+
+        if [[ "${_UPDATE_BASE}" == "true" ]]; then
+          echo "Building base image..."
+          docker build \
+            -f cloudbuild-builds/docker/Dockerfile.base \
+            -t "$$BASE_IMAGE" \
+            .
+          docker push "$$BASE_IMAGE"
+          echo "Base image pushed: $$BASE_IMAGE"
+        else
+          echo "Skipping base image build (_UPDATE_BASE=false). Pulling existing..."
+          docker pull "$$BASE_IMAGE"
+        fi
+
+        echo "$$BASE_IMAGE" > /workspace/base_image_uri.txt
+    waitFor: ["-"]
+
+  # ========================================
+  # Step 3: Build Code Image
+  # ========================================
+  # Eval harness + app code. Rebuilds on every commit.
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-code-image"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        set -euo pipefail
+
+        BASE_IMAGE=$$(cat /workspace/base_image_uri.txt)
+        SHORT="${SHORT_SHA}"
+        TAG="$${SHORT:-${BUILD_ID}}"
+        CODE_IMAGE="${_AR_REGION}-docker.pkg.dev/${PROJECT_ID}/${_AR_REPO}/geoagentbench-eval:$$TAG"
+        CODE_IMAGE_LATEST="${_AR_REGION}-docker.pkg.dev/${PROJECT_ID}/${_AR_REPO}/geoagentbench-eval:latest"
+
+        echo "Building code image on top of: $$BASE_IMAGE"
+        docker build \
+          -f cloudbuild-builds/docker/Dockerfile \
+          --build-arg BASE_IMAGE="$$BASE_IMAGE" \
+          -t "$$CODE_IMAGE" \
+          -t "$$CODE_IMAGE_LATEST" \
+          .
+
+        docker push "$$CODE_IMAGE"
+        docker push "$$CODE_IMAGE_LATEST"
+        echo "Code image pushed: $$CODE_IMAGE"
+
+        echo "$$CODE_IMAGE" > /workspace/code_image_uri.txt
+    waitFor: ["build-base-image"]
+
+  # ========================================
+  # Step 4: Deploy Cloud Run Job
+  # ========================================
+  # Creates the job on first run; updates the image and env on subsequent runs.
+  # Passes all experiment YAMLs and the run-level GCS prefix.
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "deploy-cloudrun-job"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        set -euo pipefail
+
+        CODE_IMAGE=$$(cat /workspace/code_image_uri.txt)
+        RUN_PREFIX=$$(cat /workspace/run_prefix.txt)
+
+        # Use ^;;^ delimiter because EXPERIMENT_YAMLS contains commas
+        JOB_ENV_VARS="^;;^BUCKET=${_BUCKET};;BUCKET_TILES=${_BUCKET_TILES};;BUCKET_AGENT_LOGS=${_BUCKET};;GCS_OUTPUT_PREFIX=$$RUN_PREFIX;;EXPERIMENT_YAMLS=${_EXPERIMENT_YAMLS};;VERTEXAI_PROJECT=${_VERTEX_PROJECT_ID};;VERTEXAI_LOCATION=${_VERTEX_REGION};;SHORT_SHA=${SHORT_SHA};;BUILD_ID=${BUILD_ID}"
+
+        JOB_FLAGS=(
+          --image="$$CODE_IMAGE"
+          --region="${_REGION}"
+          --project="${PROJECT_ID}"
+          --service-account="${_VM_SERVICE_ACCOUNT}"
+          --set-env-vars="$$JOB_ENV_VARS"
+          --set-secrets="ANTHROPIC_API_KEY=ANTHROPIC_KEY_1:latest"
+          --task-timeout=50400
+          --max-retries=0
+          --memory=2Gi
+          --cpu=2
+        )
+
+        if gcloud run jobs describe "${_JOB_NAME}" \
+            --region="${_REGION}" --project="${PROJECT_ID}" 2>/dev/null; then
+          echo "Updating existing Cloud Run Job: ${_JOB_NAME}"
+          gcloud run jobs update "${_JOB_NAME}" "$${JOB_FLAGS[@]}"
+        else
+          echo "Creating Cloud Run Job: ${_JOB_NAME}"
+          gcloud run jobs create "${_JOB_NAME}" "$${JOB_FLAGS[@]}"
+        fi
+    waitFor: ["build-code-image", "setup-workspace"]
+
+  # ========================================
+  # Step 5: Execute Cloud Run Job
+  # ========================================
+  # Fire-and-forget: submits the job and returns immediately.
+  # Job logs stream to Cloud Logging; results upload to GCS when complete.
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "execute-cloudrun-job"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        set -euo pipefail
+
+        RUN_TAG=$$(cat /workspace/run_tag.txt)
+        EXPERIMENT_IDS=$$(cat /workspace/experiment_ids.txt)
+
+        echo "Executing Cloud Run Job: ${_JOB_NAME}"
+        echo "Run:         $$RUN_TAG"
+        echo "Experiments: $$EXPERIMENT_IDS"
+
+        gcloud run jobs execute "${_JOB_NAME}" \
+          --region="${_REGION}" \
+          --project="${PROJECT_ID}"
+    waitFor: ["deploy-cloudrun-job"]
+
+  # ========================================
+  # Step 6: Summary Report
+  # ========================================
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "summary-report"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        RUN_TAG=$$(cat /workspace/run_tag.txt)
+        RUN_PREFIX=$$(cat /workspace/run_prefix.txt)
+        EXPERIMENT_IDS=$$(cat /workspace/experiment_ids.txt)
+        CODE_IMAGE=$$(cat /workspace/code_image_uri.txt)
+
+        echo ""
+        echo "========================================================"
+        echo "       BENCHMARK PIPELINE SUBMITTED"
+        echo "========================================================"
+        echo ""
+        echo "Build ID:    ${BUILD_ID}"
+        echo "Commit SHA:  ${SHORT_SHA}"
+        echo "Run:         $$RUN_TAG"
+        echo "Experiments: $$EXPERIMENT_IDS"
+        echo "Image:       $$CODE_IMAGE"
+        echo ""
+        echo "Results (after job completes):"
+        echo "  gs://${_BUCKET}/$$RUN_PREFIX/"
+        echo ""
+        echo "Batch summary:"
+        echo "  gs://${_BUCKET}/$$RUN_PREFIX/_batch_summary.json"
+        echo ""
+        echo "Leaderboard:"
+        echo "  gs://${_BUCKET}/$$RUN_PREFIX/leaderboard.png"
+        echo ""
+        echo "Logs:"
+        echo "  https://console.cloud.google.com/run/jobs/executions?project=${PROJECT_ID}"
+        echo ""
+        echo "========================================================"
+    waitFor: ["execute-cloudrun-job"]
+
+# ========================================
+# Build Options
+# ========================================
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: "E2_HIGHCPU_8"
+
+serviceAccount: "${_SERVICE_ACCOUNT}"
+
+timeout: "25200s"

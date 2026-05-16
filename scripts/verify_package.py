@@ -25,20 +25,19 @@ HF_DIR = REPO / "hf_dataset"
 
 EXPECTED_CASES = 93
 EXPECTED_CATEGORIES = 18
-EXPECTED_MODELS = 8
+EXPECTED_MODELS = 7
 
-# Paper Table 4 — accuracy per model (source of truth: results.jsonl files)
-# NOTE: These are pre-rerun values (20 BigEarthNet cases all fail). Update after re-run
-# with bigearthnet_lulc wired into the agent.
+# Paper Table 5 — capability accuracy per model (source of truth:
+# paper/final_results/leaderboard.csv, produced by scripts/compile_final_results.py).
+# Values are mean per-seed accuracy with the cost-budget check excluded (see paper §3.3).
 EXPECTED_ACCURACY = {
-    "exp_035_gemini25_pro_v5": 39.8,
-    "exp_036_deepseek_v32_v5": 52.7,
-    "exp_037_llama4_maverick_v5": 0.0,
-    "exp_038_gpt_oss_120b_v5": 39.8,
-    "exp_039_glm5_v5": 58.1,
-    "exp_040_qwen3_235b_v5": 47.3,
-    "exp_041_llama4_scout_v5": 5.4,
-    "exp_042_claude_sonnet4_v5": 58.1,
+    "exp_035_gemini25_pro_v5_seeds5":   48.0,
+    "exp_036_deepseek_v32_v5_seeds5":   56.3,
+    "exp_038_gpt_oss_120b_v5_seeds5":   34.1,
+    "exp_039_glm5_v5_seeds5":           50.2,
+    "exp_040_qwen3_235b_v5_seeds5":     41.2,
+    "exp_041_llama4_scout_v5_seeds5":   26.9,
+    "exp_042_claude_sonnet4_v5_seeds5": 60.8,
 }
 
 EXPECTED_FIGURES = [

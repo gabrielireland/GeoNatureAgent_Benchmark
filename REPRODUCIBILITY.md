@@ -7,16 +7,24 @@ This guide covers end-to-end reproduction: from running the benchmark to generat
 ## 1. Prerequisites
 
 - Python 3.10+
+- Docker + Docker Compose (for the local self-hosted API)
 - [uv](https://github.com/astral-sh/uv) (recommended) or pip
 - GCP project with Vertex AI enabled (for Vertex models)
 - Anthropic API key (for Claude models)
-- QGIS + MCP server (for live benchmark runs)
+
+There is **no centrally-hosted public API** — the open-source release ships the FastAPI service under `api/` so anyone can run it locally.
 
 ```bash
-git clone https://github.com/darwin-geo/GeoNatureAgent.git
-cd GeoNatureAgent
-git submodule update --init --recursive
+git clone https://github.com/gabrielireland/GeoNatureAgent_Benchmark.git
+cd GeoNatureAgent_Benchmark
 uv pip install -e ".[dev]"
+
+# Fetch the 3 data files (CO2 Spain COG, gully Europe COG, BigEarthNet Portugal JSON)
+./scripts/download_data.sh
+
+# Start the API locally on port 8080
+export ANTHROPIC_API_KEY=sk-...
+docker compose up --build -d
 ```
 
 ---
@@ -52,13 +60,12 @@ A task passes only when ALL checks pass. Partial credit (check_score) captures p
 
 ## 3. Experiment Configurations
 
-Each model has a dedicated experiment YAML in `benchmark/experiments/`:
+Each of the 7 evaluated models has a dedicated experiment YAML in `benchmark/experiments/`:
 
 | Experiment | Model | Access |
 |-----------|-------|--------|
 | `exp_035_gemini25_pro_v5.yaml` | Gemini 2.5 Pro | Vertex AI native |
 | `exp_036_deepseek_v32_v5.yaml` | DeepSeek V3.2 | Vertex AI MaaS |
-| `exp_037_llama4_maverick_v5.yaml` | Llama 4 Maverick | Vertex AI MaaS |
 | `exp_038_gpt_oss_120b_v5.yaml` | GPT-OSS-120B | Vertex AI MaaS |
 | `exp_039_glm5_v5.yaml` | GLM-5 | Vertex AI MaaS |
 | `exp_040_qwen3_235b_v5.yaml` | Qwen3-235B | Vertex AI MaaS |
@@ -71,6 +78,11 @@ All experiments use:
 - `prompt_strategy: zero_shot`
 - `prompt_version: v3`
 - `max_turns: 10`
+- `temperature: 1.0`
+
+### Multi-seed re-runs
+
+To reproduce the variance reported in the paper, the same 8 models have **3-seed** counterparts at `benchmark/experiments/exp_NNN_*_v5_seeds5.yaml`. Each carries `sampling.seeds: [42, 1337, 2024]` and produces three independent runs per (model, case) pair. The runner records `seed` and `seed_run_id` on every result line in `results.jsonl`.
 
 ---
 
@@ -94,15 +106,14 @@ python -m geoagentbench --cases v5 --filter-categories error_handling threshold
 
 ### Cloud (multi-model batch)
 
-The Cloud Build pipeline runs multiple experiments in sequence on a GCE VM with QGIS + MCP:
+The benchmark also supports parallel Cloud Run Job execution for batched multi-model runs via the Cloud Build pipeline at `cloudbuild-benchmark.yaml` — adapt the substitution variables in that file to your own GCP project. For local-only runs, use the Docker container directly:
 
-1. Edit `cloudbuild-benchmark.yaml`:
-   - Set `_EXPERIMENT_YAMLS` to comma-separated experiment paths
-   - Set `_BUCKET` for results storage
-2. Submit:
-   ```bash
-   gcloud builds submit --config=cloudbuild-benchmark.yaml
-   ```
+```bash
+# Single experiment locally
+docker compose run --rm api python -m geoagentbench \
+  --experiment benchmark/experiments/exp_042_claude_sonnet4_v5_seeds5.yaml \
+  --output-dir results/exp_042_seeds3
+```
 
 Results are uploaded to GCS: `gs://<bucket>/GeoNatureAgent/experiments/run_<timestamp>/<experiment_id>/`
 
@@ -122,26 +133,29 @@ Batch-level artifacts (at the run root):
 
 ### Paper results (GCS)
 
-| Run | Models | Location |
-|-----|--------|----------|
-| Original (6 models) | exp_035--040 | `gs://geonature-agent-results/.../run_20260422_224005/` |
-| Re-run (2 models) | exp_041--042 | `gs://geonature-agent-results/.../run_20260424_053232/` |
+Final paper numbers are aggregated from per-model 3-seed runs of the v5 case set. The authoritative manifest mapping each model to its Cloud Run output directory lives at:
 
-### Local copy
+```
+paper/final_results/sources.yaml
+```
 
-For figure generation, results are expected at `/tmp/geoagentbench_v5_results/`:
+Each entry pins a model's leaderboard cell to:
+- `experiment_id` — the `_seeds5` YAML run
+- `run_dir` — the dated folder under `gs://geonature-agent-results/GeoNatureAgent/experiments/`
+- `cloudbuild_id` — the Cloud Build ID that produced it (for tracing back to logs)
+
+To pull every results file locally:
 
 ```bash
-# Download from GCS
 mkdir -p /tmp/geoagentbench_v5_results
-for exp in exp_035 exp_036 exp_037 exp_038 exp_039 exp_040; do
-  gsutil cp "gs://geonature-agent-results/GeoNatureAgent/experiments/run_20260422_224005/${exp}_*_v5/results.jsonl" \
-    "/tmp/geoagentbench_v5_results/${exp}_*_v5.jsonl"
-done
-for exp in exp_041 exp_042; do
-  gsutil cp "gs://geonature-agent-results/GeoNatureAgent/experiments/run_20260424_053232/${exp}_*_v5/results.jsonl" \
-    "/tmp/geoagentbench_v5_results/${exp}_*_v5.jsonl"
-done
+python -c "
+import yaml, subprocess
+cfg = yaml.safe_load(open('paper/final_results/sources.yaml'))
+for name, spec in cfg['models'].items():
+    src = f\"gs://{cfg['bucket']}/GeoNatureAgent/experiments/{spec['run_dir']}/{spec['experiment_id']}/results.jsonl\"
+    dst = f\"/tmp/geoagentbench_v5_results/{spec['experiment_id']}.jsonl\"
+    subprocess.run(['gsutil', 'cp', src, dst], check=True)
+"
 ```
 
 ---
@@ -202,3 +216,63 @@ python scripts/verify_package.py --results-dir /tmp/geoagentbench_v5_results
 This checks: case counts, category counts, result record counts, accuracy matches paper Table 4, no stale references in READMEs, no TODOs in paper, all citations resolved, all figures exist, LICENSE and CITATION.cff exist, and HF dataset integrity.
 
 Expected output: `ALL CHECKS PASSED` (35 checks).
+
+---
+
+## 10. Final Results Compilation
+
+Every number reported in the paper is produced from raw GCS results by a single deterministic script. This section documents the inputs, the method, and the replay command so that any reviewer can verify reproducibility without re-running the benchmark.
+
+### Provenance
+
+The source-of-truth manifest is `paper/final_results/sources.yaml`. It maps each model's leaderboard cell to a specific Cloud Run output directory and Cloud Build ID:
+
+```yaml
+bucket: geonature-agent-results
+models:
+  Gemini 2.5 Pro:
+    experiment_id: exp_035_gemini25_pro_v5_seeds5
+    run_dir:       run_20260512_205246
+    cloudbuild_id: 87d411f7-8328-456f-b350-e3f334172eb6
+  # ... one block per model
+```
+
+Each `run_dir` contains a `results.jsonl` with one row per (case, seed) observation — i.e. 93 × 3 = 279 rows per model. Every row carries its own `seed`, `case_id`, `experiment_id`, `git_commit`, and `model_id`, so individual rows can be traced back to a Cloud Build log line.
+
+### Aggregation method
+
+For each model, we report **the mean accuracy across the three random seeds with one standard deviation as the variance bar**. Per-category accuracy is the unweighted mean over the three seeds. Cost and token figures are the per-seed mean (so they compare directly to a single-seed run).
+
+**Claude Sonnet 4 caveat.** The Anthropic Messages API does not expose a `seed` parameter. Claude's three "seeds" are therefore three independent temperature-1.0 samples from the same input distribution, not seed-determined samples. The resulting variance estimate is still valid as a statistical measure of run-to-run variance; it just isn't replayable bit-for-bit the way the Vertex MaaS runs are.
+
+### Replay
+
+To regenerate `leaderboard.csv`, `per_category.csv`, and `per_case.csv` from the GCS results:
+
+```bash
+python scripts/compile_final_results.py \
+    --config paper/final_results/sources.yaml \
+    --out-dir paper/final_results
+```
+
+The three CSVs are committed to the repo. Diff-checking the freshly-regenerated CSVs against the committed copies is the reproducibility test:
+
+```bash
+# Should print nothing
+diff <(git show HEAD:paper/final_results/leaderboard.csv) paper/final_results/leaderboard.csv
+```
+
+If the GCS results have not changed and the script has not changed, the CSVs are byte-identical (modulo float formatting).
+
+### Downstream artifacts
+
+Updating the paper after a re-run is a three-step flow:
+
+```bash
+python scripts/compile_final_results.py   # regenerate CSVs from GCS
+python paper/generate_figures.py          # regenerate 8 figures
+# then update the leaderboard table cells in the two .tex files
+# (one row per model — values come straight from leaderboard.csv)
+```
+
+`paper/final_results/leaderboard.csv` is the single source of truth for every leaderboard number quoted in the paper, the README, the HF dataset card, and the figure data arrays.

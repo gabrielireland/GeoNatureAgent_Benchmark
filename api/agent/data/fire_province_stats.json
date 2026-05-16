@@ -1,0 +1,1042 @@
+{
+  "A Coruna": {
+    "total_burnt_ha": 48200,
+    "fire_count": 312,
+    "by_period": [
+      14500,
+      11200,
+      8600,
+      7400,
+      6500
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2006,
+    "worst_year_ha": 8200
+  },
+  "Alava": {
+    "total_burnt_ha": 1200,
+    "fire_count": 28,
+    "by_period": [
+      350,
+      280,
+      200,
+      180,
+      190
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 420
+  },
+  "Albacete": {
+    "total_burnt_ha": 8900,
+    "fire_count": 95,
+    "by_period": [
+      2100,
+      2400,
+      1800,
+      1500,
+      1100
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2012,
+    "worst_year_ha": 2800
+  },
+  "Alicante": {
+    "total_burnt_ha": 12600,
+    "fire_count": 118,
+    "by_period": [
+      4200,
+      3100,
+      2400,
+      1800,
+      1100
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2012,
+    "worst_year_ha": 3500
+  },
+  "Almeria": {
+    "total_burnt_ha": 3400,
+    "fire_count": 52,
+    "by_period": [
+      800,
+      900,
+      700,
+      600,
+      400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2005,
+    "worst_year_ha": 1200
+  },
+  "Asturias": {
+    "total_burnt_ha": 35600,
+    "fire_count": 425,
+    "by_period": [
+      9800,
+      8200,
+      7100,
+      5900,
+      4600
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2006,
+    "worst_year_ha": 7500
+  },
+  "Avila": {
+    "total_burnt_ha": 15200,
+    "fire_count": 142,
+    "by_period": [
+      4200,
+      3800,
+      3100,
+      2300,
+      1800
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2009,
+    "worst_year_ha": 4100
+  },
+  "Badajoz": {
+    "total_burnt_ha": 9800,
+    "fire_count": 108,
+    "by_period": [
+      2800,
+      2400,
+      1900,
+      1600,
+      1100
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 2600
+  },
+  "Barcelona": {
+    "total_burnt_ha": 6800,
+    "fire_count": 89,
+    "by_period": [
+      2100,
+      1800,
+      1200,
+      1000,
+      700
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 2400
+  },
+  "Bizkaia": {
+    "total_burnt_ha": 3200,
+    "fire_count": 65,
+    "by_period": [
+      900,
+      800,
+      600,
+      500,
+      400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2005,
+    "worst_year_ha": 950
+  },
+  "Burgos": {
+    "total_burnt_ha": 5400,
+    "fire_count": 72,
+    "by_period": [
+      1600,
+      1300,
+      1100,
+      800,
+      600
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2002,
+    "worst_year_ha": 1800
+  },
+  "Caceres": {
+    "total_burnt_ha": 28500,
+    "fire_count": 198,
+    "by_period": [
+      8200,
+      7100,
+      5800,
+      4300,
+      3100
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 6800
+  },
+  "Cadiz": {
+    "total_burnt_ha": 5600,
+    "fire_count": 78,
+    "by_period": [
+      1800,
+      1400,
+      1100,
+      800,
+      500
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2004,
+    "worst_year_ha": 1600
+  },
+  "Cantabria": {
+    "total_burnt_ha": 8900,
+    "fire_count": 145,
+    "by_period": [
+      2800,
+      2200,
+      1700,
+      1300,
+      900
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2005,
+    "worst_year_ha": 2400
+  },
+  "Castellon": {
+    "total_burnt_ha": 14200,
+    "fire_count": 112,
+    "by_period": [
+      4800,
+      3600,
+      2800,
+      1800,
+      1200
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2012,
+    "worst_year_ha": 4600
+  },
+  "Ceuta": {
+    "total_burnt_ha": 50,
+    "fire_count": 5,
+    "by_period": [
+      15,
+      12,
+      10,
+      8,
+      5
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2001,
+    "worst_year_ha": 15
+  },
+  "Ciudad Real": {
+    "total_burnt_ha": 7200,
+    "fire_count": 85,
+    "by_period": [
+      2100,
+      1800,
+      1400,
+      1100,
+      800
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 2200
+  },
+  "Cordoba": {
+    "total_burnt_ha": 11400,
+    "fire_count": 124,
+    "by_period": [
+      3200,
+      2800,
+      2400,
+      1800,
+      1200
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2004,
+    "worst_year_ha": 3100
+  },
+  "Cuenca": {
+    "total_burnt_ha": 9100,
+    "fire_count": 88,
+    "by_period": [
+      2600,
+      2200,
+      1800,
+      1500,
+      1000
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2009,
+    "worst_year_ha": 2900
+  },
+  "Gipuzkoa": {
+    "total_burnt_ha": 1800,
+    "fire_count": 42,
+    "by_period": [
+      520,
+      440,
+      360,
+      280,
+      200
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 580
+  },
+  "Girona": {
+    "total_burnt_ha": 5200,
+    "fire_count": 68,
+    "by_period": [
+      1800,
+      1400,
+      900,
+      700,
+      400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 1900
+  },
+  "Granada": {
+    "total_burnt_ha": 14800,
+    "fire_count": 135,
+    "by_period": [
+      4200,
+      3600,
+      3100,
+      2400,
+      1500
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2005,
+    "worst_year_ha": 3800
+  },
+  "Guadalajara": {
+    "total_burnt_ha": 18500,
+    "fire_count": 92,
+    "by_period": [
+      12800,
+      2400,
+      1500,
+      1100,
+      700
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2005,
+    "worst_year_ha": 12800
+  },
+  "Huelva": {
+    "total_burnt_ha": 32400,
+    "fire_count": 215,
+    "by_period": [
+      9200,
+      8100,
+      6800,
+      5200,
+      3100
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2004,
+    "worst_year_ha": 7200
+  },
+  "Huesca": {
+    "total_burnt_ha": 4800,
+    "fire_count": 62,
+    "by_period": [
+      1400,
+      1200,
+      1000,
+      700,
+      500
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2009,
+    "worst_year_ha": 1500
+  },
+  "Illes Balears": {
+    "total_burnt_ha": 3600,
+    "fire_count": 48,
+    "by_period": [
+      1200,
+      900,
+      700,
+      500,
+      300
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2013,
+    "worst_year_ha": 1100
+  },
+  "Jaen": {
+    "total_burnt_ha": 16200,
+    "fire_count": 148,
+    "by_period": [
+      4800,
+      4000,
+      3200,
+      2600,
+      1600
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2005,
+    "worst_year_ha": 4200
+  },
+  "La Rioja": {
+    "total_burnt_ha": 2400,
+    "fire_count": 38,
+    "by_period": [
+      700,
+      600,
+      500,
+      350,
+      250
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2006,
+    "worst_year_ha": 780
+  },
+  "Las Palmas": {
+    "total_burnt_ha": 8200,
+    "fire_count": 55,
+    "by_period": [
+      1800,
+      1600,
+      2400,
+      1500,
+      900
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2007,
+    "worst_year_ha": 3200
+  },
+  "Leon": {
+    "total_burnt_ha": 42300,
+    "fire_count": 385,
+    "by_period": [
+      12400,
+      10200,
+      8500,
+      6800,
+      4400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2006,
+    "worst_year_ha": 9800
+  },
+  "Lleida": {
+    "total_burnt_ha": 7800,
+    "fire_count": 82,
+    "by_period": [
+      2400,
+      2000,
+      1600,
+      1100,
+      700
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 2600
+  },
+  "Lugo": {
+    "total_burnt_ha": 38500,
+    "fire_count": 345,
+    "by_period": [
+      11200,
+      9400,
+      7800,
+      6200,
+      3900
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2006,
+    "worst_year_ha": 8400
+  },
+  "Madrid": {
+    "total_burnt_ha": 4200,
+    "fire_count": 58,
+    "by_period": [
+      1300,
+      1100,
+      800,
+      600,
+      400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 1400
+  },
+  "Malaga": {
+    "total_burnt_ha": 18200,
+    "fire_count": 152,
+    "by_period": [
+      5400,
+      4600,
+      3800,
+      2800,
+      1600
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2012,
+    "worst_year_ha": 4800
+  },
+  "Melilla": {
+    "total_burnt_ha": 30,
+    "fire_count": 3,
+    "by_period": [
+      10,
+      8,
+      5,
+      4,
+      3
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2000,
+    "worst_year_ha": 10
+  },
+  "Murcia": {
+    "total_burnt_ha": 11800,
+    "fire_count": 108,
+    "by_period": [
+      3400,
+      2800,
+      2400,
+      1900,
+      1300
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2008,
+    "worst_year_ha": 3200
+  },
+  "Navarra": {
+    "total_burnt_ha": 5600,
+    "fire_count": 72,
+    "by_period": [
+      1700,
+      1400,
+      1100,
+      800,
+      600
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 1800
+  },
+  "Ourense": {
+    "total_burnt_ha": 62400,
+    "fire_count": 520,
+    "by_period": [
+      18200,
+      15400,
+      12800,
+      9600,
+      6400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2006,
+    "worst_year_ha": 14200
+  },
+  "Palencia": {
+    "total_burnt_ha": 4600,
+    "fire_count": 55,
+    "by_period": [
+      1400,
+      1200,
+      900,
+      700,
+      400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2002,
+    "worst_year_ha": 1500
+  },
+  "Pontevedra": {
+    "total_burnt_ha": 56800,
+    "fire_count": 480,
+    "by_period": [
+      16500,
+      14200,
+      11800,
+      8800,
+      5500
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2006,
+    "worst_year_ha": 12800
+  },
+  "Salamanca": {
+    "total_burnt_ha": 12400,
+    "fire_count": 125,
+    "by_period": [
+      3600,
+      3100,
+      2600,
+      1900,
+      1200
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 3400
+  },
+  "Santa Cruz de Tenerife": {
+    "total_burnt_ha": 12600,
+    "fire_count": 68,
+    "by_period": [
+      2800,
+      2400,
+      3600,
+      2200,
+      1600
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2007,
+    "worst_year_ha": 4800
+  },
+  "Segovia": {
+    "total_burnt_ha": 3800,
+    "fire_count": 45,
+    "by_period": [
+      1100,
+      900,
+      800,
+      600,
+      400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2002,
+    "worst_year_ha": 1200
+  },
+  "Sevilla": {
+    "total_burnt_ha": 8400,
+    "fire_count": 92,
+    "by_period": [
+      2400,
+      2100,
+      1700,
+      1300,
+      900
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2004,
+    "worst_year_ha": 2200
+  },
+  "Soria": {
+    "total_burnt_ha": 6200,
+    "fire_count": 58,
+    "by_period": [
+      1800,
+      1500,
+      1300,
+      1000,
+      600
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2002,
+    "worst_year_ha": 2000
+  },
+  "Tarragona": {
+    "total_burnt_ha": 5400,
+    "fire_count": 72,
+    "by_period": [
+      1800,
+      1400,
+      1000,
+      800,
+      400
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 1800
+  },
+  "Teruel": {
+    "total_burnt_ha": 8600,
+    "fire_count": 78,
+    "by_period": [
+      2500,
+      2100,
+      1800,
+      1400,
+      800
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2009,
+    "worst_year_ha": 2800
+  },
+  "Toledo": {
+    "total_burnt_ha": 7800,
+    "fire_count": 88,
+    "by_period": [
+      2200,
+      1900,
+      1600,
+      1300,
+      800
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 2400
+  },
+  "Valencia": {
+    "total_burnt_ha": 22400,
+    "fire_count": 168,
+    "by_period": [
+      7200,
+      5800,
+      4600,
+      3200,
+      1600
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2012,
+    "worst_year_ha": 6400
+  },
+  "Valladolid": {
+    "total_burnt_ha": 3200,
+    "fire_count": 42,
+    "by_period": [
+      1000,
+      800,
+      600,
+      500,
+      300
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2003,
+    "worst_year_ha": 1100
+  },
+  "Zamora": {
+    "total_burnt_ha": 28600,
+    "fire_count": 245,
+    "by_period": [
+      8400,
+      7200,
+      5800,
+      4400,
+      2800
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2022,
+    "worst_year_ha": 8400
+  },
+  "Zaragoza": {
+    "total_burnt_ha": 9400,
+    "fire_count": 95,
+    "by_period": [
+      2800,
+      2400,
+      1900,
+      1500,
+      800
+    ],
+    "period_labels": [
+      "00-04",
+      "05-09",
+      "10-14",
+      "15-19",
+      "20-24"
+    ],
+    "worst_year": 2009,
+    "worst_year_ha": 2600
+  }
+}

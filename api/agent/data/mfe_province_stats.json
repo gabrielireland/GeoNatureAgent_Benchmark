@@ -1,0 +1,1138 @@
+{
+  "A Coruna": {
+    "forest_pct": 52.1,
+    "total_forest_ha": 414200,
+    "top_types": [
+      {
+        "label": "Eucalyptus",
+        "pct": 42.8
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 22.1
+      },
+      {
+        "label": "Quercus robur",
+        "pct": 14.6
+      },
+      {
+        "label": "Other",
+        "pct": 20.5
+      }
+    ]
+  },
+  "Alava": {
+    "forest_pct": 54.8,
+    "total_forest_ha": 166800,
+    "top_types": [
+      {
+        "label": "Fagus sylvatica",
+        "pct": 28.4
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 22.1
+      },
+      {
+        "label": "Pinus sylvestris",
+        "pct": 18.6
+      },
+      {
+        "label": "Other",
+        "pct": 30.9
+      }
+    ]
+  },
+  "Albacete": {
+    "forest_pct": 38.2,
+    "total_forest_ha": 570400,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 35.2
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 28.4
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 12.8
+      },
+      {
+        "label": "Other",
+        "pct": 23.6
+      }
+    ]
+  },
+  "Alicante": {
+    "forest_pct": 42.6,
+    "total_forest_ha": 247200,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 52.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 15.2
+      },
+      {
+        "label": "Matorral",
+        "pct": 18.6
+      },
+      {
+        "label": "Other",
+        "pct": 13.8
+      }
+    ]
+  },
+  "Almeria": {
+    "forest_pct": 28.4,
+    "total_forest_ha": 248800,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 34.8
+      },
+      {
+        "label": "Matorral",
+        "pct": 32.1
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 12.4
+      },
+      {
+        "label": "Other",
+        "pct": 20.7
+      }
+    ]
+  },
+  "Asturias": {
+    "forest_pct": 68.2,
+    "total_forest_ha": 722400,
+    "top_types": [
+      {
+        "label": "Eucalyptus",
+        "pct": 28.6
+      },
+      {
+        "label": "Fagus sylvatica",
+        "pct": 18.2
+      },
+      {
+        "label": "Castanea sativa",
+        "pct": 12.4
+      },
+      {
+        "label": "Other",
+        "pct": 40.8
+      }
+    ]
+  },
+  "Avila": {
+    "forest_pct": 48.6,
+    "total_forest_ha": 390400,
+    "top_types": [
+      {
+        "label": "Pinus pinaster",
+        "pct": 32.4
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 24.8
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 18.2
+      },
+      {
+        "label": "Other",
+        "pct": 24.6
+      }
+    ]
+  },
+  "Badajoz": {
+    "forest_pct": 32.4,
+    "total_forest_ha": 704800,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 58.2
+      },
+      {
+        "label": "Quercus suber",
+        "pct": 14.6
+      },
+      {
+        "label": "Eucalyptus",
+        "pct": 8.4
+      },
+      {
+        "label": "Other",
+        "pct": 18.8
+      }
+    ]
+  },
+  "Barcelona": {
+    "forest_pct": 58.4,
+    "total_forest_ha": 452600,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 32.6
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 24.2
+      },
+      {
+        "label": "Pinus sylvestris",
+        "pct": 14.8
+      },
+      {
+        "label": "Other",
+        "pct": 28.4
+      }
+    ]
+  },
+  "Bizkaia": {
+    "forest_pct": 62.4,
+    "total_forest_ha": 138600,
+    "top_types": [
+      {
+        "label": "Pinus radiata",
+        "pct": 38.2
+      },
+      {
+        "label": "Eucalyptus",
+        "pct": 22.4
+      },
+      {
+        "label": "Quercus robur",
+        "pct": 14.8
+      },
+      {
+        "label": "Other",
+        "pct": 24.6
+      }
+    ]
+  },
+  "Burgos": {
+    "forest_pct": 44.2,
+    "total_forest_ha": 632400,
+    "top_types": [
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 24.6
+      },
+      {
+        "label": "Fagus sylvatica",
+        "pct": 18.2
+      },
+      {
+        "label": "Pinus sylvestris",
+        "pct": 16.8
+      },
+      {
+        "label": "Other",
+        "pct": 40.4
+      }
+    ]
+  },
+  "Caceres": {
+    "forest_pct": 44.8,
+    "total_forest_ha": 892600,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 42.4
+      },
+      {
+        "label": "Quercus suber",
+        "pct": 18.2
+      },
+      {
+        "label": "Eucalyptus",
+        "pct": 12.6
+      },
+      {
+        "label": "Other",
+        "pct": 26.8
+      }
+    ]
+  },
+  "Cadiz": {
+    "forest_pct": 38.6,
+    "total_forest_ha": 286400,
+    "top_types": [
+      {
+        "label": "Quercus suber",
+        "pct": 28.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 22.6
+      },
+      {
+        "label": "Pinus pinea",
+        "pct": 16.2
+      },
+      {
+        "label": "Other",
+        "pct": 32.8
+      }
+    ]
+  },
+  "Cantabria": {
+    "forest_pct": 64.8,
+    "total_forest_ha": 344200,
+    "top_types": [
+      {
+        "label": "Eucalyptus",
+        "pct": 32.4
+      },
+      {
+        "label": "Quercus robur",
+        "pct": 18.6
+      },
+      {
+        "label": "Fagus sylvatica",
+        "pct": 14.2
+      },
+      {
+        "label": "Other",
+        "pct": 34.8
+      }
+    ]
+  },
+  "Castellon": {
+    "forest_pct": 52.8,
+    "total_forest_ha": 350600,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 42.6
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 22.4
+      },
+      {
+        "label": "Pinus nigra",
+        "pct": 12.8
+      },
+      {
+        "label": "Other",
+        "pct": 22.2
+      }
+    ]
+  },
+  "Ceuta": {
+    "forest_pct": 18.2,
+    "total_forest_ha": 350,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 48.2
+      },
+      {
+        "label": "Matorral",
+        "pct": 32.4
+      },
+      {
+        "label": "Other",
+        "pct": 19.4
+      }
+    ]
+  },
+  "Ciudad Real": {
+    "forest_pct": 34.6,
+    "total_forest_ha": 688200,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 48.2
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 14.6
+      },
+      {
+        "label": "Quercus suber",
+        "pct": 8.4
+      },
+      {
+        "label": "Other",
+        "pct": 28.8
+      }
+    ]
+  },
+  "Cordoba": {
+    "forest_pct": 40.2,
+    "total_forest_ha": 552800,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 52.8
+      },
+      {
+        "label": "Quercus suber",
+        "pct": 12.4
+      },
+      {
+        "label": "Olea europaea",
+        "pct": 10.6
+      },
+      {
+        "label": "Other",
+        "pct": 24.2
+      }
+    ]
+  },
+  "Cuenca": {
+    "forest_pct": 52.4,
+    "total_forest_ha": 896200,
+    "top_types": [
+      {
+        "label": "Pinus nigra",
+        "pct": 28.4
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 22.6
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 18.2
+      },
+      {
+        "label": "Other",
+        "pct": 30.8
+      }
+    ]
+  },
+  "Gipuzkoa": {
+    "forest_pct": 68.4,
+    "total_forest_ha": 135200,
+    "top_types": [
+      {
+        "label": "Pinus radiata",
+        "pct": 34.6
+      },
+      {
+        "label": "Fagus sylvatica",
+        "pct": 18.4
+      },
+      {
+        "label": "Quercus robur",
+        "pct": 16.2
+      },
+      {
+        "label": "Other",
+        "pct": 30.8
+      }
+    ]
+  },
+  "Girona": {
+    "forest_pct": 62.8,
+    "total_forest_ha": 369400,
+    "top_types": [
+      {
+        "label": "Quercus suber",
+        "pct": 24.6
+      },
+      {
+        "label": "Pinus halepensis",
+        "pct": 22.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 18.2
+      },
+      {
+        "label": "Other",
+        "pct": 34.8
+      }
+    ]
+  },
+  "Granada": {
+    "forest_pct": 42.4,
+    "total_forest_ha": 534200,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 28.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 24.6
+      },
+      {
+        "label": "Pinus nigra",
+        "pct": 14.2
+      },
+      {
+        "label": "Other",
+        "pct": 32.8
+      }
+    ]
+  },
+  "Guadalajara": {
+    "forest_pct": 54.2,
+    "total_forest_ha": 824600,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 28.4
+      },
+      {
+        "label": "Pinus nigra",
+        "pct": 22.6
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 16.8
+      },
+      {
+        "label": "Other",
+        "pct": 32.2
+      }
+    ]
+  },
+  "Huelva": {
+    "forest_pct": 48.6,
+    "total_forest_ha": 492400,
+    "top_types": [
+      {
+        "label": "Eucalyptus",
+        "pct": 38.2
+      },
+      {
+        "label": "Pinus pinea",
+        "pct": 22.4
+      },
+      {
+        "label": "Quercus suber",
+        "pct": 16.8
+      },
+      {
+        "label": "Other",
+        "pct": 22.6
+      }
+    ]
+  },
+  "Huesca": {
+    "forest_pct": 52.6,
+    "total_forest_ha": 824800,
+    "top_types": [
+      {
+        "label": "Pinus sylvestris",
+        "pct": 26.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 22.8
+      },
+      {
+        "label": "Fagus sylvatica",
+        "pct": 12.6
+      },
+      {
+        "label": "Other",
+        "pct": 38.2
+      }
+    ]
+  },
+  "Illes Balears": {
+    "forest_pct": 42.8,
+    "total_forest_ha": 214200,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 48.6
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 28.4
+      },
+      {
+        "label": "Olea europaea",
+        "pct": 8.2
+      },
+      {
+        "label": "Other",
+        "pct": 14.8
+      }
+    ]
+  },
+  "Jaen": {
+    "forest_pct": 46.8,
+    "total_forest_ha": 632400,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 32.6
+      },
+      {
+        "label": "Pinus halepensis",
+        "pct": 24.8
+      },
+      {
+        "label": "Olea europaea",
+        "pct": 14.2
+      },
+      {
+        "label": "Other",
+        "pct": 28.4
+      }
+    ]
+  },
+  "La Rioja": {
+    "forest_pct": 56.4,
+    "total_forest_ha": 284600,
+    "top_types": [
+      {
+        "label": "Fagus sylvatica",
+        "pct": 24.2
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 22.6
+      },
+      {
+        "label": "Pinus sylvestris",
+        "pct": 18.4
+      },
+      {
+        "label": "Other",
+        "pct": 34.8
+      }
+    ]
+  },
+  "Las Palmas": {
+    "forest_pct": 22.4,
+    "total_forest_ha": 91200,
+    "top_types": [
+      {
+        "label": "Pinus canariensis",
+        "pct": 42.8
+      },
+      {
+        "label": "Laurisilva",
+        "pct": 24.6
+      },
+      {
+        "label": "Matorral",
+        "pct": 18.4
+      },
+      {
+        "label": "Other",
+        "pct": 14.2
+      }
+    ]
+  },
+  "Leon": {
+    "forest_pct": 48.2,
+    "total_forest_ha": 748200,
+    "top_types": [
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 28.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 22.6
+      },
+      {
+        "label": "Pinus sylvestris",
+        "pct": 14.2
+      },
+      {
+        "label": "Other",
+        "pct": 34.8
+      }
+    ]
+  },
+  "Lleida": {
+    "forest_pct": 54.6,
+    "total_forest_ha": 664200,
+    "top_types": [
+      {
+        "label": "Pinus sylvestris",
+        "pct": 28.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 24.6
+      },
+      {
+        "label": "Pinus nigra",
+        "pct": 14.2
+      },
+      {
+        "label": "Other",
+        "pct": 32.8
+      }
+    ]
+  },
+  "Lugo": {
+    "forest_pct": 58.4,
+    "total_forest_ha": 574800,
+    "top_types": [
+      {
+        "label": "Eucalyptus",
+        "pct": 38.4
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 22.6
+      },
+      {
+        "label": "Quercus robur",
+        "pct": 14.8
+      },
+      {
+        "label": "Other",
+        "pct": 24.2
+      }
+    ]
+  },
+  "Madrid": {
+    "forest_pct": 42.6,
+    "total_forest_ha": 342400,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 34.2
+      },
+      {
+        "label": "Pinus sylvestris",
+        "pct": 18.6
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 14.8
+      },
+      {
+        "label": "Other",
+        "pct": 32.4
+      }
+    ]
+  },
+  "Malaga": {
+    "forest_pct": 44.2,
+    "total_forest_ha": 322600,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 32.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 24.6
+      },
+      {
+        "label": "Quercus suber",
+        "pct": 12.8
+      },
+      {
+        "label": "Other",
+        "pct": 30.2
+      }
+    ]
+  },
+  "Melilla": {
+    "forest_pct": 12.4,
+    "total_forest_ha": 160,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 52.4
+      },
+      {
+        "label": "Matorral",
+        "pct": 28.6
+      },
+      {
+        "label": "Other",
+        "pct": 19.0
+      }
+    ]
+  },
+  "Murcia": {
+    "forest_pct": 36.8,
+    "total_forest_ha": 416200,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 48.6
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 14.2
+      },
+      {
+        "label": "Matorral",
+        "pct": 22.4
+      },
+      {
+        "label": "Other",
+        "pct": 14.8
+      }
+    ]
+  },
+  "Navarra": {
+    "forest_pct": 62.4,
+    "total_forest_ha": 650200,
+    "top_types": [
+      {
+        "label": "Fagus sylvatica",
+        "pct": 26.4
+      },
+      {
+        "label": "Pinus sylvestris",
+        "pct": 18.2
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 14.6
+      },
+      {
+        "label": "Other",
+        "pct": 40.8
+      }
+    ]
+  },
+  "Ourense": {
+    "forest_pct": 56.8,
+    "total_forest_ha": 412600,
+    "top_types": [
+      {
+        "label": "Eucalyptus",
+        "pct": 28.4
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 24.6
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 18.2
+      },
+      {
+        "label": "Other",
+        "pct": 28.8
+      }
+    ]
+  },
+  "Palencia": {
+    "forest_pct": 42.4,
+    "total_forest_ha": 340200,
+    "top_types": [
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 28.6
+      },
+      {
+        "label": "Fagus sylvatica",
+        "pct": 18.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 22.4
+      },
+      {
+        "label": "Other",
+        "pct": 30.6
+      }
+    ]
+  },
+  "Pontevedra": {
+    "forest_pct": 62.6,
+    "total_forest_ha": 280400,
+    "top_types": [
+      {
+        "label": "Eucalyptus",
+        "pct": 48.2
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 22.6
+      },
+      {
+        "label": "Quercus robur",
+        "pct": 12.4
+      },
+      {
+        "label": "Other",
+        "pct": 16.8
+      }
+    ]
+  },
+  "Salamanca": {
+    "forest_pct": 36.8,
+    "total_forest_ha": 456200,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 42.4
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 22.6
+      },
+      {
+        "label": "Castanea sativa",
+        "pct": 8.4
+      },
+      {
+        "label": "Other",
+        "pct": 26.6
+      }
+    ]
+  },
+  "Santa Cruz de Tenerife": {
+    "forest_pct": 32.4,
+    "total_forest_ha": 106800,
+    "top_types": [
+      {
+        "label": "Pinus canariensis",
+        "pct": 48.6
+      },
+      {
+        "label": "Laurisilva",
+        "pct": 28.4
+      },
+      {
+        "label": "Erica arborea",
+        "pct": 10.2
+      },
+      {
+        "label": "Other",
+        "pct": 12.8
+      }
+    ]
+  },
+  "Segovia": {
+    "forest_pct": 46.2,
+    "total_forest_ha": 320400,
+    "top_types": [
+      {
+        "label": "Pinus pinaster",
+        "pct": 32.4
+      },
+      {
+        "label": "Pinus sylvestris",
+        "pct": 24.6
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 18.2
+      },
+      {
+        "label": "Other",
+        "pct": 24.8
+      }
+    ]
+  },
+  "Sevilla": {
+    "forest_pct": 28.6,
+    "total_forest_ha": 402400,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 38.4
+      },
+      {
+        "label": "Olea europaea",
+        "pct": 22.6
+      },
+      {
+        "label": "Eucalyptus",
+        "pct": 12.8
+      },
+      {
+        "label": "Other",
+        "pct": 26.2
+      }
+    ]
+  },
+  "Soria": {
+    "forest_pct": 58.4,
+    "total_forest_ha": 602800,
+    "top_types": [
+      {
+        "label": "Pinus sylvestris",
+        "pct": 28.4
+      },
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 24.6
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 16.2
+      },
+      {
+        "label": "Other",
+        "pct": 30.8
+      }
+    ]
+  },
+  "Tarragona": {
+    "forest_pct": 48.6,
+    "total_forest_ha": 306200,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 38.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 28.6
+      },
+      {
+        "label": "Pinus nigra",
+        "pct": 10.2
+      },
+      {
+        "label": "Other",
+        "pct": 22.8
+      }
+    ]
+  },
+  "Teruel": {
+    "forest_pct": 52.8,
+    "total_forest_ha": 782400,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 28.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 24.6
+      },
+      {
+        "label": "Pinus nigra",
+        "pct": 18.2
+      },
+      {
+        "label": "Other",
+        "pct": 28.8
+      }
+    ]
+  },
+  "Toledo": {
+    "forest_pct": 30.4,
+    "total_forest_ha": 468200,
+    "top_types": [
+      {
+        "label": "Quercus ilex",
+        "pct": 52.4
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 14.6
+      },
+      {
+        "label": "Quercus suber",
+        "pct": 8.2
+      },
+      {
+        "label": "Other",
+        "pct": 24.8
+      }
+    ]
+  },
+  "Valencia": {
+    "forest_pct": 46.8,
+    "total_forest_ha": 506200,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 48.2
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 18.6
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 10.4
+      },
+      {
+        "label": "Other",
+        "pct": 22.8
+      }
+    ]
+  },
+  "Valladolid": {
+    "forest_pct": 22.4,
+    "total_forest_ha": 182600,
+    "top_types": [
+      {
+        "label": "Pinus pinaster",
+        "pct": 42.6
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 28.4
+      },
+      {
+        "label": "Populus",
+        "pct": 10.2
+      },
+      {
+        "label": "Other",
+        "pct": 18.8
+      }
+    ]
+  },
+  "Zamora": {
+    "forest_pct": 38.6,
+    "total_forest_ha": 408200,
+    "top_types": [
+      {
+        "label": "Quercus pyrenaica",
+        "pct": 32.4
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 28.6
+      },
+      {
+        "label": "Pinus pinaster",
+        "pct": 14.2
+      },
+      {
+        "label": "Other",
+        "pct": 24.8
+      }
+    ]
+  },
+  "Zaragoza": {
+    "forest_pct": 38.4,
+    "total_forest_ha": 662400,
+    "top_types": [
+      {
+        "label": "Pinus halepensis",
+        "pct": 32.6
+      },
+      {
+        "label": "Quercus ilex",
+        "pct": 28.4
+      },
+      {
+        "label": "Pinus nigra",
+        "pct": 12.8
+      },
+      {
+        "label": "Other",
+        "pct": 26.2
+      }
+    ]
+  }
+}

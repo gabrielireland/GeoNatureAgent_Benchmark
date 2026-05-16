@@ -1,0 +1,897 @@
+{
+  "generated_at": "2026-03-13",
+  "layer_info": {
+    "co2": "co2_spain_legislation / 2026 / annual — % eligible territory",
+    "erosion": "rf_gully_probability / 2022 / annual — mean probability %"
+  },
+  "provinces": {
+    "Álava": {
+      "name": "Álava",
+      "code": "01",
+      "co2": {
+        "not_eligible_pct": 41.6,
+        "conditional_pct": 10.3,
+        "eligible_pct": 48.0
+      },
+      "erosion": {
+        "mean_pct": 67.3,
+        "max_pct": 100.4,
+        "std_pct": 41.2
+      }
+    },
+    "Albacete": {
+      "name": "Albacete",
+      "code": "02",
+      "co2": {
+        "not_eligible_pct": 13.6,
+        "conditional_pct": 13.4,
+        "eligible_pct": 72.9
+      },
+      "erosion": {
+        "mean_pct": 51.7,
+        "max_pct": 100.4,
+        "std_pct": 40.7
+      }
+    },
+    "Alicante": {
+      "name": "Alicante",
+      "code": "03",
+      "co2": {
+        "not_eligible_pct": 15.8,
+        "conditional_pct": 20.3,
+        "eligible_pct": 63.9
+      },
+      "erosion": {
+        "mean_pct": 70.0,
+        "max_pct": 100.4,
+        "std_pct": 38.1
+      }
+    },
+    "Almería": {
+      "name": "Almería",
+      "code": "04",
+      "co2": {
+        "not_eligible_pct": 11.4,
+        "conditional_pct": 26.3,
+        "eligible_pct": 62.4
+      },
+      "erosion": {
+        "mean_pct": 68.0,
+        "max_pct": 100.4,
+        "std_pct": 35.6
+      }
+    },
+    "Ávila": {
+      "name": "Ávila",
+      "code": "05",
+      "co2": {
+        "not_eligible_pct": 14.1,
+        "conditional_pct": 33.8,
+        "eligible_pct": 52.1
+      },
+      "erosion": {
+        "mean_pct": 59.0,
+        "max_pct": 100.4,
+        "std_pct": 42.3
+      }
+    },
+    "Badajoz": {
+      "name": "Badajoz",
+      "code": "06",
+      "co2": {
+        "not_eligible_pct": 7.1,
+        "conditional_pct": 23.8,
+        "eligible_pct": 69.1
+      },
+      "erosion": {
+        "mean_pct": 57.9,
+        "max_pct": 100.4,
+        "std_pct": 44.6
+      }
+    },
+    "Illes Balears": {
+      "name": "Illes Balears",
+      "code": "07",
+      "co2": {
+        "not_eligible_pct": 24.7,
+        "conditional_pct": 15.8,
+        "eligible_pct": 59.5
+      },
+      "erosion": {
+        "mean_pct": 90.1,
+        "max_pct": 100.4,
+        "std_pct": 28.3
+      }
+    },
+    "Barcelona": {
+      "name": "Barcelona",
+      "code": "08",
+      "co2": {
+        "not_eligible_pct": 52.7,
+        "conditional_pct": 8.3,
+        "eligible_pct": 39.0
+      },
+      "erosion": {
+        "mean_pct": 62.1,
+        "max_pct": 100.4,
+        "std_pct": 40.8
+      }
+    },
+    "Burgos": {
+      "name": "Burgos",
+      "code": "09",
+      "co2": {
+        "not_eligible_pct": 22.7,
+        "conditional_pct": 13.0,
+        "eligible_pct": 64.3
+      },
+      "erosion": {
+        "mean_pct": 59.6,
+        "max_pct": 100.4,
+        "std_pct": 41.7
+      }
+    },
+    "Cáceres": {
+      "name": "Cáceres",
+      "code": "10",
+      "co2": {
+        "not_eligible_pct": 11.4,
+        "conditional_pct": 29.8,
+        "eligible_pct": 58.8
+      },
+      "erosion": {
+        "mean_pct": 50.1,
+        "max_pct": 100.4,
+        "std_pct": 44.5
+      }
+    },
+    "Cádiz": {
+      "name": "Cádiz",
+      "code": "11",
+      "co2": {
+        "not_eligible_pct": 20.4,
+        "conditional_pct": 22.7,
+        "eligible_pct": 56.8
+      },
+      "erosion": {
+        "mean_pct": 59.3,
+        "max_pct": 100.4,
+        "std_pct": 41.3
+      }
+    },
+    "Castellón": {
+      "name": "Castellón",
+      "code": "12",
+      "co2": {
+        "not_eligible_pct": 21.4,
+        "conditional_pct": 30.8,
+        "eligible_pct": 47.8
+      },
+      "erosion": {
+        "mean_pct": 67.0,
+        "max_pct": 100.4,
+        "std_pct": 39.4
+      }
+    },
+    "Ciudad Real": {
+      "name": "Ciudad Real",
+      "code": "13",
+      "co2": {
+        "not_eligible_pct": 8.3,
+        "conditional_pct": 12.8,
+        "eligible_pct": 78.9
+      },
+      "erosion": {
+        "mean_pct": 47.8,
+        "max_pct": 100.4,
+        "std_pct": 42.9
+      }
+    },
+    "Córdoba": {
+      "name": "Córdoba",
+      "code": "14",
+      "co2": {
+        "not_eligible_pct": 11.0,
+        "conditional_pct": 20.6,
+        "eligible_pct": 68.4
+      },
+      "erosion": {
+        "mean_pct": 49.6,
+        "max_pct": 100.4,
+        "std_pct": 42.0
+      }
+    },
+    "A Coruña": {
+      "name": "A Coruña",
+      "code": "15",
+      "co2": {
+        "not_eligible_pct": 38.3,
+        "conditional_pct": 3.8,
+        "eligible_pct": 57.9
+      },
+      "erosion": {
+        "mean_pct": 62.3,
+        "max_pct": 100.4,
+        "std_pct": 44.6
+      }
+    },
+    "Cuenca": {
+      "name": "Cuenca",
+      "code": "16",
+      "co2": {
+        "not_eligible_pct": 22.3,
+        "conditional_pct": 10.5,
+        "eligible_pct": 67.2
+      },
+      "erosion": {
+        "mean_pct": 49.1,
+        "max_pct": 100.4,
+        "std_pct": 39.5
+      }
+    },
+    "Girona": {
+      "name": "Girona",
+      "code": "17",
+      "co2": {
+        "not_eligible_pct": 52.0,
+        "conditional_pct": 13.3,
+        "eligible_pct": 34.7
+      },
+      "erosion": {
+        "mean_pct": 63.3,
+        "max_pct": 100.4,
+        "std_pct": 43.6
+      }
+    },
+    "Granada": {
+      "name": "Granada",
+      "code": "18",
+      "co2": {
+        "not_eligible_pct": 19.2,
+        "conditional_pct": 13.5,
+        "eligible_pct": 67.3
+      },
+      "erosion": {
+        "mean_pct": 67.5,
+        "max_pct": 100.4,
+        "std_pct": 36.6
+      }
+    },
+    "Guadalajara": {
+      "name": "Guadalajara",
+      "code": "19",
+      "co2": {
+        "not_eligible_pct": 26.8,
+        "conditional_pct": 19.7,
+        "eligible_pct": 53.5
+      },
+      "erosion": {
+        "mean_pct": 55.9,
+        "max_pct": 100.4,
+        "std_pct": 39.7
+      }
+    },
+    "Gipuzkoa": {
+      "name": "Gipuzkoa",
+      "code": "20",
+      "co2": {
+        "not_eligible_pct": 58.2,
+        "conditional_pct": 8.3,
+        "eligible_pct": 33.5
+      },
+      "erosion": {
+        "mean_pct": 56.6,
+        "max_pct": 100.4,
+        "std_pct": 44.0
+      }
+    },
+    "Huelva": {
+      "name": "Huelva",
+      "code": "21",
+      "co2": {
+        "not_eligible_pct": 34.7,
+        "conditional_pct": 22.6,
+        "eligible_pct": 42.7
+      },
+      "erosion": {
+        "mean_pct": 60.9,
+        "max_pct": 100.4,
+        "std_pct": 43.7
+      }
+    },
+    "Huesca": {
+      "name": "Huesca",
+      "code": "22",
+      "co2": {
+        "not_eligible_pct": 25.6,
+        "conditional_pct": 19.0,
+        "eligible_pct": 55.4
+      },
+      "erosion": {
+        "mean_pct": 54.9,
+        "max_pct": 100.4,
+        "std_pct": 40.1
+      }
+    },
+    "Jaén": {
+      "name": "Jaén",
+      "code": "23",
+      "co2": {
+        "not_eligible_pct": 18.7,
+        "conditional_pct": 22.8,
+        "eligible_pct": 58.4
+      },
+      "erosion": {
+        "mean_pct": 49.2,
+        "max_pct": 100.4,
+        "std_pct": 36.6
+      }
+    },
+    "León": {
+      "name": "León",
+      "code": "24",
+      "co2": {
+        "not_eligible_pct": 26.5,
+        "conditional_pct": 21.2,
+        "eligible_pct": 52.3
+      },
+      "erosion": {
+        "mean_pct": 49.9,
+        "max_pct": 100.4,
+        "std_pct": 42.7
+      }
+    },
+    "Lleida": {
+      "name": "Lleida",
+      "code": "25",
+      "co2": {
+        "not_eligible_pct": 28.8,
+        "conditional_pct": 20.5,
+        "eligible_pct": 50.7
+      },
+      "erosion": {
+        "mean_pct": 61.7,
+        "max_pct": 100.4,
+        "std_pct": 39.7
+      }
+    },
+    "La Rioja": {
+      "name": "La Rioja",
+      "code": "26",
+      "co2": {
+        "not_eligible_pct": 29.2,
+        "conditional_pct": 16.1,
+        "eligible_pct": 54.7
+      },
+      "erosion": {
+        "mean_pct": 65.2,
+        "max_pct": 100.4,
+        "std_pct": 39.7
+      }
+    },
+    "Lugo": {
+      "name": "Lugo",
+      "code": "27",
+      "co2": {
+        "not_eligible_pct": 25.1,
+        "conditional_pct": 11.7,
+        "eligible_pct": 63.2
+      },
+      "erosion": {
+        "mean_pct": 47.4,
+        "max_pct": 100.4,
+        "std_pct": 45.0
+      }
+    },
+    "Madrid": {
+      "name": "Madrid",
+      "code": "28",
+      "co2": {
+        "not_eligible_pct": 26.5,
+        "conditional_pct": 28.8,
+        "eligible_pct": 44.7
+      },
+      "erosion": {
+        "mean_pct": 67.0,
+        "max_pct": 100.4,
+        "std_pct": 41.3
+      }
+    },
+    "Málaga": {
+      "name": "Málaga",
+      "code": "29",
+      "co2": {
+        "not_eligible_pct": 17.9,
+        "conditional_pct": 14.3,
+        "eligible_pct": 67.8
+      },
+      "erosion": {
+        "mean_pct": 66.4,
+        "max_pct": 100.4,
+        "std_pct": 38.9
+      }
+    },
+    "Murcia": {
+      "name": "Murcia",
+      "code": "30",
+      "co2": {
+        "not_eligible_pct": 14.6,
+        "conditional_pct": 16.8,
+        "eligible_pct": 68.5
+      },
+      "erosion": {
+        "mean_pct": 59.6,
+        "max_pct": 100.4,
+        "std_pct": 38.4
+      }
+    },
+    "Navarra": {
+      "name": "Navarra",
+      "code": "31",
+      "co2": {
+        "not_eligible_pct": 32.9,
+        "conditional_pct": 13.8,
+        "eligible_pct": 53.3
+      },
+      "erosion": {
+        "mean_pct": 64.6,
+        "max_pct": 100.4,
+        "std_pct": 41.0
+      }
+    },
+    "Ourense": {
+      "name": "Ourense",
+      "code": "32",
+      "co2": {
+        "not_eligible_pct": 17.0,
+        "conditional_pct": 15.8,
+        "eligible_pct": 67.2
+      },
+      "erosion": {
+        "mean_pct": 51.0,
+        "max_pct": 100.4,
+        "std_pct": 43.8
+      }
+    },
+    "Asturias": {
+      "name": "Asturias",
+      "code": "33",
+      "co2": {
+        "not_eligible_pct": 34.2,
+        "conditional_pct": 15.9,
+        "eligible_pct": 49.9
+      },
+      "erosion": {
+        "mean_pct": 53.0,
+        "max_pct": 100.4,
+        "std_pct": 42.2
+      }
+    },
+    "Palencia": {
+      "name": "Palencia",
+      "code": "34",
+      "co2": {
+        "not_eligible_pct": 15.5,
+        "conditional_pct": 17.7,
+        "eligible_pct": 66.9
+      },
+      "erosion": {
+        "mean_pct": 53.9,
+        "max_pct": 100.4,
+        "std_pct": 43.2
+      }
+    },
+    "Las Palmas": {
+      "name": "Las Palmas",
+      "code": "35",
+      "co2": {
+        "not_eligible_pct": 10.2,
+        "conditional_pct": 40.8,
+        "eligible_pct": 49.0
+      }
+    },
+    "Pontevedra": {
+      "name": "Pontevedra",
+      "code": "36",
+      "co2": {
+        "not_eligible_pct": 35.7,
+        "conditional_pct": 4.1,
+        "eligible_pct": 60.2
+      },
+      "erosion": {
+        "mean_pct": 61.4,
+        "max_pct": 100.4,
+        "std_pct": 43.9
+      }
+    },
+    "Salamanca": {
+      "name": "Salamanca",
+      "code": "37",
+      "co2": {
+        "not_eligible_pct": 13.7,
+        "conditional_pct": 17.4,
+        "eligible_pct": 68.9
+      },
+      "erosion": {
+        "mean_pct": 45.2,
+        "max_pct": 100.4,
+        "std_pct": 44.4
+      }
+    },
+    "Santa Cruz de Tenerife": {
+      "name": "Santa Cruz de Tenerife",
+      "code": "38",
+      "co2": {
+        "not_eligible_pct": 26.0,
+        "conditional_pct": 31.5,
+        "eligible_pct": 42.4
+      }
+    },
+    "Cantabria": {
+      "name": "Cantabria",
+      "code": "39",
+      "co2": {
+        "not_eligible_pct": 35.5,
+        "conditional_pct": 16.5,
+        "eligible_pct": 48.0
+      },
+      "erosion": {
+        "mean_pct": 61.4,
+        "max_pct": 100.4,
+        "std_pct": 42.4
+      }
+    },
+    "Segovia": {
+      "name": "Segovia",
+      "code": "40",
+      "co2": {
+        "not_eligible_pct": 22.8,
+        "conditional_pct": 17.2,
+        "eligible_pct": 60.0
+      },
+      "erosion": {
+        "mean_pct": 53.8,
+        "max_pct": 100.4,
+        "std_pct": 43.2
+      }
+    },
+    "Sevilla": {
+      "name": "Sevilla",
+      "code": "41",
+      "co2": {
+        "not_eligible_pct": 11.3,
+        "conditional_pct": 15.5,
+        "eligible_pct": 73.2
+      },
+      "erosion": {
+        "mean_pct": 50.5,
+        "max_pct": 100.4,
+        "std_pct": 43.1
+      }
+    },
+    "Soria": {
+      "name": "Soria",
+      "code": "42",
+      "co2": {
+        "not_eligible_pct": 22.3,
+        "conditional_pct": 16.5,
+        "eligible_pct": 61.2
+      },
+      "erosion": {
+        "mean_pct": 56.0,
+        "max_pct": 100.4,
+        "std_pct": 40.6
+      }
+    },
+    "Tarragona": {
+      "name": "Tarragona",
+      "code": "43",
+      "co2": {
+        "not_eligible_pct": 23.1,
+        "conditional_pct": 21.2,
+        "eligible_pct": 55.7
+      },
+      "erosion": {
+        "mean_pct": 67.1,
+        "max_pct": 100.4,
+        "std_pct": 39.9
+      }
+    },
+    "Teruel": {
+      "name": "Teruel",
+      "code": "44",
+      "co2": {
+        "not_eligible_pct": 23.1,
+        "conditional_pct": 18.6,
+        "eligible_pct": 58.3
+      },
+      "erosion": {
+        "mean_pct": 63.0,
+        "max_pct": 100.4,
+        "std_pct": 38.3
+      }
+    },
+    "Toledo": {
+      "name": "Toledo",
+      "code": "45",
+      "co2": {
+        "not_eligible_pct": 10.9,
+        "conditional_pct": 21.6,
+        "eligible_pct": 67.5
+      },
+      "erosion": {
+        "mean_pct": 51.6,
+        "max_pct": 100.4,
+        "std_pct": 43.0
+      }
+    },
+    "Valencia": {
+      "name": "Valencia",
+      "code": "46",
+      "co2": {
+        "not_eligible_pct": 19.5,
+        "conditional_pct": 31.4,
+        "eligible_pct": 49.1
+      },
+      "erosion": {
+        "mean_pct": 62.2,
+        "max_pct": 100.4,
+        "std_pct": 39.9
+      }
+    },
+    "Valladolid": {
+      "name": "Valladolid",
+      "code": "47",
+      "co2": {
+        "not_eligible_pct": 11.8,
+        "conditional_pct": 19.1,
+        "eligible_pct": 69.1
+      },
+      "erosion": {
+        "mean_pct": 57.8,
+        "max_pct": 100.4,
+        "std_pct": 44.1
+      }
+    },
+    "Bizkaia": {
+      "name": "Bizkaia",
+      "code": "48",
+      "co2": {
+        "not_eligible_pct": 53.1,
+        "conditional_pct": 6.0,
+        "eligible_pct": 40.9
+      },
+      "erosion": {
+        "mean_pct": 57.8,
+        "max_pct": 100.4,
+        "std_pct": 43.5
+      }
+    },
+    "Zamora": {
+      "name": "Zamora",
+      "code": "49",
+      "co2": {
+        "not_eligible_pct": 11.9,
+        "conditional_pct": 24.0,
+        "eligible_pct": 64.1
+      },
+      "erosion": {
+        "mean_pct": 58.1,
+        "max_pct": 100.4,
+        "std_pct": 43.7
+      }
+    },
+    "Zaragoza": {
+      "name": "Zaragoza",
+      "code": "50",
+      "co2": {
+        "not_eligible_pct": 13.4,
+        "conditional_pct": 20.3,
+        "eligible_pct": 66.4
+      },
+      "erosion": {
+        "mean_pct": 69.7,
+        "max_pct": 100.4,
+        "std_pct": 38.1
+      }
+    },
+    "Ceuta": {
+      "name": "Ceuta",
+      "code": "51",
+      "co2": {
+        "not_eligible_pct": 64.2,
+        "conditional_pct": 15.0,
+        "eligible_pct": 20.8
+      },
+      "erosion": {
+        "mean_pct": 86.5,
+        "max_pct": 100.4,
+        "std_pct": 31.7
+      }
+    },
+    "Melilla": {
+      "name": "Melilla",
+      "code": "52",
+      "co2": {
+        "not_eligible_pct": 74.2,
+        "conditional_pct": 0.7,
+        "eligible_pct": 25.1
+      },
+      "erosion": {
+        "mean_pct": 88.8,
+        "max_pct": 100.4,
+        "std_pct": 28.7
+      }
+    }
+  },
+  "rankings": {
+    "co2_eligible_top10": [
+      [
+        "Ciudad Real",
+        78.9
+      ],
+      [
+        "Sevilla",
+        73.2
+      ],
+      [
+        "Albacete",
+        72.9
+      ],
+      [
+        "Badajoz",
+        69.1
+      ],
+      [
+        "Valladolid",
+        69.1
+      ],
+      [
+        "Salamanca",
+        68.9
+      ],
+      [
+        "Murcia",
+        68.5
+      ],
+      [
+        "Córdoba",
+        68.4
+      ],
+      [
+        "Málaga",
+        67.8
+      ],
+      [
+        "Toledo",
+        67.5
+      ]
+    ],
+    "co2_eligible_bottom10": [
+      [
+        "Castellón",
+        47.8
+      ],
+      [
+        "Madrid",
+        44.7
+      ],
+      [
+        "Huelva",
+        42.7
+      ],
+      [
+        "Santa Cruz de Tenerife",
+        42.4
+      ],
+      [
+        "Bizkaia",
+        40.9
+      ],
+      [
+        "Barcelona",
+        39.0
+      ],
+      [
+        "Girona",
+        34.7
+      ],
+      [
+        "Gipuzkoa",
+        33.5
+      ],
+      [
+        "Melilla",
+        25.1
+      ],
+      [
+        "Ceuta",
+        20.8
+      ]
+    ],
+    "erosion_risk_top10": [
+      [
+        "Illes Balears",
+        90.1
+      ],
+      [
+        "Melilla",
+        88.8
+      ],
+      [
+        "Ceuta",
+        86.5
+      ],
+      [
+        "Alicante",
+        70.0
+      ],
+      [
+        "Zaragoza",
+        69.7
+      ],
+      [
+        "Almería",
+        68.0
+      ],
+      [
+        "Granada",
+        67.5
+      ],
+      [
+        "Álava",
+        67.3
+      ],
+      [
+        "Tarragona",
+        67.1
+      ],
+      [
+        "Castellón",
+        67.0
+      ]
+    ],
+    "erosion_risk_bottom10": [
+      [
+        "Ourense",
+        51.0
+      ],
+      [
+        "Sevilla",
+        50.5
+      ],
+      [
+        "Cáceres",
+        50.1
+      ],
+      [
+        "León",
+        49.9
+      ],
+      [
+        "Córdoba",
+        49.6
+      ],
+      [
+        "Jaén",
+        49.2
+      ],
+      [
+        "Cuenca",
+        49.1
+      ],
+      [
+        "Ciudad Real",
+        47.8
+      ],
+      [
+        "Lugo",
+        47.4
+      ],
+      [
+        "Salamanca",
+        45.2
+      ]
+    ]
+  }
+}

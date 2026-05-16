@@ -195,7 +195,7 @@ Credentials are injected by infrastructure — never put API keys in the YAML.
 ```bash
 # Edit cloudbuild-benchmark.yaml to point _EXPERIMENT_YAML at your config, then:
 gcloud builds submit --config=GeoNatureAgent/cloudbuild-benchmark.yaml \
-    --project=local-env-489816-i2
+    --project=YOUR_GCP_PROJECT_ID
 ```
 
 Results are uploaded to GCS and streamed to BigQuery automatically.
