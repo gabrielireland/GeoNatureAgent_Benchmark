@@ -152,13 +152,13 @@ cat_avg = {
 # FIGURE 1: Leaderboard — Accuracy bar chart (horizontal)
 # ═══════════════════════════════════════════════════════════════════════════
 def fig1_leaderboard():
-    fig, ax = plt.subplots(figsize=(6.5, 3.8))
+    fig, ax = plt.subplots(figsize=(8, 4))
     y = np.arange(len(models))
-    ax.barh(y, accuracy, color=model_colors, edgecolor="white", linewidth=0.5, height=0.65)
+    ax.barh(y, accuracy, color=model_colors, edgecolor="white", linewidth=0.5, height=0.7)
     ax.set_yticks(y)
     ax.set_yticklabels(models)
     ax.set_xlabel("Accuracy (%)")
-    ax.set_xlim(0, 70)
+    ax.set_xlim(0, 79)
     ax.set_title(f"GeoNatureAgent Benchmark v5 — Model Accuracy (93 tasks, {len(models)} models)")
     ax.invert_yaxis()
     # Variance bars (per-seed standard deviation) where available.
@@ -169,7 +169,7 @@ def fig1_leaderboard():
     for i, (v, c, sd) in enumerate(zip(accuracy, cost_total, accuracy_std)):
         cost_str = f"${c:.2f}" if c > 0 else "---"
         label = f"{v:.1f}% ±{sd:.1f}  ({cost_str})" if sd > 0 else f"{v:.1f}%  ({cost_str})"
-        ax.text(v + sd + 0.5, i, label, va="center", fontsize=8, color=C_DARK)
+        ax.text(v + sd + 0.5, i, label, va="center", fontsize=9, color=C_DARK)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.axvline(50, color=C_GRAY, linestyle="--", linewidth=0.7, alpha=0.5)
@@ -196,10 +196,10 @@ def fig2_cost_accuracy():
         ax.scatter(plot_cost[i], plot_acc[i], s=size, c=plot_colors[i],
                    alpha=0.85, edgecolor=C_DARK, linewidth=0.5, zorder=3)
         txt = ax.text(
-            plot_cost[i],
-            plot_acc[i],
+            plot_cost[i]-1,
+            plot_acc[i]-6.5,
             m,
-            fontsize=9,
+            fontsize=8,
             fontweight="bold"
             )
         texts.append(txt)
@@ -224,6 +224,7 @@ def fig2_cost_accuracy():
         # Place the label near the upper-right end of the frontier.
         ax.annotate("Pareto frontier",
                     xy=(px[-1] * 0.6, py[-1] - 4),
+                    xytext=(-35, 9), textcoords="offset points",
                     fontsize=9, fontweight="bold",
                     color=C_GRAY, style="italic")
 
@@ -260,7 +261,7 @@ def fig3_binary_vs_partial():
            label="Avg Check Score (%)",
            color=model_colors, edgecolor="white", linewidth=0.4, alpha=0.55)
     ax.set_xticks(x)
-    ax.set_xticklabels(models, rotation=35, ha="right", fontsize=8)
+    ax.set_xticklabels(models, rotation=45, ha="right", fontsize=9)
     ax.set_ylabel("Score (%)")
     ax.set_title("Binary Accuracy vs Partial Credit (93 tasks)")
     ax.legend(loc="upper right", framealpha=0.9)
@@ -283,15 +284,15 @@ def fig4_category_heatmap():
     fig, ax = plt.subplots(figsize=(10, 4))
     im = ax.imshow(data, cmap="viridis", aspect="auto", vmin=0, vmax=100)
     ax.set_xticks(np.arange(len(cat_labels)))
-    ax.set_xticklabels(cat_labels, rotation=50, ha="right", fontsize=10)
+    ax.set_xticklabels(cat_labels, rotation=50, ha="right", fontsize=11)
     ax.set_yticks(np.arange(len(model_names)))
-    ax.set_yticklabels(model_names, fontsize=10)
+    ax.set_yticklabels(model_names, fontsize=11)
     for i in range(len(model_names)):
         for j in range(len(cat_labels)):
             v = data[i, j]
             # viridis: dark (purple/blue) at low values, bright (yellow) at high.
             color = "white" if v < 55 else "#222222"
-            ax.text(j, i, f"{v:.0f}", ha="center", va="center", fontsize=10, fontweight='bold', color=color)
+            ax.text(j, i, f"{v:.0f}", ha="center", va="center", fontsize=11, fontweight='bold', color=color)
     ax.set_title(f"Accuracy by Category (%) — 18 categories, {len(model_names)} models")
     fig.colorbar(im, ax=ax, label="Accuracy %", shrink=0.8)
     fig.savefig(OUT / "fig4_category_heatmap.pdf")
@@ -312,7 +313,7 @@ def fig5_hard_cases():
 
     fig, ax = plt.subplots(figsize=(6.5, 5))
     # Soft amber accent — categorical-difficulty axis, not model identity.
-    ax.barh(labels, rates, color="#d97706", height=0.6, edgecolor="white", linewidth=0.5)
+    ax.barh(labels, rates, color="#d97706", height=0.65, edgecolor="white", linewidth=0.5)
     ax.set_xlabel("Avg Accuracy (%)", fontsize=10)
     ax.set_xlim(0, 85)
     ax.tick_params(axis='x', labelsize=10)
@@ -342,39 +343,39 @@ def fig6_architecture():
     PAD = 0.1  # FancyBboxPatch round-pad; arrows must compensate to land on visible edges.
     boxes = [
         (0.5, 5.5, 2.0, 1.0, "User Query\n(NL + history)", DIAG_INPUT),
-        (3.5, 5.5, 3.0, 1.0, "LLM Agent\n(ReAct loop)", DIAG_PROCESS),
-        (3.5, 3.0, 3.0, 1.0, "Tool Router\n(12 tools)", DIAG_PROCESS),
+        (3.6, 5.5, 2.8, 1.0, "LLM Agent\n(ReAct loop)", DIAG_PROCESS),
+        (3.6, 3.0, 2.8, 1.0, "Tool Router\n(12 tools)", DIAG_PROCESS),
         (7.5, 5.5, 2.0, 1.0, "Response\n(NL + data)", DIAG_OUTPUT),
         (7.5, 3.0, 2.0, 1.0, "Geospatial\nAPI (COGs)", DIAG_DATA),
-        (3.5, 0.5, 3.0, 1.0, "Eval Harness\n(scoring)", DIAG_DECISION),
+        (3.6, 0.5, 2.8, 1.0, "Eval Harness\n(scoring)", DIAG_DECISION),
     ]
     for x, y, w, h, text, color in boxes:
         rect = mpatches.FancyBboxPatch((x, y), w, h, boxstyle=f"round,pad={PAD}",
                                         facecolor=color, edgecolor=C_DARK, linewidth=1.2)
         ax.add_patch(rect)
         ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
-                fontsize=11, fontweight="bold", color=C_DARK)
+                fontsize=13, fontweight="bold", color=C_DARK)
 
     # Arrows land on visible box edges: original edge ± PAD.
     arrows = [
-        (2.5 + PAD, 6.0, 1.0 - 2 * PAD,  0),         # User → LLM
-        (6.5 + PAD, 6.0, 1.0 - 2 * PAD,  0),         # LLM → Response
+        (2.5 + PAD, 6.0, 1.1 - 2 * PAD,  0),         # User → LLM
+        (6.4 + PAD, 6.0, 1.1 - 2 * PAD,  0),         # LLM → Response
         (5.0,       5.5 - PAD, 0, -(1.5 - 2 * PAD)), # LLM ↓ Tool Router
         (5.0,       4.0 + PAD, 0,  (1.5 - 2 * PAD)), # Tool Router ↑ LLM
-        (6.5 + PAD, 3.5, 1.0 - 2 * PAD,  0),         # Tool Router → Geo API
-        (7.5 - PAD, 3.5, -(1.0 - 2 * PAD), 0),       # Geo API → Tool Router
+        (6.4 + PAD, 3.5, 1.1 - 2 * PAD,  0),         # Tool Router → Geo API
+        (7.5 - PAD, 3.5, -(1.1 - 2 * PAD), 0),       # Geo API → Tool Router
         (5.0,       3.0 - PAD, 0, -(1.5 - 2 * PAD)), # Tool Router → Eval Harness
     ]
     for x, y, dx, dy in arrows:
         ax.annotate("", xy=(x + dx, y + dy), xytext=(x, y),
                     arrowprops=dict(arrowstyle="->", color=C_DARK, lw=1.2))
 
-    ax.text(3.0, 6.2, "query", fontsize=11, color=C_GRAY, ha="center")
-    ax.text(7.0, 6.2, "answer", fontsize=11, color=C_GRAY, ha="center")
-    ax.text(4.6, 4.7, "tool calls", fontsize=11, color=C_GRAY, rotation=90, va="center")
-    ax.text(5.2, 4.7, "results", fontsize=11, color=C_GRAY, rotation=90, va="center")
-    ax.text(7.0, 3.7, "API", fontsize=11, color=C_GRAY, ha="center")
-    ax.text(4.6, 2.2, "log", fontsize=11, color=C_GRAY, rotation=90, va="center")
+    ax.text(3.05, 6.2, "query", fontsize=12, color=C_GRAY, ha="center")
+    ax.text(6.95, 6.2, "answer", fontsize=11, color=C_GRAY, ha="center")
+    ax.text(4.6, 4.75, "tool calls", fontsize=12, color=C_GRAY, rotation=90, va="center")
+    ax.text(5.1, 4.75, "results", fontsize=12, color=C_GRAY, rotation=90, va="center")
+    ax.text(6.95, 3.7, "API", fontsize=12, color=C_GRAY, ha="center")
+    ax.text(4.6, 2.2, "log", fontsize=12, color=C_GRAY, rotation=90, va="center")
 
     ax.set_title("GeoNatureAgent Benchmark — System Architecture", fontsize=13, fontweight="bold", pad=10)
     fig.savefig(OUT / "fig6_architecture.pdf")
@@ -398,8 +399,8 @@ def fig7_tokens_vs_accuracy():
         ax.scatter(plot_tokens[i], plot_acc[i], s=80, c=plot_colors[i],
                    edgecolor=C_DARK, linewidth=0.5, zorder=3)
         txt = ax.text(
-            plot_tokens[i],
-            plot_acc[i],
+            plot_tokens[i]-90,
+            plot_acc[i]-3,
             m,
             fontsize=9,
             fontweight="bold"
@@ -429,7 +430,7 @@ def fig7_tokens_vs_accuracy():
 # FIGURE 8: Scoring pipeline diagram
 # ═══════════════════════════════════════════════════════════════════════════
 def fig8_scoring_pipeline():
-    fig, ax = plt.subplots(figsize=(8.0, 4.5))
+    fig, ax = plt.subplots(figsize=(10, 6))
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 5.8)
     ax.set_aspect("equal")
@@ -437,7 +438,7 @@ def fig8_scoring_pipeline():
 
     PAD = 0.08  # FancyBboxPatch round-pad; arrows must compensate to land on visible edges.
 
-    def _box(x, y, w, h, text, color, fs=9):
+    def _box(x, y, w, h, text, color, fs=10):
         rect = mpatches.FancyBboxPatch(
             (x, y), w, h, boxstyle=f"round,pad={PAD}",
             facecolor=color, edgecolor=C_DARK, linewidth=1.0,
@@ -452,32 +453,32 @@ def fig8_scoring_pipeline():
         if label:
             mx = (x1 + x2) / 2 + label_offset[0]
             my = (y1 + y2) / 2 + label_offset[1]
-            ax.text(mx, my, label, fontsize=8, color=C_DARK,
+            ax.text(mx, my, label, fontsize=10, color=C_DARK,
                     ha="center", va="center", fontweight="bold")
 
     # ── Row 1: Inputs ──
     # Task box:     x=0.8..2.8,  y=4.8..5.5 (visible y=4.72..5.58)
     # Agent Output: x=3.3..5.8,  y=4.8..5.5 (visible y=4.72..5.58)
-    _box(0.8, 4.8, 2.0, 0.7, "Task\n(benchmark_v5.json)", DIAG_INPUT)
+    _box(0.5, 4.8, 2.3, 0.7, "Task\n(benchmark_v5.json)", DIAG_INPUT)
     _box(3.3, 4.8, 2.5, 0.7, "Agent Output\n(answer, tools, actions)", DIAG_PROCESS)
 
     # ── Row 2: Scoring checks + parallel Partial-Credit output (same y level) ──
     # 8 Checks:       x=0.5..6.1, y=3.2..4.0  (visible top y=4.08)
     # Partial Credit: x=6.7..9.7, y=3.1..4.1  (visible left edge x=6.62)
-    _box(0.5, 3.2, 5.6, 0.8,
-         "8 Scoring Checks   (each produces pass / fail)",
-         DIAG_DATA, fs=10)
-    _box(6.6, 3.05, 3.2, 1.1,
+    _box(0.5, 3.2, 5.0, 0.8,
+         "8 Scoring Checks (each produces pass / fail)",
+         DIAG_DATA, fs=11)
+    _box(6.0, 3.05, 3.8, 1.1,
          "Partial Credit\n(always computed)\n"
          "check_score · tool_f1 · keyword_coverage",
-         DIAG_INPUT, fs=8)
+         DIAG_INPUT, fs=9)
 
     # Inputs → 8 Checks: arrows land on the visible top edge of the checks box.
-    _arrow(1.8, 4.8 - PAD, 2.3, 4.0 + PAD)
-    _arrow(4.55, 4.8 - PAD, 4.3, 4.0 + PAD)
+    _arrow(1.65, 4.8 - PAD, 2.1, 4.0 + PAD)
+    _arrow(4.55, 4.8 - PAD, 4.1, 4.0 + PAD)
 
     # 8 Checks → Partial Credit: horizontal arrow between visible edges.
-    _arrow(6.1 + PAD, 3.6, 6.6 - PAD, 3.6)
+    _arrow(5.5 + PAD, 3.6, 6.0 - PAD, 3.6)
 
     # ── Row 3: Decision diamond ──
     diamond_x, diamond_y = 3.3, 1.95
@@ -489,7 +490,7 @@ def fig8_scoring_pipeline():
         (diamond_x - dw, diamond_y),
     ], closed=True, facecolor=DIAG_DECISION, edgecolor=C_DARK, linewidth=1.0)
     ax.add_patch(diamond)
-    ax.text(diamond_x, diamond_y, "ALL\npass?", fontsize=9, ha="center",
+    ax.text(diamond_x, diamond_y, "ALL\npass?", fontsize=10, ha="center",
             va="center", fontweight="bold", color=C_DARK)
 
     # 8 Checks bottom-center → diamond top vertex.
@@ -503,9 +504,9 @@ def fig8_scoring_pipeline():
 
     # Diamond → PASS / FAIL: tips land on each visible top edge.
     _arrow(diamond_x - dw, diamond_y, 1.25, 1.0 + PAD,
-           "yes", label_offset=(-0.45, 0.2))
+           "yes", label_offset=(-0.35, 0.2))
     _arrow(diamond_x + dw, diamond_y, 5.35, 1.0 + PAD,
-           "no",  label_offset=(0.45, 0.2))
+           "no",  label_offset=(0.35, 0.2))
 
     ax.set_title("Scoring Pipeline — Per-Case Evaluation", fontsize=11,
                  fontweight="bold", pad=10)
