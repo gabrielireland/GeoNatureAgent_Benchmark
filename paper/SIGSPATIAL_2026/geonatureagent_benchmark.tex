@@ -125,7 +125,7 @@
 %%
 %% The "title" command has an optional parameter,
 %% allowing the author to define a "short title" to be used in page headers.
-\title[GeoNatureAgent Benchmark]{GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis Across Frontier and Open-Weight Foundation Models}
+\title[GeoNatureAgent Benchmark]{GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis Across Frontier and Open-Weight Foundation Models [Benchmark]}
 
 %%
 %% The "author" command and its associated commands are used to define
@@ -256,7 +256,7 @@ However, a critical evaluation gap persists. Public benchmarks for LLM agents in
 This paper makes four contributions:
 \begin{enumerate}
     \item \textbf{GeoNatureAgent Benchmark}---the first benchmark for environmental analysis agents using structured tool calling against a production-style geospatial API, comprising 93 tasks across 18 categories with twelve domain-specific tools, evaluated by eight mechanistic checks per case (no LLM-as-judge).
-    \item \textbf{Multi-seed cross-platform evaluation}---a systematic comparison of seven LLMs spanning frontier closed-source models (Claude Sonnet~4, Gemini~2.5~Pro) and frontier open-weight families (DeepSeek~V3.2, GLM-5, Qwen3-235B, GPT-OSS-120B, Llama~4~Scout), each evaluated under three temperature-1.0 seeds on identical infrastructure with mean-$\pm$-standard-deviation reporting; capability and per-case cost are reported as orthogonal axes rather than collapsed into a single gated score.
+    \item \textbf{Multi-seed cross-platform evaluation}---a systematic comparison of seven LLMs spanning frontier closed-source models (Claude Sonnet~4, Gemini~2.5~Pro) and frontier open-weight families (DeepSeek~V3.2, GLM-5, Qwen3-235B, GPT-OSS-120B, Llama~4~Scout), each evaluated under three tempe\-rature-1.0 seeds on identical infrastructure with mean-$\pm$-standard-deviation reporting; capability and per-case cost are reported as orthogonal axes rather than collapsed into a single gated score.
     \item \textbf{Cost-efficiency Pareto analysis}---quantitative cost--accuracy mapping revealing that the cost--accuracy Pareto frontier is occupied entirely by open-weight models, with DeepSeek~V3.2 offering 93\% of Claude's capability at 11$\times$ lower cost.
     \item \textbf{Reproducible MLOps pipeline and open API}---a fully automated Cloud Build pipeline that produces conversation-trace-level results in object storage, plus an Apache-2.0 self-hostable FastAPI service so the entire evaluation can be reproduced without any private endpoint.
 \end{enumerate}
@@ -275,7 +275,7 @@ The literature reveals four paradigms. The \textbf{LLM + Tool Pool} approach pai
 
 Agent tool-use is evaluated by GeoBenchX~\citep{krechetova2025geobenchx}, ThinkGeo~\citep{shabbir2025thinkgeo} (486 remote sensing tasks), and UnivEARTH~\citep{kao2025univearth} (only 33\% accuracy on Earth Engine code generation and a 58\% code failure rate). GeoBenchX is the closest comparable work: 202 tasks across five categories (merge-visualize, process-merge-visualize, spatial operations, heatmaps/contour lines, and control questions), evaluated via 24 general-purpose GIS tools (data loading, filtering, spatial joins, and choropleth rendering) with an LLM-as-judge scoring protocol (3-point scale, three independent judges achieving 88--96\% agreement with human annotations). Top performers are o4-mini and Claude~3.5~Sonnet. Crucially, GeoBenchX tools are low-level primitives operating on local files---\texttt{load\_data}, \texttt{filter\_categorical}, \texttt{create\_buffer}, \texttt{make\_choropleth\_map}---whereas GeoNatureAgent Benchmark tools are high-level domain operations against a production cloud API.
 
-To bridge the gap between general-purpose GIS benchmarks and domain-specific environmental analysis, we integrate four canonical GIS operations from GeoBenchX~\citep{krechetova2025geobenchx} into GeoNatureAgent Benchmark's toolset: proximity buffering (\texttt{create\_buffer}), feature selection by spatial relationship (\texttt{select\_features\_by\_spatial\_relationship}), centroid extraction (\texttt{get\_centroids}), and explicit task rejection (\texttt{reject\_task}) to prevent hallucination on out-of-scope queries. These tools are adapted from GeoBenchX's local-file paradigm to operate against GeoNatureAgent Benchmark's cloud API and administrative boundary system. We additionally introduce 10 benchmark cases inspired by GeoBenchX's task patterns---buffer-based proximity analysis, spatial joins, and centroid calculations---applied to Spanish environmental indicators. This creates a direct comparison pathway: models achieving 58\% on GeoBenchX's general GIS tasks can be evaluated on equivalent spatial operations within our domain-specific context, isolating the performance impact of domain complexity from tool-use capability.
+To bridge the gap between general-purpose GIS benchmarks and domain-specific environmental analysis, we integrate four canonical GIS operations from GeoBenchX~\citep{krechetova2025geobenchx} into GeoNatureAgent Benchmark's toolset: proximity buffering (\texttt{create\_buffer}), feature selection by spatial relationship (\texttt{select\_\allowbreak features\_\allowbreak by\_\allowbreak spatial\_\allowbreak relationship}), centroid extraction (\texttt{get\_centroids}), and explicit task rejection (\texttt{reject\_task}) to prevent hallucination on out-of-scope queries. These tools are adapted from GeoBenchX's local-file paradigm to operate against GeoNatureAgent Benchmark's cloud API and administrative boundary system. We additionally introduce 10 benchmark cases inspired by GeoBenchX's task patterns---buffer-based proximity analysis, spatial joins, and centroid calculations---applied to Spanish environmental indicators. This creates a direct comparison pathway: models achieving 58\% on GeoBenchX's general GIS tasks can be evaluated on equivalent spatial operations within our domain-specific context, isolating the performance impact of domain complexity from tool-use capability.
 
 Map reasoning: MapEval~\citep{dihan2025mapeval} (no model exceeds 67\%), MapQA~\citep{arnold2025mapqa} (humans 91\%, models $<$50\%). Spatial reasoning: GPSBench~\citep{truong2026gpsbench}, SpatiaLab~\citep{wasi2026spatialab} (best model 55\% vs human 88\%). Foundation models: GEO-Bench~\citep{lacoste2023geobench} and GEO-Bench-2~\citep{simumba2025geobench2} evaluate \emph{pixel-level} classification/segmentation across 19 datasets; PANGAEA~\citep{marsocci2024pangaea} finds that foundation models do not consistently outperform supervised baselines.
 
@@ -348,7 +348,7 @@ Figure~\ref{fig:architecture} shows the system architecture. The agent operates 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=1.0\columnwidth]{figures/fig6_architecture.pdf}
+    \includegraphics[trim={0.7cm 0.7cm 0.7cm 1.4cm}, clip, width=1.0\columnwidth]{figures/fig6_architecture.pdf}
     \caption{GeoNatureAgent Benchmark system architecture. The LLM agent interacts with a production API serving COG data; the eval harness logs all tool calls and scores responses.}
     \Description{}
     \label{fig:architecture}
@@ -424,7 +424,7 @@ Each task is scored by eight check types (Table~\ref{tab:checks} and Figure~\ref
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=1.0\columnwidth]{figures/fig8_scoring_pipeline.pdf}
+    \includegraphics[trim={0.9cm 0.7cm 0.3cm 1.2cm}, clip, width=1.0\columnwidth]{figures/fig8_scoring_pipeline.pdf}
     \caption{Scoring pipeline. Each case is evaluated by up to eight checks; binary pass requires all to pass. Partial-credit metrics (check score, tool F1, keyword coverage) are always computed.}
     \Description{}
     \label{fig:scoring}
@@ -435,7 +435,7 @@ Each task is scored by eight check types (Table~\ref{tab:checks} and Figure~\ref
 
 \subsection{Experimental Setup}
 
-We evaluate seven LLMs on GeoNatureAgent Benchmark v5 (93 tasks, 18 categories) across Vertex~AI Model-as-a-Service and the Anthropic Messages API (Table~\ref{tab:models}). All experiments use the v3 system prompt (a zero-shot ReAct-style instruction; the full prompt is committed to the repository at \texttt{api/agent/prompts/v3.md}), \texttt{max\_turns=10}, \texttt{max\_tokens=4096}, and \texttt{temperature=1.0}. We use temperature-1.0 to expose run-to-run variance and stress-test tool-use reliability under realistic sampling noise rather than the deterministic temperature-0 regime that overstates production stability. The prompt is held constant across all models to isolate capability from prompt-engineering effort; chain-of-thought, few-shot, and self-reflection variants are a distinct research question and are left to future work. Experiments run sequentially inside a single Cloud Run Job to ensure identical infrastructure conditions.
+We evaluate seven LLMs on GeoNatureAgent Benchmark v5 (93 tasks, 18 categories) across Vertex~AI Model-as-a-Service and the Anthropic Messages API (Table~\ref{tab:models}). All experiments use the v3 system prompt (a zero-shot ReAct-style instruction; the full prompt is committed to the repository at \path{api/agent/prompts/v3.md}), \texttt{max\_\allowbreak turns=10}, \texttt{max\_tokens=4096}, and \texttt{temperature=1.0}. We use tem\-perature-1.0 to expose run-to-run variance and stress-test tool-use reliability under realistic sampling noise rather than the deterministic temperature-0 regime that overstates production stability. The prompt is held constant across all models to isolate capability from prompt-engineering effort; chain-of-thought, few-shot, and self-reflection variants are a distinct research question and are left to future work. Experiments run sequentially inside a single Cloud Run Job to ensure identical infrastructure conditions.
 
 \begin{table}[t]
     \caption{Models evaluated. Six via Vertex AI; Claude via the Anthropic Messages API.}
@@ -461,14 +461,14 @@ We evaluate seven LLMs on GeoNatureAgent Benchmark v5 (93 tasks, 18 categories) 
 
 To control for run-to-run variance under temperature-1.0 sampling, every model is evaluated on the full v5 case set (93 tasks) under three random seeds, $\{42, 1337, 2024\}$, where the underlying inference API exposes a \texttt{seed} parameter (Vertex MaaS endpoints). The Anthropic Messages API does not implement deterministic seeding, so Claude~Sonnet~4 is evaluated under two independent temperature-1.0 samples drawn under the same configuration; this yields a valid run-to-run variance estimate but is not bit-for-bit replayable. Reported accuracies are the per-seed mean with one standard deviation, and per-category accuracies are the unweighted mean across the available seeds. Each Cloud Run output directory contains a \texttt{results.jsonl} where every row carries its own \texttt{seed}, \texttt{case\_id}, and \texttt{git\_commit}, so any leaderboard cell can be traced back to a Cloud Build log line.
 
-The mapping from each model's leaderboard entry to its specific Cloud Run output directory is committed in \texttt{paper/final\_results/sources.yaml}. A single deterministic script (\texttt{scripts/compile\_final\_results.py}) reads this manifest, pulls each \texttt{results.jsonl} from GCS, and emits the per-model leaderboard, per-category breakdown, and per-case matrix as CSV artefacts that are themselves committed to the repository. These CSVs are the single source of truth for every number reported in this paper; a reviewer can regenerate them from the public bucket with one command and diff-check against the committed copies.
+The mapping from each model's leaderboard entry to its specific Cloud Run output directory is committed in \path{paper/final_results/sources.yaml}. A single deterministic script (\path{scripts/compile_final_results.py}) reads this manifest, pulls each \path{results.json} from GCS, and emits the per-model leaderboard, per-category breakdown, and per-case matrix as CSV artefacts that are themselves committed to the repository. These CSVs are the single source of truth for every number reported in this paper; a reviewer can regenerate them from the public bucket with one command and diff-check against the committed copies.
 
 
 \subsection{Overall Results}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[trim={0.3cm 0.2cm 0.6cm 1.1cm}, clip, width=1.0\columnwidth]{figures/fig1_leaderboard.pdf}
+    \includegraphics[trim={0.1cm 0.1cm 0.1cm 0.9cm}, clip, width=1.0\columnwidth]{figures/fig1_leaderboard.pdf}
     \caption{GeoNatureAgent Benchmark v5 leaderboard. Accuracy (\%) with total cost in parentheses. Dashed line at 50\%.}
     \Description{}
     \label{fig:leaderboard}
@@ -504,7 +504,7 @@ Three findings stand out. First, \textbf{the top of the leaderboard is bimodal b
 
 \begin{figure}[t]
     \centering
-    \includegraphics[trim={0.2cm 0.3cm 0.5cm 0.9cm}, clip, width=1.0\columnwidth]{figures/fig3_binary_vs_partial.pdf}
+    \includegraphics[trim={0.1cm 0.2cm 0.4cm 0.8cm}, clip, width=1.0\columnwidth]{figures/fig3_binary_vs_partial.pdf}
     \caption{Binary accuracy vs partial-credit check score. The gap indicates many ``near-miss'' failures.}
     \Description{}
     \label{fig:binary_partial}
@@ -516,7 +516,7 @@ Three findings stand out. First, \textbf{the top of the leaderboard is bimodal b
 
 \begin{figure}[t]
     \centering
-    \includegraphics[trim={0.2cm 0.3cm 0.7cm 1.9cm}, clip, width=1.0\columnwidth]{figures/fig2_cost_accuracy.pdf}
+    \includegraphics[trim={0.1cm 0.1cm 1.8cm 1.9cm}, clip, width=1.0\columnwidth]{figures/fig2_cost_accuracy.pdf}
     \caption{Cost-accuracy trade-off. Bubble size proportional to total tokens; cost is the mean per-seed run cost (93 cases). The Pareto frontier (dashed line) runs Scout~$\to$~Qwen3-235B~$\to$~DeepSeek~V3.2~$\to$~Claude~Sonnet~4: three of the four frontier models are open-weight.}
     \Description{}
     \label{fig:cost_accuracy}
@@ -549,7 +549,7 @@ Figure~\ref{fig:tokens_accuracy} further illustrates this relationship, showing 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[trim={0.2cm 0.3cm 0.3cm 1.3cm}, clip, width=1.0\columnwidth]{figures/fig7_tokens_accuracy.pdf}
+    \includegraphics[trim={0.1cm 0.2cm 0.1cm 1.1cm}, clip, width=1.0\columnwidth]{figures/fig7_tokens_accuracy.pdf}
     \caption{Token consumption vs accuracy. Token volume is a poor predictor of performance.}
     \Description{}
     \label{fig:tokens_accuracy}
@@ -564,7 +564,7 @@ One case---close-value comparison---defeats every model in every seed, and two f
 
 \begin{figure}[t]
     \centering
-    \includegraphics[trim={0.3cm 0.2cm 0.2cm 1.2cm}, clip, width=1.0\columnwidth]{figures/fig5_hard_cases.pdf}
+    \includegraphics[trim={0.1cm 0.1cm 0.1cm 1.0cm}, clip, width=1.0\columnwidth]{figures/fig5_hard_cases.pdf}
     \caption{Category difficulty---mean accuracy across all seven models, sorted by difficulty.}
     \Description{}
     \label{fig:hard_cases}
@@ -584,7 +584,7 @@ Conversely, the easiest categories are \textbf{habitat analysis} (Claude 100\%, 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[trim={0.3cm 0.4cm 0.3cm 0.7cm}, clip, width=1.0\columnwidth]{figures/fig4_category_heatmap.pdf}
+    \includegraphics[trim={0.1cm 0.2cm 0.1cm 0.6cm}, clip, width=1.0\columnwidth]{figures/fig4_category_heatmap.pdf}
     \caption{Accuracy by category across the seven models. Comparison achieves 0\% across every model; the largest category (tool selection, 21 tasks) shows large inter-model variance.}
     \Description{}
     \label{fig:heatmap}
