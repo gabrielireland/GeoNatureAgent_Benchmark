@@ -191,7 +191,9 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-    Environmental scientists spend disproportionate effort on data wrangling rather than analysis, yet no benchmark exists to evaluate AI agents that automate environmental geospatial workflows through structured tool calling against real APIs. We introduce \textbf{GeoNatureAgent Benchmark}, a benchmark for environmental analysis agents comprising 93 tasks across 18 categories—including municipality-level analysis, multi-turn conversation, spatial reasoning, cross-indicator synthesis, error handling and recovery, ranking, comparison, multilingual understanding, habitat analysis, deep-dive profiling, temporal change, and task rejection—evaluated against an open, self-hostable geospatial API serving three environmental indicators across Spain and Portugal using twelve domain-specific tools. We evaluate seven large language models (Claude~Sonnet~4, DeepSeek~V3.2, GLM-5, Gemini~2.5~Pro, Qwen3-235B, GPT-OSS-120B, and Llama~4~Scout) across Vertex~AI and Anthropic platforms under three temperature-1.0 seeds per model, reporting capability and per-case cost as orthogonal axes. We find that: (1)~Claude~Sonnet~4 leads on capability at $60.8\%\pm0.8\%$, with DeepSeek~V3.2 a close second at $56.3\%\pm3.1\%$ and no other model exceeding 51\%; (2)~the cost--accuracy Pareto frontier is occupied entirely by open-weight models (Llama~4~Scout~$\to$~Qwen3-235B~$\to$~DeepSeek~V3.2), with DeepSeek~V3.2 at \$0.011/case offering 93\% of Claude's accuracy at 11$\times$ lower cost; (3)~comparison tasks remain universally unsolved (0\% across all models on close-value comparisons), exposing systematic reasoning limitations; and (4)~structured tool calling against a real API provides a more discriminative evaluation signal than synthetic benchmarks, with mean accuracies 25--35 percentage points below those reported on general-purpose GIS benchmarks. We demonstrate domain and geographic extensibility by incorporating BigEarthNet~V2 land cover data for Portugal as a third indicator alongside Spanish CO$_2$ suitability and gully erosion, enabling cross-country evaluation across three data domains. GeoNatureAgent Benchmark, the evaluation harness, and the self-hostable API are publicly available.\footnote{\url{https://github.com/gabrielireland/GeoNatureAgent_Benchmark}}
+    Environmental scientists spend disproportionate effort on data wrangling rather than analysis. Yet, no benchmark exists to evaluate AI agents that automate environmental geospatial workflows through structured tool calling against real APIs. We introduce \textbf{GeoNatureAgent Benchmark}, the first benchmark for environmental analysis agents operating through structured tool calls to a production-style geospatial API. The benchmark comprises 93 tasks across 18 categories, covering municipality-level analysis, multi-turn conversation, spatial reasoning, cross-indicator synthesis, error handling and recovery, ranking, comparison, multilingual understanding, habitat analysis, deep-dive profiling, temporal change, and task rejection. Tasks are evaluated against an open, self-hostable geospatial API serving three environmental indicators across Spain and Portugal through twelve domain-specific tools.
+    We evaluate seven large language models (Claude~Sonnet~4, DeepSeek~V3.2, GLM-5, Gemini~2.5~Pro, Qwen3-235B, GPT-OSS-120B, and Llama~4~Scout) across Vertex~AI and Anthropic platforms under three temperature-1.0 seeds per model, reporting capability and per-case cost as orthogonal axes. Results manifest that: (1)~Claude~Sonnet~4 achieves the highest capability at  $60.8\%\pm0.8\%$,  followed closely by DeepSeek~V3.2 at $56.3\%\pm3.1\%$, while no other model exceeds 51\%; (2)~the cost--accuracy Pareto frontier is occupied entirely by open-weight models (Llama~4~Scout~$\to$~Qwen3-235B~$\to$~DeepSeek~V3.2), with DeepSeek~V3.2 offering 93\% of Claude's capability at 11$\times$ lower cost(\$0.011/case); (3)~comparison tasks remain universally unsolved (0\% across all models for close-value comparisons), exposing systematic reasoning limitations; and (4)~structured tool calling against a real API provides a more discriminative measure of real-world agent capability, with mean accuracies 25--35 percentage points below those reported on general-purpose GIS benchmarks.
+    We further demonstrate geographic and domain extensibility by integrating BigEarthNet~V2 land-cover data for Portugal alongside Spanish CO$_2$ suitability and gully erosion indicators. GeoNatureAgent Benchmark, the evaluation harness, and the self-hostable API are publicly available. GeoNatureAgent Benchmark, the evaluation harness, and the self-hostable API are publicly available.\footnote{\url{https://github.com/gabrielireland/GeoNatureAgent_Benchmark}}
 \end{abstract}
 
 %%
@@ -247,19 +249,20 @@
 \section{Introduction}
 \label{sec:intro}
 
-Environmental monitoring at scale requires multi-temporal geospatial analysis, including the computation of vegetation indices, the detection of land cover change, the assessment of erosion risk, and the generation of statistical summaries for regulatory compliance. Practitioners routinely spend the majority of their effort on data wrangling---discovering datasets, reprojecting coordinate systems, and debugging code against remote sensing APIs~\cite{zhang2023geogpt, li2023llmgeo}. This expertise barrier limits the adoption of geospatial methods by domain scientists who understand environmental systems but lack GIS programming skills.
+Environmental monitoring at scale requires multi-temporal geospatial analysis, including the detection of land cover change, the assessment of erosion risk, or the computation of vegetation indices; furthermore, the generation of statistical summaries for regulatory compliance. Practitioners routinely spend the majority of their effort on data wrangling---discovering datasets, reprojecting coordinate systems, and debugging code against remote sensing APIs~\cite{zhang2023geogpt, li2023llmgeo}. This expertise barrier limits the adoption of geospatial methods by domain scientists who understand environmental systems but lack GIS programming skills.
 
-Recent advances in large language models (LLMs) have led to the development of AI agent systems that translate natural language into executable geospatial operations. Architectures range from LLMs with tool pools~\citep{zhang2023geogpt, akinboyewa2024giscopilot} to fine-tuned specialists~\citep{zhang2024gtchain, zhang2025envgpt} to multi-agent systems achieving 85--97\% accuracy~\citep{luo2025geojsonagents, lee2025geollmsquad}. Major industry players are investing heavily: Google's Earth~AI integrates Gemini with AlphaEarth Foundations~\citep{google2025earthai}, the Planet--Anthropic partnership applies Claude to daily satellite imagery~\citep{planet2025anthropic}, and NASA/IBM's Prithvi-EO-2.0 provides pre-trained vision transformers~\citep{szwarcman2024prithvi}.
+Recent advances in large language models (LLMs) have led to the development of AI agent systems that translate natural language into executable geospatial operations. Architectures range from LLMs with tool pools~\citep{zhang2023geogpt, akinboyewa2024giscopilot} to fine-tuned specialists~\citep{zhang2024gtchain, zhang2025envgpt} to multi-agent systems achieving 85--97\% accuracy~\citep{luo2025geojsonagents, lee2025geollmsquad}. Major industry players are investing heavily: Google's Earth~AI integrates Gemini with AlphaEarth Foundations~\citep{google2025earthai}, the Planet-Anthropic partnership applies Claude to daily satellite imagery~\citep{planet2025anthropic}, and NASA/IBM's Prithvi-EO-2.0 provides pre-trained vision transformers~\citep{szwarcman2024prithvi}.
 
 However, a critical evaluation gap persists. Public benchmarks for LLM agents in geospatial settings remain scarce, and the few that exist target general GIS tasks (GeoBenchX~\citep{krechetova2025geobenchx}, ThinkGeo~\citep{shabbir2025thinkgeo}) rather than environmental science workflows. Environmental knowledge benchmarks (EnviroExam~\citep{huang2024enviroexam}) evaluate knowledge, not agent behavior. Code-generation benchmarks (UnivEARTH~\citep{kao2025univearth}) do not reflect the structured API interaction that production systems employ---58\% of LLM-generated Earth Engine code fails to execute. At the foundation model level, GEO-Bench~\citep{lacoste2023geobench} and GEO-Bench-2~\citep{simumba2025geobench2} evaluate pixel-level vision models, not the agent-level tool orchestration that determines real-world usability.
 
-This paper makes four contributions:
+This work fills this gap through four main contributions:
 \begin{enumerate}
     \item \textbf{GeoNatureAgent Benchmark}---the first benchmark for environmental analysis agents using structured tool calling against a production-style geospatial API, comprising 93 tasks across 18 categories with twelve domain-specific tools, evaluated by eight mechanistic checks per case (no LLM-as-judge).
     \item \textbf{Multi-seed cross-platform evaluation}---a systematic comparison of seven LLMs spanning frontier closed-source models (Claude Sonnet~4, Gemini~2.5~Pro) and frontier open-weight families (DeepSeek~V3.2, GLM-5, Qwen3-235B, GPT-OSS-120B, Llama~4~Scout), each evaluated under three tempe\-rature-1.0 seeds on identical infrastructure with mean-$\pm$-standard-deviation reporting; capability and per-case cost are reported as orthogonal axes rather than collapsed into a single gated score.
-    \item \textbf{Cost-efficiency Pareto analysis}---quantitative cost--accuracy mapping revealing that the cost--accuracy Pareto frontier is occupied entirely by open-weight models, with DeepSeek~V3.2 offering 93\% of Claude's capability at 11$\times$ lower cost.
+    \item \textbf{Cost-efficiency Pareto analysis}---quantitative cost-accuracy mapping revealing that the cost-accuracy Pareto frontier is occupied entirely by open-weight models, with DeepSeek~V3.2 offering 93\% of Claude's capability at 11$\times$ lower cost.
     \item \textbf{Reproducible MLOps pipeline and open API}---a fully automated Cloud Build pipeline that produces conversation-trace-level results in object storage, plus an Apache-2.0 self-hostable FastAPI service so the entire evaluation can be reproduced without any private endpoint.
 \end{enumerate}
+
 
 
 \section{Related Work}
@@ -268,7 +271,7 @@ This paper makes four contributions:
 
 \subsection{Geospatial AI Agent Architectures}
 
-The literature reveals four paradigms. The \textbf{LLM + Tool Pool} approach pairs general-purpose LLMs with callable tools: GeoGPT~\citep{zhang2023geogpt} uses GPT-3.5-turbo with LangChain, LLM-Geo~\citep{li2023llmgeo} uses GPT-4 for DAG-based decomposition, and GIS~Copilot~\citep{akinboyewa2024giscopilot} integrates LLMs into QGIS. \textbf{Fine-tuned specialists} sacrifice generality for expertise: GTChain~\citep{zhang2024gtchain} fine-tuned LLaMA-2-7B, achieving 32.5\% higher accuracy than GPT-4; EnvGPT~\citep{zhang2025envgpt} fine-tuned an 8B model on 100M environmental tokens, rivalling GPT-4o-mini. \textbf{Multi-agent systems} decompose tasks: GeoJSON~Agents~\citep{luo2025geojsonagents} achieved 97\% with GPT-4o Planner-Worker architecture vs 49\% with a single-agent; GeoLLM-Squad~\citep{lee2025geollmsquad} gained 17\% from specialized sub-agents. \textbf{Cost-efficient hybrids}: Geo-OLM~\citep{stamoulis2025geoolm} enables sub-7B models to perform within 10\% of GPT-4o at 100$\times$ lower cost.
+The literature reveals four paradigms. The \textbf{LLM + Tool Pool} approach pairs general-purpose LLMs with callable tools: GeoGPT~\citep{zhang2023geogpt} uses GPT-3.5-turbo with LangChain, LLM-Geo~\citep{li2023llmgeo} uses GPT-4 for DAG-based decomposition, and GIS~Copilot~\citep{akinboyewa2024giscopilot} integrates LLMs into QGIS. \textbf{Fine-tuned specialists} sacrifice generality for expertise: GTChain~\citep{zhang2024gtchain} fine-tuned LLaMA-2-7B, achieving 32.5\% higher accuracy than GPT-4; EnvGPT~\citep{zhang2025envgpt} fine-tuned an 8B model on 100M environmental tokens, rivaling GPT-4o-mini. \textbf{Multi-agent systems} decompose tasks: GeoJSON~Agents~\citep{luo2025geojsonagents} achieved 97\% with GPT-4o Planner-Worker architecture vs. 49\% with a single-agent; GeoLLM-Squad~\citep{lee2025geollmsquad} gained 17\% from specialized sub-agents. \textbf{Cost-efficient hybrids}: Geo-OLM~\citep{stamoulis2025geoolm} enables sub-7B models to perform within 10\% of GPT-4o at 100$\times$ lower cost.
 
 
 \subsection{Benchmarks and Evaluation}
@@ -284,7 +287,7 @@ Map reasoning: MapEval~\citep{dihan2025mapeval} (no model exceeds 67\%), MapQA~\
 
 \subsection{Environmental Science AI}
 
-EnvGPT~\citep{zhang2025envgpt} shows that focused fine-tuning on environmental tokens rivals GPT-4o-mini. Google's Earth~AI~\citep{google2025earthai} achieves 82\% on Q\&A (vs 50\% baseline Gemini). Pan et al.~\citep{pan2025mcpairquality} demonstrate MCP-grounded air quality monitoring at 4.78/5.0 factual accuracy. Spain's RD~214/2025~\citep{spain2025rd214} mandates carbon footprint reporting for $\sim$4,000 organisations, creating demand for automated multi-temporal geospatial analysis.
+EnvGPT~\citep{zhang2025envgpt} shows that focused fine-tuning on environmental tokens rivals GPT-4o-mini. Google's Earth~AI~\citep{google2025earthai} achieves 82\% on Q\&A (vs 50\% baseline Gemini). Pan et al.~\citep{pan2025mcpairquality} demonstrate MCP-grounded air quality monitoring with a factual accuracy of 4.78/5.0. Spain's RD~214/2025~\citep{spain2025rd214} mandates carbon footprint reporting for $\sim$4,000 organizations, creating demand for automated multi-temporal geospatial analysis.
 
 
 \subsection{The Missing Benchmark}
@@ -296,38 +299,39 @@ No existing benchmark evaluates environmental analysis agents performing structu
 \section{GeoNatureAgent Benchmark}
 \label{sec:benchmark}
 
+
 \subsection{Benchmark Design}
 
-GeoNatureAgent Benchmark comprises 93 tasks organized into 18 categories (Table~\ref{tab:categories}), spanning easy (19\%), medium (45\%), and hard (36\%) difficulty levels.
+GeoNatureAgent Benchmark comprises 93 tasks organized into 18 categories (see Table~\ref{tab:categories}), spanning easy (19\%), medium (45\%), and hard (36\%) difficulty levels.
 
-\begin{table}[t]
-\caption{GeoNatureAgent Benchmark v5 task categories (93 tasks, 18 categories).}
-\label{tab:categories}
-\centering
-\begin{tabular}{lcp{4.4cm}}
-\toprule
-\textbf{Category} & \textbf{N} & \textbf{Tests} \\
-\midrule
-Tool selection         & 21 & Correct tool choice for varied queries \\
-Cross-indicator        &  8 & CO$_2$ $\times$ erosion $\times$ land cover synthesis \\
-Deep dive              &  6 & Multi-tool environmental profiling \\
-Interpretation         &  7 & Reasoning over analysis results \\
-Error handling         &  6 & Non-existent entities, invalid indicators \\
-Habitat analysis       &  7 & BigEarthNet V2 land cover (Portugal) \\
-Language               &  6 & Galician, Basque inputs \\
-Municipality           &  4 & Municipality-level analysis, disambiguation \\
-Memory (multi-turn)    &  6 & Follow-up questions, context retention \\
-Spatial reasoning      &  4 & Coastal, meseta, community knowledge \\
-Multi-muni ranking     &  3 & Multi-municipality comparisons \\
-Threshold              &  3 & Numeric threshold queries \\
-Temporal change        &  1 & Cross-country temporal context \\
-Error recovery         &  3 & Graceful fallback when data is unavailable \\
-Ranking                &  2 & Top-N and bottom-N province queries \\
-Comparison             &  2 & Close-value and directional comparisons \\
-Single analysis        &  2 & Basic single-province analysis \\
-Province aggregation   &  2 & Aggregate statistics across provinces \\
-\bottomrule
-\end{tabular}
+\begin{table}[ht]
+    \caption{GeoNatureAgent Benchmark v5 task categories (93 tasks, 18 categories).}
+    \label{tab:categories}
+    \centering
+    \begin{tabular}{lcp{3.9cm}}
+        \toprule
+        \textbf{Category} & \textbf{Tasks} & \textbf{Tests} \\
+        \midrule
+        Tool selection         & 21 & Correct tool choice for varied queries \\
+        Cross-indicator        &  8 & CO$_2$ $\times$ erosion $\times$ land cover synthesis \\
+        Deep dive              &  6 & Multi-tool environmental profiling \\
+        Interpretation         &  7 & Reasoning over analysis results \\
+        Error handling         &  6 & Non-existent entities, invalid indicators \\
+        Habitat analysis       &  7 & BigEarthNet V2 land cover (Portugal) \\
+        Language               &  6 & Galician, Basque inputs \\
+        Municipality           &  4 & Municipality-level analysis, disambiguation \\
+        Memory (multi-turn)    &  6 & Follow-up questions, context retention \\
+        Spatial reasoning      &  4 & Coastal, meseta, community knowledge \\
+        Multi-muni ranking     &  3 & Multi-municipality comparisons \\
+        Threshold              &  3 & Numeric threshold queries \\
+        Temporal change        &  1 & Cross-country temporal context \\
+        Error recovery         &  3 & Graceful fallback when data is unavailable \\
+        Ranking                &  2 & Top-N and bottom-N province queries \\
+        Comparison             &  2 & Close-value and directional comparisons \\
+        Single analysis        &  2 & Basic single-province analysis \\
+        Province aggregation   &  2 & Aggregate statistics across provinces \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
 Each task specifies: a natural language query (optionally with multi-turn history), expected tool calls, must-contain/must-not-contain strings, maximum rounds, cost budget, and domain-expert ground truth. Error handling tasks are deliberately unsolvable---requesting analysis on non-existent municipalities, fabricating statistics from display-only layers, or citing indicators that do not exist---testing the agent's ability to decline gracefully rather than hallucinate.
@@ -344,9 +348,9 @@ Seven additional layers are available for visual display but not statistical ana
 
 \subsection{Agent Architecture}
 
-Figure~\ref{fig:architecture} shows the system architecture. The agent operates in a ReAct-style loop~\citep{yao2023react}: it receives a query, reasons about tools, executes calls, observes results, and generates a response. The agent has access to twelve tools (Table~\ref{tab:tools}).
+Figure~\ref{fig:architecture} shows the system architecture. The agent operates in a ReAct-style loop~\citep{yao2023react}: it receives a query, reasons about tools, executes calls, observes results, and generates a response. The agent has access to twelve tools (see Table~\ref{tab:tools}).
 
-\begin{figure}[t]
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0.7cm 0.7cm 0.7cm 1.4cm}, clip, width=1.0\columnwidth]{figures/fig6_architecture.pdf}
     \caption{GeoNatureAgent Benchmark system architecture. The LLM agent interacts with a production API serving COG data; the eval harness logs all tool calls and scores responses.}
@@ -354,7 +358,7 @@ Figure~\ref{fig:architecture} shows the system architecture. The agent operates 
     \label{fig:architecture}
 \end{figure}
 
-\begin{table}[t]
+\begin{table}[ht]
     \caption{Agent tools. The first eight are domain-specific; the last four are adapted from GeoBenchX~\citep{krechetova2025geobenchx}.}
     \label{tab:tools}
     \centering
@@ -366,7 +370,7 @@ Figure~\ref{fig:architecture} shows the system architecture. The agent operates 
         \texttt{lookup\_municipality} & Resolve municipality (+ province hint) \\
         \texttt{analyze\_area} & Zonal statistics for indicator in AOI \\
         \texttt{analyze\_multi\_layer} & Multi-indicator analysis in single call \\
-        \texttt{compare\_areas} & Compare two areas on same indicator \\
+        \texttt{compare\_areas} & Compare two areas on the same indicator \\
         \texttt{find\_top\_n} & Rank provinces by indicator value \\
         \texttt{toggle\_layer} & Enable/disable map layer visibility \\
         \texttt{generate\_chart} & Bar/stacked-bar chart from data \\
@@ -382,15 +386,16 @@ Figure~\ref{fig:architecture} shows the system architecture. The agent operates 
 The design choice of structured tool calling over code generation is motivated by empirical evidence: GeoJSON~Agents report 85--97\% accuracy with function calling~\citep{luo2025geojsonagents}, while UnivEARTH reports only 33\% when agents generate executable code~\citep{kao2025univearth}.
 
 \paragraph{Multi-backend inference client.}
-Fair cross-model comparison requires normalizing heterogeneous API surfaces into a common interface. Our inference client routes models through two backends: a native Anthropic client for Claude, and a LiteLLM-based client for Vertex AI Model-as-a-Service (MaaS) endpoints that expose an OpenAI-compatible API. The MaaS backend maps publisher-prefixed model identifiers (e.g., \texttt{meta/llama4-...}) to Vertex AI endpoints and normalizes response formats---including tool-call representations---into the shared schema consumed by the eval harness. Notably, Llama~4 models emit tool calls as Python-style function invocations (\texttt{<|python\_start|>func(k=v)<|python\_end|>}) rather than JSON; a dedicated AST-based parser extracts these into structured tool calls so that Llama~4 Scout's responses are scored on the same footing as the JSON-native models. Each inference call uses a layered timeout architecture combining daemon-thread hard timeouts with exponential-backoff retry on rate-limit errors, enabling unattended execution of the full case-seed grid.
+Fair cross-model comparison requires normalizing heterogeneous API surfaces into a common interface. Our inference client routes models through two backends: a native Anthropic client for Claude and a LiteLLM-based client for Vertex AI Model-as-a-Service (MaaS) endpoints that expose an OpenAI-compatible API. The MaaS backend maps publisher-prefixed model identifiers (e.g., \texttt{meta/llama4-...}) to Vertex AI endpoints and normalizes response formats---including tool-call representations---into the shared schema consumed by the eval harness. Notably, Llama~4 models emit tool calls as Python-style function invocations (\texttt{<|python\_start|>func(k=v)<|python\_end|>}) rather than JSON; a dedicated AST-based parser extracts these into structured tool calls so that Llama~4 Scout's responses are scored on the same footing as the JSON-native models. Each inference call uses a layered timeout architecture combining daemon-thread hard timeouts with exponential-backoff retry on rate-limit errors, enabling unattended execution of the full case-seed grid.
+
 
 \subsection{Evaluation Protocol}
 \label{sec:scoring}
 
-Each task is scored by eight check types (Table~\ref{tab:checks} and Figure~\ref{fig:scoring}). A task \emph{passes} only when \textbf{all} applicable checks pass (strict binary). We additionally compute partial-credit metrics for finer-grained analysis.
+Each task is scored by eight check types (see Table~\ref{tab:checks} and Figure~\ref{fig:scoring}). A task \emph{passes} only when \textbf{all} applicable checks pass (strict binary). We additionally compute partial-credit metrics for finer-grained analysis.
 
-\begin{table}[t]
-    \caption{Scoring checks. Each task specifies which checks apply; binary capability pass requires every applicable check except \texttt{max\_cost\_usd} to pass (Section ``Capability and cost as orthogonal axes'').}
+\begin{table}[ht]
+    \caption{Scoring checks. Each task specifies which checks apply; binary capability pass requires every applicable check except \texttt{max\_cost\_usd} to pass (Paragraph ``Capability and cost as orthogonal axes'').}
     \label{tab:checks}
     \centering
     \begin{tabular}{lp{5.3cm}}
@@ -400,7 +405,7 @@ Each task is scored by eight check types (Table~\ref{tab:checks} and Figure~\ref
         \texttt{expected\_tools} & Every expected tool was called (recall\,=\,1.0). Extra tools do not cause failure.\textsuperscript{a} \\
         \texttt{expected\_actions} & Every expected UI action was generated (recall\,=\,1.0). \\
         \texttt{must\_contain} & Each required keyword appears in the answer (case-insensitive substring). \\
-        \texttt{must\_not\_contain} & No forbidden keyword appears in the answer. \\
+        \texttt{must\_not\_contain} & Forbidden keyword does not appear in the answer. \\
         \texttt{numeric\_accuracy} & For each ground-truth entry, the label is found in the answer and the nearest percentage value is within tolerance.\textsuperscript{b} \\
         \texttt{chart\_generated} & At least one chart URL was produced (only checked when \texttt{generate\_chart} is an expected tool). \\
         \texttt{max\_rounds} & Agent loop iterations $\leq$ budget. \\
@@ -414,15 +419,15 @@ Each task is scored by eight check types (Table~\ref{tab:checks} and Figure~\ref
     \textsuperscript{c}Per-case budgets default to \$0.10 in the \texttt{v5} task set. The per-case cost is logged and used in cost--accuracy analysis but is excluded from the binary capability score; see ``Capability and cost as orthogonal axes'' below.
 \end{table}
 
-\textbf{Continuous metrics.} Beyond binary pass/fail, we report: \emph{check score}---fraction of individual checks passed per case (partial credit); \emph{keyword coverage}---fraction of \texttt{must\_contain} terms found; \emph{tool F1}---set-based F1 between expected and actual tools; and \emph{cost utilisation}---ratio of actual to budgeted cost.
+\paragraph{Continuous metrics.} Beyond binary pass/fail, we report: \emph{check score}---fraction of individual checks passed per case (partial credit); \emph{keyword coverage}---fraction of \texttt{must\_contain} terms found; \emph{tool F1}---set-based F1 between expected and actual tools; and \emph{cost utilisation}---ratio of actual to budgeted cost.
 
-\textbf{Error classification.} When a task fails, the first failing check (in priority order: tool\_missing $\to$ chart\_missing $\to$ wrong\_data $\to$ rounds\_exceeded $\to$ keyword\_missing $\to$ forbidden\_keyword) determines the error category. This priority reflects diagnostic value: tool selection failures are the most informative for understanding agent reasoning. Cases that would only fail \texttt{max\_cost\_usd} are not counted as failures for capability scoring; their cost is instead reported on the cost--accuracy axis (Section~\ref{sec:cost}).
+\paragraph{Error classification.} When a task fails, the first failing check (in priority order: tool\_missing $\to$ chart\_missing $\to$ wrong\_data $\to$ rounds\_exceeded $\to$ keyword\_missing $\to$ forbidden\_keyword) determines the error category. This priority reflects diagnostic value: tool selection failures are the most informative for understanding agent reasoning. Cases that would only fail \texttt{max\_cost\_usd} are not counted as failures for capability scoring; their cost is instead reported on the cost--accuracy axis (Section~\ref{sec:cost}).
 
-\textbf{Design rationale.} Tool and action checks use \emph{recall} as the gate rather than F1. An agent that calls all expected tools plus an exploratory extra tool should not be penalised---the key question is whether it performed the required operations. F1 is tracked as a separate metric for efficiency analysis.
+\paragraph{Design rationale.} Tool and action checks use \emph{recall} as the gate rather than F1. An agent that calls all expected tools plus an exploratory extra tool should not be penalised---the key question is whether it performed the required operations. F1 is tracked as a separate metric for efficiency analysis.
 
-\textbf{Capability and cost as orthogonal axes.} Per-case cost budgets are deployment thresholds, not measures of reasoning ability: a model that pays more in tokens has not necessarily reasoned less correctly. Conflating the two into a single binary score forces the reader to interpret a model's accuracy through the lens of one specific, unjustified price threshold. We therefore decouple them: the binary leaderboard scores capability only (does the agent solve the case, evidenced by tool selection, keywords, and numeric accuracy), and per-case cost is reported alongside as a Pareto axis (Section~\ref{sec:cost}). This separation follows HELM~\citep{liang2023helm}, GAIA~\citep{mialon2023gaia}, and other modern agent benchmarks that report cost and latency as orthogonal dimensions rather than gates. Aggregated cost remains visible in the leaderboard table; a reader who cares about a specific per-case budget can recover the cost-gated number from the supplementary per-case CSV (column \texttt{passed\_with\_cost\_gate}).
+\paragraph{Capability and cost as orthogonal axes.} Per-case cost budgets are deployment thresholds, not measures of reasoning ability: a model that pays more in tokens has not necessarily reasoned less correctly. Conflating the two into a single binary score forces the reader to interpret a model's accuracy through the lens of one specific, unjustified price threshold. We therefore decouple them: the binary leaderboard scores capability only (does the agent solve the case, evidenced by tool selection, keywords, and numeric accuracy), and per-case cost is reported alongside as a Pareto axis (Section~\ref{sec:cost}). This separation follows HELM~\citep{liang2023helm}, GAIA~\citep{mialon2023gaia}, and other modern agent benchmarks that report cost and latency as orthogonal dimensions rather than gates. Aggregated cost remains visible in the leaderboard table; a reader who cares about a specific per-case budget can recover the cost-gated number from the supplementary per-case CSV (column \texttt{passed\_with\_cost\_gate}).
 
-\begin{figure}[t]
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0.9cm 0.7cm 0.3cm 1.2cm}, clip, width=1.0\columnwidth]{figures/fig8_scoring_pipeline.pdf}
     \caption{Scoring pipeline. Each case is evaluated by up to eight checks; binary pass requires all to pass. Partial-credit metrics (check score, tool F1, keyword coverage) are always computed.}
@@ -430,14 +435,16 @@ Each task is scored by eight check types (Table~\ref{tab:checks} and Figure~\ref
     \label{fig:scoring}
 \end{figure}
 
+
+
 \section{Experiments and Results}
 \label{sec:results}
 
 \subsection{Experimental Setup}
 
-We evaluate seven LLMs on GeoNatureAgent Benchmark v5 (93 tasks, 18 categories) across Vertex~AI Model-as-a-Service and the Anthropic Messages API (Table~\ref{tab:models}). All experiments use the v3 system prompt (a zero-shot ReAct-style instruction; the full prompt is committed to the repository at \path{api/agent/prompts/v3.md}), \texttt{max\_\allowbreak turns=10}, \texttt{max\_tokens=4096}, and \texttt{temperature=1.0}. We use tem\-perature-1.0 to expose run-to-run variance and stress-test tool-use reliability under realistic sampling noise rather than the deterministic temperature-0 regime that overstates production stability. The prompt is held constant across all models to isolate capability from prompt-engineering effort; chain-of-thought, few-shot, and self-reflection variants are a distinct research question and are left to future work. Experiments run sequentially inside a single Cloud Run Job to ensure identical infrastructure conditions.
+We evaluate seven LLMs on GeoNatureAgent Benchmark v5 (93 tasks, 18 categories) across Vertex~AI Model-as-a-Service and the Anthropic Messages API (Table~\ref{tab:models}). All experiments use the v3 system prompt (a zero-shot ReAct-style instruction; the full prompt is committed to the repository at \path{api/agent/prompts/v3.md}), \texttt{max\_\allowbreak turns=10}, \texttt{max\_tokens=4096}, and \texttt{temperature=1.0}. We use tem\-perature-1.0 to expose run-to-run variance and stress-test tool-use reliability under realistic sampling noise rather than the deterministic temperature-0 regime that overstates production stability. The prompt is held constant across all models to isolate capability from prompt-engineering effort; chain-of-thought, few-shot, and self-reflection variants are distinct research questions and are left for future work. Experiments are run sequentially inside a single Cloud Run Job to ensure identical infrastructure conditions.
 
-\begin{table}[t]
+\begin{table}[ht]
     \caption{Models evaluated. Six via Vertex AI; Claude via the Anthropic Messages API.}
     \label{tab:models}
     \centering
@@ -456,17 +463,18 @@ We evaluate seven LLMs on GeoNatureAgent Benchmark v5 (93 tasks, 18 categories) 
     \end{tabular}
 \end{table}
 
+
 \subsection{Aggregation Protocol}
 \label{sec:aggregation}
 
 To control for run-to-run variance under temperature-1.0 sampling, every model is evaluated on the full v5 case set (93 tasks) under three random seeds, $\{42, 1337, 2024\}$, where the underlying inference API exposes a \texttt{seed} parameter (Vertex MaaS endpoints). The Anthropic Messages API does not implement deterministic seeding, so Claude~Sonnet~4 is evaluated under two independent temperature-1.0 samples drawn under the same configuration; this yields a valid run-to-run variance estimate but is not bit-for-bit replayable. Reported accuracies are the per-seed mean with one standard deviation, and per-category accuracies are the unweighted mean across the available seeds. Each Cloud Run output directory contains a \texttt{results.jsonl} where every row carries its own \texttt{seed}, \texttt{case\_id}, and \texttt{git\_commit}, so any leaderboard cell can be traced back to a Cloud Build log line.
 
-The mapping from each model's leaderboard entry to its specific Cloud Run output directory is committed in \path{paper/final_results/sources.yaml}. A single deterministic script (\path{scripts/compile_final_results.py}) reads this manifest, pulls each \path{results.json} from GCS, and emits the per-model leaderboard, per-category breakdown, and per-case matrix as CSV artefacts that are themselves committed to the repository. These CSVs are the single source of truth for every number reported in this paper; a reviewer can regenerate them from the public bucket with one command and diff-check against the committed copies.
+The mapping from each model's leaderboard entry to its specific Cloud Run output directory is committed in \path{paper/final_results/sources.yaml}. A single deterministic script (\path{scripts/compile_final_results.py}) reads this manifest, pulls each \path{results.json} from GCS, and emits the per-model leaderboard, per-category breakdown, and per-case matrix as CSV artifacts that are themselves committed to the repository. These CSVs are the single source of truth for every number reported in this paper; a reviewer can regenerate them from the public bucket with one command and diff-check against the committed copies.
 
 
 \subsection{Overall Results}
 
-\begin{figure}[t]
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0.1cm 0.1cm 0.1cm 0.9cm}, clip, width=1.0\columnwidth]{figures/fig1_leaderboard.pdf}
     \caption{GeoNatureAgent Benchmark v5 leaderboard. Accuracy (\%) with total cost in parentheses. Dashed line at 50\%.}
@@ -474,11 +482,7 @@ The mapping from each model's leaderboard entry to its specific Cloud Run output
     \label{fig:leaderboard}
 \end{figure}
 
-Table~\ref{tab:leaderboard} and Figure~\ref{fig:leaderboard} present the main results aggregated across seeds. \textbf{Claude~Sonnet~4} leads on capability at $60.8\%\pm0.8\%$, with \textbf{DeepSeek~V3.2} a close second at $56.3\%\pm3.1\%$. \textbf{GLM-5} ($50.2\%\pm2.2\%$) and \textbf{Gemini~2.5~Pro} ($48.0\%\pm3.3\%$) form the second tier. \textbf{Qwen3-235B} ($41.2\%\pm4.3\%$), \textbf{GPT-OSS-120B} ($34.1\%\pm1.2\%$), and \textbf{Llama~4~Scout} ($26.9\%\pm2.1\%$) trail. Only two models exceed 55\% and none reaches 65\%, confirming that environmental geospatial tool orchestration remains a significant challenge even for the strongest frontier models. Inter-seed standard deviations are tight ($0.8$--$4.3$ percentage points), so the inter-model ordering is robust to sampling noise.
-
-Three findings stand out. First, \textbf{the top of the leaderboard is bimodal but close}: Claude~Sonnet~4 and DeepSeek~V3.2 are separated by only $4.5$ percentage points (Welch's $t=2.40$, $df\!\approx\!2$, $p\!\approx\!0.13$)---within statistical noise at our sample size---while both lead the third-place GLM-5 by more than $6$~pp ($t\!\geq\!2.76$). The capability gap between the top two and the rest of the cohort is robust: Claude~Sonnet~4 vs.\ Llama~4~Scout yields $t=25.0$, and every adjacent pair below the top two is significant at $p<0.1$ except GLM-5 vs.\ Gemini~2.5~Pro, which are statistically indistinguishable. Second, \textbf{scale does not predict accuracy within the open-weight cluster}: Llama~4~Scout (109B MoE active parameters) trails Qwen3-235B, which trails DeepSeek~V3.2 (671B MoE), but GPT-OSS-120B is outperformed by the 109B-parameter Scout on partial-credit metrics, indicating that parameter count alone is insufficient to predict tool-orchestration competence. Third, \textbf{closed-source frontier models do not categorically dominate open-weight peers}: Claude leads on capability but only marginally above DeepSeek; Gemini~2.5~Pro sits in third position, below both open-weight contenders. As we show in Section~\ref{sec:cost}, this pattern is reinforced on the cost axis, where the entire cost--accuracy Pareto frontier is occupied by open-weight models.
-
-\begin{table}[t]
+\begin{table}[ht]
     \caption{Capability leaderboard: seven models on 93 GeoNatureAgent Benchmark v5 tasks. Accuracy is the per-seed mean with one standard deviation, decoupled from cost (Section~\ref{sec:scoring}). Cost is the mean total cost of one seed run (93 cases); \$/case is the per-call mean.}
     \label{tab:leaderboard}
     \centering
@@ -500,9 +504,15 @@ Three findings stand out. First, \textbf{the top of the leaderboard is bimodal b
     \textsuperscript{$\dagger$}Claude Sonnet~4 is reported from two temperature-1.0 samples (the Anthropic Messages API does not implement deterministic seeding); the other six models are evaluated under three seeds. The variance estimate for Claude is therefore based on fewer observations and should be interpreted as an indicative measure rather than a precise one.
 \end{table}
 
-\textbf{Partial credit tells a different story.} Even failing cases often demonstrate partial competence: correct tool selection but missing a keyword, or correct keywords but an extra unnecessary tool call. This gap between binary accuracy and partial-credit scores (Figure~\ref{fig:binary_partial}) suggests that many failures are ``near-misses'' addressable through prompt engineering.
+Table~\ref{tab:leaderboard} and Figure~\ref{fig:leaderboard} summarize the main results aggregated across seeds. \textbf{Claude~Sonnet~4} leads on capability at $60.8\%\pm0.8\%$, with \textbf{DeepSeek~V3.2} a close second at $56.3\%\pm3.1\%$. \textbf{GLM-5} ($50.2\%\pm2.2\%$) and \textbf{Gemini~2.5~Pro} ($48.0\%\pm3.3\%$) form the second tier. \textbf{Qwen3-235B} ($41.2\%\pm4.3\%$), \textbf{GPT-OSS-120B} ($34.1\%\pm1.2\%$), and \textbf{Llama~4~Scout} ($26.9\%\pm2.1\%$) trail. Only two models exceed 55\%, and none reaches 65\%, confirming that environmental geospatial tool orchestration remains a significant challenge even for the strongest frontier models. Inter-seed standard deviations are tight ($0.8$--$4.3$ percentage points), so the inter-model ordering is robust to sampling noise.
 
-\begin{figure}[t]
+Three findings stand out. First, \textbf{the top of the leaderboard is bimodal but close}: Claude~Sonnet~4 and DeepSeek~V3.2 are separated by only $4.5$ percentage points (Welch's $t=2.40$, $df\!\approx\!2$, $p\!\approx\!0.13$)---within statistical noise at our sample size---while both lead the third-place GLM-5 by more than $6$~pp ($t\!\geq\!2.76$). The capability gap between the top two and the rest of the cohort is robust: Claude~Sonnet~4 vs.\ Llama~4~Scout yields $t=25.0$, and every adjacent pair below the top two is significant at $p<0.1$ except GLM-5 vs.\ Gemini~2.5~Pro, which are statistically indistinguishable. Second, \textbf{scale does not predict accuracy within the open-weight cluster}: Llama~4~Scout (109B MoE active parameters) trails Qwen3-235B, which trails DeepSeek~V3.2 (671B MoE), but GPT-OSS-120B is outperformed by the 109B-parameter Scout on partial-credit metrics, indicating that parameter count alone is insufficient to predict tool-orchestration competence. Third, \textbf{closed-source frontier models do not categorically dominate open-weight peers}: Claude leads on capability but only marginally above DeepSeek; Gemini~2.5~Pro sits in third position, below both open-weight contenders. As we show in Section~\ref{sec:cost}, this pattern is reinforced on the cost axis, where the entire cost-accuracy Pareto frontier is occupied by open-weight models.
+
+
+
+\paragraph{Partial credit tells a different story.} Even failing cases often demonstrate partial competence: correct tool selection but missing a keyword, or correct keywords but an extra unnecessary tool call. This gap between binary accuracy and partial-credit scores (Figure~\ref{fig:binary_partial}) suggests that many failures are ``near-misses'' addressable through prompt engineering.
+
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0.1cm 0.2cm 0.4cm 0.8cm}, clip, width=1.0\columnwidth]{figures/fig3_binary_vs_partial.pdf}
     \caption{Binary accuracy vs partial-credit check score. The gap indicates many ``near-miss'' failures.}
@@ -514,18 +524,18 @@ Three findings stand out. First, \textbf{the top of the leaderboard is bimodal b
 \subsection{Cost-Accuracy Analysis}
 \label{sec:cost}
 
-\begin{figure}[t]
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0.1cm 0.1cm 1.8cm 1.9cm}, clip, width=1.0\columnwidth]{figures/fig2_cost_accuracy.pdf}
-    \caption{Cost-accuracy trade-off. Bubble size proportional to total tokens; cost is the mean per-seed run cost (93 cases). The Pareto frontier (dashed line) runs Scout~$\to$~Qwen3-235B~$\to$~DeepSeek~V3.2~$\to$~Claude~Sonnet~4: three of the four frontier models are open-weight.}
+    \caption{Cost-accuracy trade-off. Bubble size is proportional to total tokens; cost is the mean per-seed run cost (93 cases). The Pareto frontier (dashed line) runs Scout~$\to$~Qwen3-235B~$\to$~DeepSeek~V3.2~$\to$~Claude~Sonnet~4: three of the four frontier models are open-weight.}
     \Description{}
     \label{fig:cost_accuracy}
 \end{figure}
 
-Cost per case varies by more than an order of magnitude across the cohort, from \$0.003 for Llama~4~Scout to \$0.127 for Claude~Sonnet~4 (Figure~\ref{fig:cost_accuracy}). The cost--accuracy Pareto frontier comprises four models: \textbf{Llama~4~Scout} (cheapest, $26.9\%$ capability), \textbf{Qwen3-235B} ($41.2\%$ at \$0.010/case), \textbf{DeepSeek~V3.2} ($56.3\%$ at \$0.011/case), and \textbf{Claude~Sonnet~4} (highest capability at $60.8\%$, \$0.127/case). Three of these four frontier models are open-weight; closed-source Gemini~2.5~Pro and the open-weight GPT-OSS-120B are dominated (every Pareto-frontier point matches or exceeds their accuracy at lower cost). The DeepSeek~V3.2 entry is particularly notable: it delivers $93\%$ of Claude's capability ($56.3\%$ vs.\ $60.8\%$) at $11.6\times$ lower per-case cost, making it the strongest single-model recommendation for cost-sensitive deployments. Models priced between DeepSeek and Claude---GLM-5, Gemini~2.5~Pro, and GPT-OSS-120B---neither match Claude's accuracy nor undercut DeepSeek's price; they are interior to the frontier in the cost--accuracy plane.
+Cost per case varies by more than an order of magnitude across the cohort, from \$0.003 for Llama~4~Scout to \$0.127 for Claude~Sonnet~4 (see Figure~\ref{fig:cost_accuracy}). The cost-accuracy Pareto frontier comprises four models: \textbf{Llama~4~Scout} (cheapest, $26.9\%$ capability), \textbf{Qwen3-235B} ($41.2\%$ at \$0.010/case), \textbf{DeepSeek~V3.2} ($56.3\%$ at \$0.011/case), and \textbf{Claude~Sonnet~4} (highest capability at $60.8\%$, \$0.127/case). Three of these four frontier models are open-weight; closed-source Gemini~2.5~Pro and the open-weight GPT-OSS-120B are dominated (every Pareto-frontier point matches or exceeds their accuracy at lower cost). The DeepSeek~V3.2 entry is particularly notable: it delivers $93\%$ of Claude's capability ($56.3\%$ vs.\ $60.8\%$) at $11.6\times$ lower per-case cost, making it the strongest single-model recommendation for cost-sensitive deployments. Models priced between DeepSeek and Claude---GLM-5, Gemini~2.5~Pro, and GPT-OSS-120B---neither match Claude's accuracy nor undercut DeepSeek's price; they are interior to the frontier in the cost-accuracy plane.
 
-\begin{table}[t]
-    \caption{Projected per-query inference cost at 1{,}000 queries/day. Daily and monthly figures extrapolate the per-case cost reported in Table~\ref{tab:leaderboard}. Sorted by capability accuracy.}
+\begin{table}[ht]
+    \caption{Projected per-query inference cost at 1{,}000 queries/day. Daily and monthly data extrapolate the per-case cost reported in Table~\ref{tab:leaderboard}. Sorted by capability accuracy.}
     \label{tab:cost_projection}
     \centering
     \begin{tabular}{lrrr}
@@ -543,14 +553,14 @@ Cost per case varies by more than an order of magnitude across the cohort, from 
     \end{tabular}
 \end{table}
 
-Table~\ref{tab:cost_projection} projects per-query costs to a production deployment serving 1{,}000 queries/day. The capability leader (Claude~Sonnet~4, $60.8\%$) costs \$127/day, while the second-place DeepSeek~V3.2 ($56.3\%$) costs \$11/day---a $4.5$-percentage-point capability gap for an $11.6\times$ price difference. For most production deployments the right operating point sits on the open-weight Pareto frontier; the rare scenarios that justify the premium price are those where the absolute capability ceiling matters more than throughput economics. These dynamics align with prior cost-efficient findings such as Geo-OLM~\citep{stamoulis2025geoolm}, which shows that small specialised models can match frontier model performance at a fraction of frontier cost; here the same pattern emerges among general-purpose models at the larger scale required for environmental analysis.
+Table~\ref{tab:cost_projection} projects per-query costs to a production deployment serving 1{,}000 queries/day. The capability leader (Claude~Sonnet~4, $60.8\%$) costs \$127/day, while the second-place DeepSeek~V3.2 ($56.3\%$) costs \$11/day---a $4.5$-percentage-point capability gap for an $11.6\times$ price difference. For most production deployments, the right operating point sits on the open-weight Pareto frontier; the rare scenarios that justify the premium price are those where the absolute capability ceiling matters more than throughput economics. These dynamics align with prior cost-efficient findings such as Geo-OLM~\citep{stamoulis2025geoolm}, which shows that small specialized models can match frontier model performance at a fraction of frontier cost; here, the same pattern emerges among general-purpose models at the larger scale required for environmental analysis.
 
 Figure~\ref{fig:tokens_accuracy} further illustrates this relationship, showing that token consumption does not predict accuracy---models that generate more tokens do not necessarily achieve higher scores.
 
-\begin{figure}[t]
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0.1cm 0.2cm 0.1cm 1.1cm}, clip, width=1.0\columnwidth]{figures/fig7_tokens_accuracy.pdf}
-    \caption{Token consumption vs accuracy. Token volume is a poor predictor of performance.}
+    \caption{Token consumption vs. accuracy. Token volume is a poor predictor of performance.}
     \Description{}
     \label{fig:tokens_accuracy}
 \end{figure}
@@ -562,7 +572,7 @@ Figure~\ref{fig:tokens_accuracy} further illustrates this relationship, showing 
 
 One case---close-value comparison---defeats every model in every seed, and two further categories sit in the 0--25\% range (Figure~\ref{fig:hard_cases}), revealing systematic limitations:
 
-\begin{figure}[t]
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0.1cm 0.1cm 0.1cm 1.0cm}, clip, width=1.0\columnwidth]{figures/fig5_hard_cases.pdf}
     \caption{Category difficulty---mean accuracy across all seven models, sorted by difficulty.}
@@ -582,7 +592,7 @@ Conversely, the easiest categories are \textbf{habitat analysis} (Claude 100\%, 
 \subsection{Category-Level Analysis}
 \label{sec:category}
 
-\begin{figure}[t]
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0.1cm 0.2cm 0.1cm 0.6cm}, clip, width=1.0\columnwidth]{figures/fig4_category_heatmap.pdf}
     \caption{Accuracy by category across the seven models. Comparison achieves 0\% across every model; the largest category (tool selection, 21 tasks) shows large inter-model variance.}
@@ -602,7 +612,7 @@ Figure~\ref{fig:heatmap} shows mean accuracy by category across all seven models
 
 GeoNatureAgent Benchmark's 60.8\% best-model accuracy is notably lower than GeoBenchX and GeoJSON~Agents (85--97\%). Table~\ref{tab:benchmark_comparison} summarizes the key differences.
 
-\begin{table}[t]
+\begin{table}[ht]
     \caption{Comparison of structured tool-calling geospatial benchmarks.}
     \label{tab:benchmark_comparison}
     \centering
@@ -640,7 +650,7 @@ GeoNatureAgent Benchmark is designed to be domain- and geography-agnostic. To de
 
 This integration tests whether agents generalize from Spanish environmental data to a different country and data domain. The 20 BigEarthNet benchmark cases (Table~\ref{tab:bigearth_cases}) span seven task patterns: single-district breakdown, cross-indicator synthesis (Portuguese land cover with Spanish CO$_2$/erosion), multi-turn recall, chart generation, legend and layer discovery, temporal context, and two-district comparison. Unlike the CO$_2$ and erosion indicators, where ground truth depends on live raster geometry, BigEarthNet cases have fixed numeric ground truth derived from pre-computed district-level statistics, enabling deterministic scoring.
 
-\begin{table}[t]
+\begin{table}[ht]
     \caption{BigEarthNet V2 benchmark cases by task pattern. All cases use Portuguese districts with pre-computed ground truth.}
     \label{tab:bigearth_cases}
     \centering
