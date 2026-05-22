@@ -157,6 +157,7 @@
   \country{Spain}}
 
 \author{Mario Garc\'{\i}a Peces}
+\email{mario.garcia.peces@gmail.com}
 \affiliation{%
   \institution{Independent Researcher}
   \city{Madrid}
@@ -192,7 +193,7 @@
 %% article.
 \begin{abstract}
     Environmental scientists spend disproportionate effort on data wrangling rather than analysis. Yet, no benchmark exists to evaluate AI agents that automate environmental geospatial workflows through structured tool calling against real APIs. We introduce \textbf{GeoNatureAgent Benchmark}, the first benchmark for environmental analysis agents operating through structured tool calls to a production-style geospatial API. The benchmark comprises 93 tasks across 18 categories, covering municipality-level analysis, multi-turn conversation, spatial reasoning, cross-indicator synthesis, error handling and recovery, ranking, comparison, multilingual understanding, habitat analysis, deep-dive profiling, temporal change, and task rejection. Tasks are evaluated against an open, self-hostable geospatial API serving three environmental indicators across Spain and Portugal through twelve domain-specific tools.
-    We evaluate seven large language models (Claude~Sonnet~4, DeepSeek~V3.2, GLM-5, Gemini~2.5~Pro, Qwen3-235B, GPT-OSS-120B, and Llama~4~Scout) across Vertex~AI and Anthropic platforms under three temperature-1.0 seeds per model, reporting capability and per-case cost as orthogonal axes. Results manifest that: (1)~Claude~Sonnet~4 achieves the highest capability at  $60.8\%\pm0.8\%$,  followed closely by DeepSeek~V3.2 at $56.3\%\pm3.1\%$, while no other model exceeds 51\%; (2)~the cost--accuracy Pareto frontier is occupied entirely by open-weight models (Llama~4~Scout~$\to$~Qwen3-235B~$\to$~DeepSeek~V3.2), with DeepSeek~V3.2 offering 93\% of Claude's capability at 11$\times$ lower cost(\$0.011/case); (3)~comparison tasks remain universally unsolved (0\% across all models for close-value comparisons), exposing systematic reasoning limitations; and (4)~structured tool calling against a real API provides a more discriminative measure of real-world agent capability, with mean accuracies 25--35 percentage points below those reported on general-purpose GIS benchmarks.
+    We evaluate seven large language models (Claude~Sonnet~4, DeepSeek~V3.2, GLM-5, Gemini~2.5~Pro, Qwen3-235B, GPT-OSS-120B, and Llama~4~Scout) across Vertex~AI and Anthropic platforms under three temperature-1.0 seeds per model, reporting capability and per-case cost as orthogonal axes. Results manifest that: (1)~Claude~Sonnet~4 achieves the highest capability at  $60.8\%\pm0.8\%$,  followed closely by DeepSeek~V3.2 at $56.3\%\pm3.1\%$, while no other model exceeds 51\%; (2)~the cost-accuracy Pareto frontier is occupied entirely by open-weight models (Llama~4~Scout~$\to$~Qwen3-235B~$\to$~DeepSeek~V3.2), with DeepSeek~V3.2 offering 93\% of Claude's capability at 11$\times$ lower cost(\$0.011/case); (3)~comparison tasks remain universally unsolved (0\% across all models for close-value comparisons), exposing systematic reasoning limitations; and (4)~structured tool calling against a real API provides a more discriminative measure of real-world agent capability, with mean accuracies 25--35 percentage points below those reported on general-purpose GIS benchmarks.
     We further demonstrate geographic and domain extensibility by integrating BigEarthNet~V2 land-cover data for Portugal alongside Spanish CO$_2$ suitability and gully erosion indicators. GeoNatureAgent Benchmark, the evaluation harness, and the self-hostable API are publicly available. GeoNatureAgent Benchmark, the evaluation harness, and the self-hostable API are publicly available.\footnote{\url{https://github.com/gabrielireland/GeoNatureAgent_Benchmark}}
 \end{abstract}
 
@@ -233,7 +234,7 @@
 %%
 %% Keywords. The author(s) should pick words that accurately describe
 %% the work being presented. Separate the keywords with commas.
-\keywords{Geospatial AI, LLM Agents, Tool Calling, Benchmark, Environmental Analysis}
+\keywords{Geospatial AI, Benchmark, LLM Agents, Tool Calling, Environmental Analysis}
 
 % \received{20 February 2007}
 % \received[revised]{12 March 2009}
