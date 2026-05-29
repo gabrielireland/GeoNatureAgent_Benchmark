@@ -5,6 +5,13 @@ type: software
 license: Apache-2.0
 url: "https://github.com/gabrielireland/GeoNatureAgent_Benchmark"
 repository-code: "https://github.com/gabrielireland/GeoNatureAgent_Benchmark"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20450998
+    description: "Software archive (Zenodo) — reserved DOI, pending publication"
+  - type: doi
+    value: 10.5281/zenodo.20450996
+    description: "Dataset archive (Zenodo) — reserved DOI, pending publication"
 keywords:
   - geospatial AI
   - LLM agents
@@ -15,8 +22,8 @@ authors:
   - family-names: Diaz-Ireland
     given-names: Gabriel
     affiliation: "Universidad Católica de Ávila; Johns Hopkins University"
-    email: gabriel.ireland@darwingeospatial.com
-  - family-names: Kakkar
+    email: gdiazir1@jh.edu
+  - family-names: Jain
     given-names: Devika
     affiliation: "Center for Geographic Analysis, Harvard University"
     email: kakkar@fas.harvard.edu
