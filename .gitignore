@@ -34,3 +34,11 @@ venv/
 
 # Results (stored in GCS, not git)
 results/
+
+# Claude / AI assistant material (local working context only — never committed)
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+.claudeignore
+*.claude.*
+claude_*.local.*
