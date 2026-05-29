@@ -157,7 +157,8 @@ def fig1_leaderboard():
     ax.barh(y, accuracy, color=model_colors, edgecolor="white", linewidth=0.5, height=0.7)
     ax.set_yticks(y)
     ax.set_yticklabels(models)
-    ax.set_xlabel("Accuracy (%)")
+    ax.set_xlabel("Accuracy (%)", fontsize=11, fontweight="bold")
+    ax.tick_params(axis='both', labelsize=10)
     ax.set_xlim(0, 79)
     ax.set_title(f"GeoNatureAgent Benchmark v5 — Model Accuracy (93 tasks, {len(models)} models)")
     ax.invert_yaxis()
@@ -230,10 +231,9 @@ def fig2_cost_accuracy():
 
     x_max = max(plot_cost) * 1.25 + 0.3
     y_max = max(plot_acc) * 1.15 + 3
-    ax.set_xlabel("Cost per Seed Run (USD, 93 cases)", fontsize=10)
-    ax.set_ylabel("Accuracy (%)", fontsize=10)
-    ax.tick_params(axis='x', labelsize=10)
-    ax.tick_params(axis='y', labelsize=10)
+    ax.set_xlabel("Cost per Seed Run (USD, 93 cases)", fontsize=11, fontweight="bold")
+    ax.set_ylabel("Accuracy (%)", fontsize=11, fontweight="bold")
+    ax.tick_params(axis='both', labelsize=10)
     ax.set_title("Cost-Accuracy Trade-off\n(bubble size = total tokens)")
     ax.set_xlim(-0.3, x_max)
     ax.set_ylim(-2, y_max)
@@ -252,17 +252,63 @@ def fig2_cost_accuracy():
 def fig3_binary_vs_partial():
     fig, ax = plt.subplots(figsize=(7, 3.5))
     x = np.arange(len(models))
-    w = 0.35
+    w = 0.40
     # Per-model color identity stays consistent with fig1/fig2/fig7.
     # Binary bars at full saturation; partial-credit bars at alpha=0.55 for contrast.
-    ax.bar(x - w / 2, accuracy, w, label="Binary Accuracy (%)",
-           color=model_colors, edgecolor="white", linewidth=0.4)
-    ax.bar(x + w / 2, [s * 100 for s in check_score], w,
-           label="Avg Check Score (%)",
-           color=model_colors, edgecolor="white", linewidth=0.4, alpha=0.55)
+    partial_scores = np.array(check_score) * 100
+
+    # Binary accuracy bars
+    bars1 = ax.bar(
+        x - w / 2,
+        accuracy,
+        width=w,
+        label="Binary Accuracy (%)",
+        color=model_colors,
+        edgecolor="white",
+        linewidth=0.4,
+    )
+
+    # Partial-credit bars
+    bars2 = ax.bar(
+        x + w / 2,
+        partial_scores,
+        width=w,
+        label="Partial Credit (%)",
+        color=model_colors,
+        edgecolor="white",
+        linewidth=0.4,
+        alpha=0.55,
+    )
+
+    # --- Add values inside bars ---
+    for bar in bars1:
+        h = bar.get_height()
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            h - 3,
+            f"{h:.1f}",
+            ha="center",
+            va="top",
+            fontsize=8,
+            color="white",
+            fontweight="bold",
+        )
+
+    for bar in bars2:
+        h = bar.get_height()
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            h - 3,
+            f"{h:.1f}",
+            ha="center",
+            va="top",
+            fontsize=8,
+            color="black",
+        )
     ax.set_xticks(x)
-    ax.set_xticklabels(models, rotation=45, ha="right", fontsize=9)
-    ax.set_ylabel("Score (%)")
+    ax.set_xticklabels(models, rotation=45, ha="right", fontsize=10)
+    ax.set_ylabel("Score (%)", fontsize=11, fontweight="bold")
+    ax.tick_params(axis='both', labelsize=10)
     ax.set_title("Binary Accuracy vs Partial Credit (93 tasks)")
     ax.legend(loc="upper right", framealpha=0.9)
     ax.set_ylim(0, 105)
@@ -314,10 +360,9 @@ def fig5_hard_cases():
     fig, ax = plt.subplots(figsize=(6.5, 5))
     # Soft amber accent — categorical-difficulty axis, not model identity.
     ax.barh(labels, rates, color="#d97706", height=0.65, edgecolor="white", linewidth=0.5)
-    ax.set_xlabel("Avg Accuracy (%)", fontsize=10)
+    ax.set_xlabel("Avg Accuracy (%)", fontsize=11, fontweight='bold')
     ax.set_xlim(0, 85)
-    ax.tick_params(axis='x', labelsize=10)
-    ax.tick_params(axis='y', labelsize=10)
+    ax.tick_params(axis='both', labelsize=10)
     ax.set_title(f"Category Difficulty (avg across {len(cat_data)} models)")
     ax.invert_yaxis()
     for i, v in enumerate(rates):
@@ -412,11 +457,10 @@ def fig7_tokens_vs_accuracy():
                 expand_points=(4.0, 4.0),
                 force_text=(2.0, 2.0),
                 force_points=(2.0, 2.0))
-    ax.set_xlabel("Total Tokens (K)", fontsize=10)
-    ax.set_ylabel("Accuracy (%)", fontsize=10)
+    ax.set_xlabel("Total Tokens (K)", fontsize=11, fontweight='bold')
+    ax.set_ylabel("Accuracy (%)", fontsize=11, fontweight='bold')
     ax.set_ylim(0, 65)
-    ax.tick_params(axis='x', labelsize=10)
-    ax.tick_params(axis='y', labelsize=10)
+    ax.tick_params(axis='both', labelsize=10)
     ax.set_title("Token Usage vs Accuracy (93 tasks)")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
