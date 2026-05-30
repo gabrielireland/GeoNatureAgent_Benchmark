@@ -35,6 +35,9 @@ venv/
 # Results (stored in GCS, not git)
 results/
 
+# Raster COGs (large; fetched from Zenodo via scripts/download_data.sh)
+api/data/cogs/*.tif
+
 # Claude / AI assistant material (local working context only — never committed)
 CLAUDE.md
 CLAUDE.local.md

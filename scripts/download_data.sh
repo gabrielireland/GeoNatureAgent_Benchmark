@@ -33,17 +33,21 @@
 #   ("MLOps Pipeline") of the paper.
 #
 # File specifications (for sanity checks after manual placement)
-#   co2_spain.tif    — categorical, EPSG:25830, ~30 m resolution,
-#                      values: 0 = not suitable … 6 = highly suitable
-#   gully_europe.tif — continuous probability [0, 100], EPSG:3035, ~100 m
+#   co2_spain.tif    — categorical COG, uint8, EPSG:3035, 100 m, NoData 255,
+#                      values: 0 = Not Eligible, 1 = Eligible with Conditions,
+#                      2 = Eligible (3 classes)
+#   gully_europe.tif — continuous probability [0, 100], float32, EPSG:3035 (ETRS89-LAEA),
+#                      100 m, NoData 256
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 COG_DIR="$REPO_DIR/api/data/cogs"
 mkdir -p "$COG_DIR"
 
-CO2_URL="${CO2_SPAIN_URL:-}"
-GULLY_URL="${GULLY_EUROPE_URL:-}"
+# Default to the published Zenodo dataset record (v2, concept DOI 10.5281/zenodo.20450995).
+# Override via env vars if mirroring elsewhere.
+CO2_URL="${CO2_SPAIN_URL:-https://zenodo.org/records/20454498/files/co2_spain.tif}"
+GULLY_URL="${GULLY_EUROPE_URL:-https://zenodo.org/records/20454498/files/gully_europe.tif}"
 
 cat <<EOF
 ==============================================
