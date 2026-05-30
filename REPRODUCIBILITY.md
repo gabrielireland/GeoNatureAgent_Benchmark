@@ -82,7 +82,7 @@ All experiments use:
 
 ### Multi-seed re-runs
 
-To reproduce the variance reported in the paper, the same 8 models have **3-seed** counterparts at `benchmark/experiments/exp_NNN_*_v5_seeds5.yaml`. Each carries `sampling.seeds: [42, 1337, 2024]` and produces three independent runs per (model, case) pair. The runner records `seed` and `seed_run_id` on every result line in `results.jsonl`.
+To reproduce the variance reported in the paper, the seven evaluated models have **3-seed** counterparts at `benchmark/experiments/exp_NNN_*_v5_seeds5.yaml` (Claude Sonnet 4 uses two independent temperature-1.0 samples, as the Anthropic API exposes no seed parameter). Each carries `sampling.seeds: [42, 1337, 2024]` and produces three independent runs per (model, case) pair. The runner records `seed` and `seed_run_id` on every result line in `results.jsonl`.
 
 ---
 
@@ -165,10 +165,10 @@ for name, spec in cfg['models'].items():
 All 8 figures are generated from a single script:
 
 ```bash
-python agentic_documentation/paper/generate_figures.py
+python paper/generate_figures.py
 ```
 
-Output: `agentic_documentation/paper/figures/fig{1..8}_*.{pdf,png}`
+Output: `paper/figures/fig{1..8}_*.{pdf,png}`
 
 | Figure | Content |
 |--------|---------|
@@ -201,7 +201,7 @@ pdflatex geonatureagent_benchmark.tex
 python scripts/prepare_hf_dataset.py --results-dir /tmp/geoagentbench_v5_results
 ```
 
-Generates `hf_dataset/tasks.jsonl` (93 tasks) and `hf_dataset/results.jsonl` (744 results).
+Generates `hf_dataset/tasks.jsonl` (93 tasks) and `hf_dataset/results.jsonl` (1860 per-case-per-seed results across the 7 final models). Point `--results-dir` at the `_v5_seeds5` runs from `sources.yaml`, not the older single-seed runs.
 
 ---
 
@@ -213,7 +213,7 @@ Run the package verification script to check all artifacts are consistent:
 python scripts/verify_package.py --results-dir /tmp/geoagentbench_v5_results
 ```
 
-This checks: case counts, category counts, result record counts, accuracy matches paper Table 4, no stale references in READMEs, no TODOs in paper, all citations resolved, all figures exist, LICENSE and CITATION.cff exist, and HF dataset integrity.
+This checks: case counts, category counts, result record counts, accuracy matches the paper leaderboard (Table 5), no stale references in READMEs, no TODOs in paper, all citations resolved, all figures exist, LICENSE and CITATION.cff exist, and HF dataset integrity.
 
 Expected output: `ALL CHECKS PASSED` (35 checks).
 
