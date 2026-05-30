@@ -7,11 +7,11 @@ url: "https://github.com/gabrielireland/GeoNatureAgent_Benchmark"
 repository-code: "https://github.com/gabrielireland/GeoNatureAgent_Benchmark"
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20450998
-    description: "Software archive (Zenodo) — reserved DOI, pending publication"
+    value: 10.5281/zenodo.20450997
+    description: "Software archive (Zenodo) — concept DOI, resolves to latest version"
   - type: doi
-    value: 10.5281/zenodo.20450996
-    description: "Dataset archive (Zenodo) — reserved DOI, pending publication"
+    value: 10.5281/zenodo.20450995
+    description: "Dataset archive (Zenodo) — concept DOI, resolves to latest version"
 keywords:
   - geospatial AI
   - LLM agents
