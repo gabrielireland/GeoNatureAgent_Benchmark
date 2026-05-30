@@ -7,7 +7,13 @@ Benchmark tasks and evaluation results from **GeoNatureAgent Benchmark: Benchmar
 | File | Records | Description |
 |------|---------|-------------|
 | `tasks.jsonl` | 93 | Benchmark task definitions (18 categories, 3 difficulty levels) |
-| `results.jsonl` | 744 | Evaluation results (93 tasks x 8 models) |
+| `results.jsonl` | 1860 | Per-case evaluation results for the 7 final models across seeds (93 tasks × 3 seeds for six models, × 2 samples for Claude Sonnet 4) |
+
+> **Provenance:** `results.jsonl` is regenerated from the canonical per-case matrix
+> (`paper/final_results/per_case.csv`), which is compiled from the final `*_v5_seeds5`
+> Cloud Run experiments listed in `paper/final_results/sources.yaml`. It reproduces the
+> paper leaderboard exactly. Earlier single-seed / exploratory runs (and discontinued
+> models such as Llama 4 Maverick) are **not** included here.
 
 ## Task Schema (`tasks.jsonl`)
 
@@ -30,24 +36,28 @@ Each line is a JSON object with:
 
 ## Result Schema (`results.jsonl`)
 
-Each line is a JSON object with:
+Each line is one (model × case × seed) evaluation:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `model_id` | string | Model name (e.g. `glm-5`, `claude-sonnet-4`) |
-| `experiment_id` | string | Experiment identifier |
+| `model_id` | string | Model name (e.g. `Claude Sonnet 4`, `DeepSeek V3.2`) |
+| `experiment_id` | string | Cloud Run experiment identifier (`*_v5_seeds5`) |
 | `case_id` | string | Task ID |
-| `passed` | bool | All checks passed |
-| `error_category` | string | Failure reason (null if passed) |
+| `seed` | int | Random seed (`42`, `1337`, `2024`; Claude has two samples, no seed param) |
+| `category` | string | Task category |
+| `passed` | bool | All applicable capability checks passed (cost gate excluded) |
+| `passed_with_cost_gate` | bool | `passed` AND within the per-case cost budget |
+| `check_score` | float | Fraction of individual checks passed (0.0–1.0) |
+| `keyword_coverage` | float | Fraction of `must_contain` keywords found |
+| `cost_usd` | float | Estimated per-case cost |
+| `input_tokens` / `output_tokens` | int | Token counts |
 | `rounds` | int | Agent loop iterations used |
-| `tools_used` | list[str] | Tools actually called |
-| `input_tokens` | int | Input token count |
-| `output_tokens` | int | Output token count |
-| `cost_usd` | float | Estimated cost |
 | `duration_ms` | int | Wall-clock time |
-| `check_score` | float | Fraction of checks passed (0.0--1.0) |
-| `tool_f1` | float | F1 between expected and actual tools |
-| `keyword_coverage` | float | Fraction of must_contain keywords found |
+| `error_category` | string | First failing check (null if passed) |
+
+> Per-case `tool_f1` and the exact `tools_used` lists are not carried in the compiled
+> matrix; they are available in the full conversation traces archived with the dataset
+> record (see Citation / Zenodo).
 
 ## Categories
 
@@ -72,35 +82,33 @@ Each line is a JSON object with:
 | threshold | 3 | Numeric threshold filtering |
 | tool_selection | 21 | Chart type, multi-layer toggle |
 
-## Models Evaluated
+## Models Evaluated (final leaderboard)
 
 | Model | Accuracy | Cost/case |
 |-------|----------|-----------|
-| GLM-5 | 58.1% | $0.027 |
-| Claude Sonnet 4 | 58.1% | $0.087 |
-| DeepSeek V3.2 | 52.7% | $0.008 |
-| Qwen3-235B | 47.3% | $0.005 |
-| Gemini 2.5 Pro | 39.8% | $0.032 |
-| GPT-OSS-120B | 39.8% | $0.051 |
+| Claude Sonnet 4 | 60.8% | $0.127 |
+| DeepSeek V3.2 | 56.3% | $0.011 |
+| GLM-5 | 50.2% | $0.038 |
+| Gemini 2.5 Pro | 48.0% | $0.052 |
+| Qwen3-235B | 41.2% | $0.010 |
+| GPT-OSS-120B | 34.1% | $0.089 |
 | Llama 4 Scout | 26.9% | $0.003 |
 
 ## Usage
 
 ```python
 import json
+from collections import defaultdict
 
-# Load tasks
 tasks = [json.loads(line) for line in open("tasks.jsonl")]
 print(f"{len(tasks)} tasks, {len(set(t['category'] for t in tasks))} categories")
 
-# Load results
 results = [json.loads(line) for line in open("results.jsonl")]
-# Accuracy per model
-from collections import Counter
-for model in sorted(set(r["model_id"] for r in results)):
-    model_results = [r for r in results if r["model_id"] == model]
-    acc = sum(r["passed"] for r in model_results) / len(model_results)
-    print(f"{model}: {acc:.1%}")
+acc = defaultdict(list)
+for r in results:
+    acc[r["model_id"]].append(r["passed"])
+for model in sorted(acc, key=lambda m: -sum(acc[m]) / len(acc[m])):
+    print(f"{model}: {sum(acc[model]) / len(acc[model]):.1%}")
 ```
 
 ## Citation
@@ -108,9 +116,9 @@ for model in sorted(set(r["model_id"] for r in results)):
 ```bibtex
 @article{diazireland2026geoagentbench,
   title   = {GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis},
-  author  = {Diaz-Ireland, Gabriel and Prieto-Herr{\'a}ez, Diego and Vel{\'a}zquez, Javier and Garc{\'i}a Peces, Mario and Perez, Guillermo},
+  author  = {Diaz-Ireland, Gabriel and Prieto-Herr{\'a}ez, Diego and Garc{\'i}a Peces, Mario and Vel{\'a}zquez, Javier and Jain, Devika},
   year    = {2026},
-  url     = {https://github.com/darwin-geo/GeoNatureAgent}
+  url     = {https://github.com/gabrielireland/GeoNatureAgent_Benchmark}
 }
 ```
 
