@@ -9,8 +9,8 @@ This guide covers end-to-end reproduction: from running the benchmark to generat
 - Python 3.10+
 - Docker + Docker Compose (for the local self-hosted API)
 - [uv](https://github.com/astral-sh/uv) (recommended) or pip
-- GCP project with Vertex AI enabled (for Vertex models)
-- Anthropic API key (for Claude models)
+- **GCP project with Vertex AI enabled** — required for six of the seven models (DeepSeek, GLM-5, Gemini 2.5 Pro, Qwen3-235B, GPT-OSS-120B, Llama 4 Scout), all served via Vertex AI Model-as-a-Service. Authenticate with **`gcloud auth application-default login`** (Application Default Credentials — this is what LiteLLM/Vertex reads, and is **distinct from `gcloud auth login`**, which only authenticates the CLI).
+- Anthropic API key (for Claude Sonnet 4 only)
 
 There is **no centrally-hosted public API** — the open-source release ships the FastAPI service under `api/` so anyone can run it locally.
 
@@ -22,8 +22,16 @@ uv pip install -e ".[dev]"
 # Fetch the 3 data files (CO2 Spain COG, gully Europe COG, BigEarthNet Portugal JSON)
 ./scripts/download_data.sh
 
-# Start the API locally on port 8080
+# Authenticate to Vertex for the six Vertex-hosted models (required).
+# NOTE: this is the Application Default Credentials login, NOT `gcloud auth login`.
+gcloud auth application-default login
+export VERTEXAI_PROJECT=<your-gcp-project>
+export VERTEXAI_LOCATION=us-central1
+
+# For Claude Sonnet 4 only:
 export ANTHROPIC_API_KEY=sk-...
+
+# Start the API locally on port 8080
 docker compose up --build -d
 ```
 
