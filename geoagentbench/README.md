@@ -25,7 +25,7 @@ python -m geoagentbench --cases v5 --experiment benchmark/experiment.yaml --outp
 python -m geoagentbench [OPTIONS]
 
 --experiment PATH          Path to experiment YAML config (see benchmark/experiment.yaml)
---cases SET                Case set to run: dev, v1, v2, v3, v4, v5, all (default: dev)
+--cases SET                Case set to run: dev (6-case smoke test), v5 (93-case paper set), all (default: dev)
 --case-file PATH           Run a custom cases JSON file instead of a named set
 --model MODEL_ID           Override model from experiment YAML (e.g. claude-sonnet-4-20250514)
 --prompt VERSION           Prompt version: v1, v2, v3 (default: v3)
@@ -47,7 +47,7 @@ python -m geoagentbench --cases v5 --filter-ids V5_21_comparison_lorca_murcia
 python -m geoagentbench --cases v5 --filter-categories comparison cross_indicator
 
 # Point to a custom experiment config
-python -m geoagentbench --experiment benchmark/experiments/exp_013_claude_opus46_vertex_v3.yaml --cases v3
+python -m geoagentbench --experiment benchmark/experiments/exp_042_claude_sonnet4_v5_seeds5.yaml --cases v5
 ```
 
 ---
