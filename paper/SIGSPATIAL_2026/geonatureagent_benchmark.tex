@@ -529,7 +529,7 @@ The mapping from each model's leaderboard entry to its specific Cloud Run output
     \vspace{2pt}
 
     \raggedright\footnotesize
-    \textsuperscript{$\dagger$}Claude Sonnet~4 is reported from two temperature-1.0 samples (the Anthropic Messages API does not implement deterministic seeding); the other six models are evaluated under three seeds. The variance estimate for Claude is therefore based on fewer observations and should be interpreted as an indicative measure rather than a precise one.
+    \textsuperscript{$\dagger$}Claude Sonnet~4 is reported from two temperature-1.0 samples (the Anthropic Messages API does not implement deterministic seeding); the other six models are evaluated under three seeds. The variance estimate for Claude is therefore based on fewer observations and should be interpreted as an indicative measure rather than a precise one. We do not draw a third Claude sample because its two samples already exhibit the tightest run-to-run spread in the cohort ($\pm 0.8$~pp) while incurring the highest per-run cost (\$11.84); an additional sample would add disproportionate expense for limited variance information.
 \end{table}
 
 Table~\ref{tab:leaderboard} and Figure~\ref{fig:leaderboard} summarize the main results aggregated across seeds. \textbf{Claude~Sonnet~4} leads on capability at $60.8\%\pm0.8\%$, with \textbf{DeepSeek~V3.2} a close second at $56.3\%\pm3.1\%$. \textbf{GLM-5} ($50.2\%\pm2.2\%$) and \textbf{Gemini~2.5~Pro} ($48.0\%\pm3.3\%$) form the second tier. \textbf{Qwen3-235B} ($41.2\%\pm4.3\%$), \textbf{GPT-OSS-120B} ($34.1\%\pm1.2\%$), and \textbf{Llama~4~Scout} ($26.9\%\pm2.1\%$) trail. Only two models exceed $55\%$, and none reaches $65\%$, confirming that environmental geospatial tool orchestration remains a significant challenge even for the strongest frontier models. Inter-seed standard deviations are tight ($0.8$--$4.3$ percentage points), so the inter-model ordering is robust to sampling noise.
@@ -749,7 +749,7 @@ We thank Darwin Geospatial for infrastructure support for this research and for 
 \section{Online Resources}
 \label{sec:Data_Availability}
 
-The GeoNatureAgent Benchmark code, evaluation harness, and self-hostable API are available at \url{https://github.com/gabrielireland/GeoNatureAgent_Benchmark}. The benchmark dataset (tasks, per-case results, and the derived environmental indicators for Spain and Portugal) is archived at Zenodo under DOI \url{https://doi.org/10.5281/zenodo.20450996} \citep{geonatureagent_dataset}, and the evaluation software is archived at Zenodo under DOI \url{https://doi.org/10.5281/zenodo.20450998} \citep{geonatureagent_software}.
+The GeoNatureAgent Benchmark code, evaluation harness, and self-hostable API are available at \url{https://github.com/gabrielireland/GeoNatureAgent_Benchmark}. The benchmark dataset (tasks, per-case results, and the derived environmental indicators for Spain and Portugal) is archived at Zenodo under DOI \url{https://doi.org/10.5281/zenodo.20450995} \citep{geonatureagent_dataset}, and the evaluation software is archived at Zenodo under DOI \url{https://doi.org/10.5281/zenodo.20450997} \citep{geonatureagent_software}.
 
 \end{document}
 \endinput
