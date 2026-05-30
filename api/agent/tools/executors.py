@@ -685,14 +685,34 @@ def exec_generate_chart(
     plt.close(fig)
     buf.seek(0)
 
-    bucket_name = _get_gcs_bucket()
     gcs_path = f"{output_prefix.rstrip('/')}/{filename}"
-    from google.cloud import storage as gcs
-    blob = gcs.Client().bucket(bucket_name).blob(gcs_path)
-    blob.upload_from_file(buf, content_type="image/png")
 
+    # Self-hostable / reproducible default: in LOCAL_DEV_MODE (the default) write the
+    # chart to a local directory instead of GCS, so the benchmark runs with zero cloud
+    # credentials. Only upload to GCS when explicitly out of local-dev mode; fall back
+    # to a local file on any GCS error.
+    if os.getenv("LOCAL_DEV_MODE", "true").lower() != "true":
+        try:
+            from google.cloud import storage as gcs
+            bucket_name = _get_gcs_bucket()
+            blob = gcs.Client().bucket(bucket_name).blob(gcs_path)
+            blob.upload_from_file(buf, content_type="image/png")
+            return {"gcs_uri": f"gs://{bucket_name}/{gcs_path}",
+                    "filename": filename, "chart_type": chart_type}
+        except Exception as exc:  # noqa: BLE001
+            import logging
+            logging.getLogger(__name__).warning(
+                "Chart GCS upload failed (%s); falling back to local file", exc)
+
+    import tempfile
+    from pathlib import Path as _Path
+    charts_root = _Path(os.getenv("CHART_OUTPUT_DIR",
+                                   str(_Path(tempfile.gettempdir()) / "geonature_charts")))
+    out_path = charts_root / gcs_path
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_bytes(buf.getvalue())
     return {
-        "gcs_uri": f"gs://{bucket_name}/{gcs_path}",
+        "gcs_uri": out_path.as_uri(),
         "filename": filename,
         "chart_type": chart_type,
     }
