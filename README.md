@@ -2,7 +2,7 @@
 
 A benchmark for evaluating LLM agents on environmental geospatial analysis through structured tool calling against a production API.
 
-**93 tasks** | **18 categories** | **12 tools** | **8 models evaluated**
+**93 tasks** | **18 categories** | **12 tools** | **7 models evaluated**
 
 > **Paper**: *GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis*
 > Gabriel Diaz-Ireland, Diego Prieto-Herráez, Javier Velázquez, Mario García Peces, Guillermo Perez (2026)
@@ -15,9 +15,9 @@ Environmental scientists spend disproportionate effort on data wrangling rather 
 
 Tasks span municipality-level analysis, multi-turn conversation, spatial reasoning, cross-indicator synthesis, error handling, ranking, comparison, multilingual understanding, habitat analysis, temporal change detection, and more.
 
-**Key findings** (8 models evaluated):
-- Best models (GLM-5 and Claude Sonnet 4) achieve 58.1% accuracy — environmental geospatial tool orchestration remains an open challenge
-- Cost varies by two orders of magnitude: DeepSeek V3.2 achieves 52.7% at $0.008/case vs Claude Sonnet 4 at $0.087/case
+**Key findings** (7 models evaluated):
+- Best model (Claude Sonnet 4) achieves 60.8% ± 0.8% accuracy — environmental geospatial tool orchestration remains an open challenge
+- Cost varies by two orders of magnitude: Llama 4 Scout at $0.003/case and DeepSeek V3.2 (56.3%) at $0.011/case vs Claude Sonnet 4 at $0.127/case
 - Comparison and error recovery are universally hard categories
 
 ---
@@ -83,7 +83,7 @@ GeoNatureAgent Benchmark/
 │   └── experiments/             # Per-model configs (8 v5 experiments)
 ├── hf_dataset/                  # HuggingFace dataset
 │   ├── tasks.jsonl              # 93 task definitions
-│   ├── results.jsonl            # 744 results (93 x 8 models)
+│   ├── results.jsonl            # 1860 results (93 tasks × seeds × 7 models)
 │   └── README.md                # Dataset card
 ├── paper/                       # LaTeX manuscript + figures
 │   ├── geonatureagent_benchmark.tex

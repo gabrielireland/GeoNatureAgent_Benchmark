@@ -52,7 +52,7 @@ PARALLEL_TOOLS_ENABLED = os.getenv("AGENT_PARALLEL_TOOLS", "true").lower() == "t
 
 def _load_prompt(version: str = None) -> str:
     """Load system prompt from api/agent/prompts/{version}.md"""
-    version = version or os.getenv("AGENT_PROMPT_VERSION", "v1")
+    version = version or os.getenv("AGENT_PROMPT_VERSION", "v3")
     prompt_path = os.path.join(_AGENT_DIR, "prompts", f"{version}.md")
     if not os.path.isfile(prompt_path):
         logger.error("[AGENT] Prompt file not found: %s -- falling back to v1", prompt_path)
@@ -73,7 +73,7 @@ TOOLS = _load_tools()
 
 logger.info(
     "[AGENT] Loaded prompt version '%s' (%d chars) and %d tools",
-    os.getenv("AGENT_PROMPT_VERSION", "v1"), len(SYSTEM_PROMPT), len(TOOLS),
+    os.getenv("AGENT_PROMPT_VERSION", "v3"), len(SYSTEM_PROMPT), len(TOOLS),
 )
 
 
@@ -655,7 +655,7 @@ def run_agent(
                     actions=actions,
                     usage=usage,
                     duration_ms=total_ms,
-                    prompt_version=os.getenv("AGENT_PROMPT_VERSION", "v1"),
+                    prompt_version=os.getenv("AGENT_PROMPT_VERSION", "v3"),
                     provinces=[p["name"] for p in province_geometries],
                     indicators=list({t["input"].get("indicator", "") for t in tools_used if "input" in t} - {""}),
                     success=True,
@@ -750,7 +750,7 @@ def run_agent(
             actions=actions,
             usage=usage,
             duration_ms=total_ms,
-            prompt_version=os.getenv("AGENT_PROMPT_VERSION", "v1"),
+            prompt_version=os.getenv("AGENT_PROMPT_VERSION", "v3"),
             provinces=[p["name"] for p in province_geometries],
             indicators=list({t["input"].get("indicator", "") for t in tools_used if "input" in t} - {""}),
             success=False,
