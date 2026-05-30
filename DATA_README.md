@@ -44,8 +44,8 @@ does this automatically.
 | `results_per_case.jsonl` | 1,860 per-(model × case × seed) scored results for the 7 final models. Reproduces the leaderboard. |
 | `leaderboard.csv`, `per_category.csv`, `per_case.csv` | Compiled results — the single source of truth for every number in the paper. |
 | `sources.yaml` | Manifest mapping each leaderboard cell to its Cloud Run output directory. |
-| `admin_boundaries.zip` | Spanish autonomous communities / municipalities and Portuguese districts (GeoJSON). Unzips to `api/data/`. Defines the AOIs for zonal statistics. |
-| `raw_traces.zip` | *(Added in a subsequent version.)* Full raw agent conversation logs (`*.jsonl`) from the experiment runs — the deepest reproducibility layer behind the scored results. Not required to re-run the benchmark; provided for audit of the original runs. |
+| `admin_boundaries.zip` | Spanish provinces + autonomous communities + municipalities and Portuguese districts (GeoJSON). Unzips to `api/data/`. Defines the AOIs for zonal statistics and province name resolution. |
+| `raw_traces.zip` | Full raw agent conversation logs (`*.jsonl`, 1583 files) from the experiment runs — the deepest reproducibility layer behind the scored results. Not required to re-run the benchmark; provided for audit of the original runs. |
 
 ## Third-party source datasets (cited, not redistributed)
 
