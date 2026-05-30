@@ -64,11 +64,16 @@ def _load():
     global _provinces, _name_index
     if _provinces:
         return
-    if not _DATA_PATH.exists():
-        logger.error("Data file not found: %s", _DATA_PATH)
+    if not _DATA_PATH.exists() or _DATA_PATH.stat().st_size == 0:
+        logger.error("Provinces data file missing or empty: %s "
+                     "(run scripts/download_data.sh or restore api/data/spain_provinces.geojson)", _DATA_PATH)
         return
-    with _DATA_PATH.open("r", encoding="utf-8") as f:
-        fc = json.load(f)
+    try:
+        with _DATA_PATH.open("r", encoding="utf-8") as f:
+            fc = json.load(f)
+    except (json.JSONDecodeError, OSError) as exc:
+        logger.error("Failed to parse provinces data %s: %s", _DATA_PATH, exc)
+        return
     for i, feature in enumerate(fc.get("features", [])):
         props = feature.get("properties", {})
         _provinces.append(feature)

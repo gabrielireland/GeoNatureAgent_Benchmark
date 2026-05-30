@@ -41,11 +41,17 @@ def _write_jsonl(filename: str, event: Dict[str, Any]) -> None:
         pass
 
 
-def log_query_event(event: Dict[str, Any]) -> None:
-    event.setdefault("timestamp", datetime.now(timezone.utc).isoformat())
-    _write_jsonl("queries.jsonl", event)
+def _build_event(event: Optional[Dict[str, Any]], fields: Dict[str, Any]) -> Dict[str, Any]:
+    """Accept either a single ``event`` dict or keyword fields (the agent uses kwargs)."""
+    payload: Dict[str, Any] = dict(event or {})
+    payload.update(fields)
+    payload.setdefault("timestamp", datetime.now(timezone.utc).isoformat())
+    return payload
 
 
-def log_feedback_event(event: Dict[str, Any]) -> None:
-    event.setdefault("timestamp", datetime.now(timezone.utc).isoformat())
-    _write_jsonl("feedback.jsonl", event)
+def log_query_event(event: Optional[Dict[str, Any]] = None, **fields: Any) -> None:
+    _write_jsonl("queries.jsonl", _build_event(event, fields))
+
+
+def log_feedback_event(event: Optional[Dict[str, Any]] = None, **fields: Any) -> None:
+    _write_jsonl("feedback.jsonl", _build_event(event, fields))
