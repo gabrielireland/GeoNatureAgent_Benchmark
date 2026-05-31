@@ -46,8 +46,9 @@ See [`geoagentbench/README.md`](geoagentbench/README.md) for full CLI reference 
 
 | Document | Description |
 |----------|-------------|
-| [`HOWTOUSE.md`](HOWTOUSE.md) | How to evaluate your own agent, add tasks, extend the benchmark |
-| [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) | End-to-end reproduction guide (experiments, figures, paper) |
+| [`docs/HOWTOUSE.md`](docs/HOWTOUSE.md) | How to evaluate your own agent, add tasks, extend the benchmark |
+| [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) | End-to-end reproduction guide (experiments, figures, paper) |
+| [`docs/DATA_README.md`](docs/DATA_README.md) | Data archive specs (COGs, boundaries, sources) |
 | [`geoagentbench/README.md`](geoagentbench/README.md) | CLI reference, output format, metrics |
 | [`geoagentbench/cases/README.md`](geoagentbench/cases/README.md) | Task definitions, categories, JSON schema |
 | [`hf_dataset/README.md`](hf_dataset/README.md) | HuggingFace dataset card |
@@ -59,8 +60,7 @@ See [`geoagentbench/README.md`](geoagentbench/README.md) for full CLI reference 
 ```
 GeoNatureAgent Benchmark/
 ├── README.md                    # This file
-├── HOWTOUSE.md                  # Integration guide
-├── REPRODUCIBILITY.md           # Reproduction guide
+├── docs/                        # HOWTOUSE, REPRODUCIBILITY, DATA_README, PENDING
 ├── LICENSE                      # Apache 2.0
 ├── CITATION.cff                 # Citation metadata
 ├── pyproject.toml               # Python package config
