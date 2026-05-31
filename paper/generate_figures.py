@@ -389,7 +389,7 @@ def fig6_architecture():
     boxes = [
         (0.5, 5.5, 2.0, 1.0, "User Query\n(NL + history)", DIAG_INPUT),
         (3.6, 5.5, 2.8, 1.0, "LLM Agent\n(ReAct loop)", DIAG_PROCESS),
-        (3.6, 3.0, 2.8, 1.0, "Tool Router\n(12 tools)", DIAG_PROCESS),
+        (3.6, 3.0, 2.8, 1.0, "Tool Router\n(16 tools)", DIAG_PROCESS),
         (7.5, 5.5, 2.0, 1.0, "Response\n(NL + data)", DIAG_OUTPUT),
         (7.5, 3.0, 2.0, 1.0, "Geospatial\nAPI (COGs)", DIAG_DATA),
         (3.6, 0.5, 2.8, 1.0, "Eval Harness\n(scoring)", DIAG_DECISION),
