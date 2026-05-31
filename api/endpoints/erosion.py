@@ -49,9 +49,18 @@ def _load_parquet() -> pd.DataFrame:
         if _df_cache is not None and (now - _df_cache_ts) < _CACHE_TTL_SECONDS:
             return _df_cache
 
+        # Prefer the parquet bundled with the repo (api/data/) so reproduction needs no GCS.
+        bundled = Path(__file__).resolve().parents[1] / "data" / "murcia_zonal_stats.parquet"
+        if bundled.exists():
+            df = pd.read_parquet(bundled)
+            _df_cache = df
+            _df_cache_ts = time.time()
+            logger.info("Parquet loaded from bundled file: %d rows, %d columns", len(df), len(df.columns))
+            return df
+
         local_path = Path(tempfile.gettempdir()) / "murcia_zonal_stats.parquet"
 
-        # Try GCS download
+        # Try GCS download (only when the bundled file is absent)
         try:
             from google.cloud import storage
             client = storage.Client()

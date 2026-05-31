@@ -821,6 +821,13 @@ def _load_erosion_parquet() -> "pd.DataFrame":
     import tempfile
     import pandas as pd
 
+    # Prefer the parquet bundled with the repo (api/data/) so reproduction needs no GCS;
+    # fall back to GCS only if it is absent.
+    bundled = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "murcia_zonal_stats.parquet")
+    if os.path.exists(bundled):
+        _erosion_df = pd.read_parquet(bundled)
+        _erosion_df_ts = now
+        return _erosion_df
     local_path = os.path.join(tempfile.gettempdir(), "murcia_zonal_stats.parquet")
     try:
         from google.cloud import storage
