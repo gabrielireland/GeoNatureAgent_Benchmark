@@ -2,7 +2,7 @@
 
 A benchmark for evaluating LLM agents on environmental geospatial analysis through structured tool calling against a production API.
 
-**93 tasks** | **18 categories** | **12 tools** | **7 models evaluated**
+**93 tasks** | **18 categories** | **16 tools** | **7 models evaluated**
 
 > **Paper**: *GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis*
 > Gabriel Diaz-Ireland, Diego Prieto-Herráez, Mario García Peces, Javier Velázquez, Devika Jain (2026)
