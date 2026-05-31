@@ -5,7 +5,7 @@ A benchmark for evaluating LLM agents on environmental geospatial analysis throu
 **93 tasks** | **18 categories** | **12 tools** | **7 models evaluated**
 
 > **Paper**: *GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis*
-> Gabriel Diaz-Ireland, Diego Prieto-Herráez, Javier Velázquez, Mario García Peces, Guillermo Perez (2026)
+> Gabriel Diaz-Ireland, Diego Prieto-Herráez, Mario García Peces, Javier Velázquez, Devika Jain (2026)
 
 ---
 
@@ -126,7 +126,7 @@ If you use GeoNatureAgent Benchmark in your research, please cite:
 ```bibtex
 @article{diazireland2026geoagentbench,
   title   = {GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis},
-  author  = {Diaz-Ireland, Gabriel and Kakkar, Devika and Prieto-Herr{\'a}ez, Diego and Garc{\'i}a Peces, Mario and Vel{\'a}zquez, Javier},
+  author  = {Diaz-Ireland, Gabriel and Prieto-Herr{\'a}ez, Diego and Garc{\'i}a Peces, Mario and Vel{\'a}zquez, Javier and Jain, Devika},
   year    = {2026},
   url     = {https://github.com/gabrielireland/GeoNatureAgent_Benchmark}
 }
