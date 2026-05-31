@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 authors = [
     {name = "Gabriel Diaz-Ireland", email = "gdiazir1@jh.edu"},
-    {name = "Devika Kakkar", email = "kakkar@fas.harvard.edu"},
+    {name = "Devika Jain", email = "kakkar@fas.harvard.edu"},
     {name = "Diego Prieto-Herráez"},
     {name = "Mario García Peces"},
     {name = "Javier Velázquez"},

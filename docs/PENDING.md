@@ -33,12 +33,7 @@ SIGSPATIAL 2026 abstract registration: 2026-05-22 (6 days)
 
 - [ ] **Page-count check after Devika's edits**. If she adds material, recheck the 10-page limit.
 
-- [ ] **Decide the GitHub org** (waiting on Devika's preference between `darwin-geo/`, `cga-harvard/`, or staying at `gabrielireland/`). Once decided:
-  - Create the org / get admin access
-  - Transfer the repo OR set up the new repo and force-push from local
-  - Update the URL in both `.tex` files
-  - Update `pyproject.toml` URLs
-  - Update any README / HOWTOUSE.md / CITATION.cff references
+- [x] **GitHub org: stay at `gabrielireland/`** (decided 2026-05-31). All URLs already point there — no repo transfer or URL changes needed.
 
 ### Optional (nice to have, but defer if needed)
 
