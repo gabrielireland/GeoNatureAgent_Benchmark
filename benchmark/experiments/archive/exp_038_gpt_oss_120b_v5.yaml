@@ -1,5 +1,5 @@
 experiment_id: "exp_038_gpt_oss_120b_v5"
-description: "OpenAI GPT-OSS 120B via Vertex AI MaaS — Full v5 benchmark (93 cases, 18 categories, 12 tools)"
+description: "OpenAI GPT-OSS 120B via Vertex AI MaaS — Full v5 benchmark (93 cases, 18 categories, 16 tools)"
 based_on: "exp_031_gpt_oss_120b_geobenchx_v1"
 
 model:
