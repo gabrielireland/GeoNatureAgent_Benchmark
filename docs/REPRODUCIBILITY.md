@@ -250,7 +250,7 @@ models:
   # ... one block per model
 ```
 
-Each `run_dir` contains a `results.jsonl` with one row per (case, seed) observation — i.e. 93 × 3 = 279 rows per model. Every row carries its own `seed`, `case_id`, `experiment_id`, `git_commit`, and `model_id`, so individual rows can be traced back to a Cloud Build log line.
+Each `run_dir` contains a `results.jsonl` with one row per (case, seed) observation — i.e. 93 × 3 = 279 rows per model. Every row carries its own `seed`, `case_id`, `experiment_id`, and `model_id`, so individual rows can be traced back to their Cloud Run output directory.
 
 ### Aggregation method
 
