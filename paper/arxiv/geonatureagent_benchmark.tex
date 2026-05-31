@@ -153,7 +153,7 @@ Figure~\ref{fig:architecture} shows the system architecture. The agent operates 
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=1.0\columnwidth]{figures/fig6_architecture.pdf}
+\includegraphics[width=1.0\columnwidth]{../figures/fig6_architecture.pdf}
 \caption{GeoNatureAgent Benchmark system architecture. The LLM agent interacts with a production API serving COG data; the eval harness logs all tool calls and scores responses.}
 \label{fig:architecture}
 \end{figure}
@@ -234,7 +234,7 @@ Each task is scored by eight check types (Table~\ref{tab:checks} and Figure~\ref
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=1.0\columnwidth]{figures/fig8_scoring_pipeline.pdf}
+\includegraphics[width=1.0\columnwidth]{../figures/fig8_scoring_pipeline.pdf}
 \caption{Scoring pipeline. Each case is evaluated by up to eight checks; binary pass requires all to pass. Partial-credit metrics (check score, tool F1, keyword coverage) are always computed.}
 \label{fig:scoring}
 \end{figure}
@@ -282,7 +282,7 @@ The mapping from each model's leaderboard entry to its specific Cloud Run output
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0.3cm 0.2cm 0.6cm 1.1cm}, clip, width=1.0\columnwidth]{figures/fig1_leaderboard.pdf}
+\includegraphics[trim={0.3cm 0.2cm 0.6cm 1.1cm}, clip, width=1.0\columnwidth]{../figures/fig1_leaderboard.pdf}
 \caption{GeoNatureAgent Benchmark v5 leaderboard. Accuracy (\%) with total cost in parentheses. Dashed line at 50\%.}
 
 \label{fig:leaderboard}
@@ -321,7 +321,7 @@ Three findings stand out. First, \textbf{the top of the leaderboard is bimodal b
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0.2cm 0.3cm 0.5cm 0.9cm}, clip, width=1.0\columnwidth]{figures/fig3_binary_vs_partial.pdf}
+\includegraphics[trim={0.2cm 0.3cm 0.5cm 0.9cm}, clip, width=1.0\columnwidth]{../figures/fig3_binary_vs_partial.pdf}
 \caption{Binary accuracy vs partial-credit check score. The gap indicates many ``near-miss'' failures.}
 
 \label{fig:binary_partial}
@@ -333,7 +333,7 @@ Three findings stand out. First, \textbf{the top of the leaderboard is bimodal b
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0.2cm 0.3cm 0.7cm 1.9cm}, clip, width=1.0\columnwidth]{figures/fig2_cost_accuracy.pdf}
+\includegraphics[trim={0.2cm 0.3cm 0.7cm 1.9cm}, clip, width=1.0\columnwidth]{../figures/fig2_cost_accuracy.pdf}
 \caption{Cost-accuracy trade-off. Bubble size proportional to total tokens; cost is the mean per-seed run cost (93 cases). The Pareto frontier (dashed line) runs Scout~$\to$~Qwen3-235B~$\to$~DeepSeek~V3.2~$\to$~Claude~Sonnet~4: three of the four frontier models are open-weight.}
 
 \label{fig:cost_accuracy}
@@ -369,7 +369,7 @@ Figure~\ref{fig:tokens_accuracy} further illustrates this relationship, showing 
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0.2cm 0.3cm 0.3cm 1.3cm}, clip, width=1.0\columnwidth]{figures/fig7_tokens_accuracy.pdf}
+\includegraphics[trim={0.2cm 0.3cm 0.3cm 1.3cm}, clip, width=1.0\columnwidth]{../figures/fig7_tokens_accuracy.pdf}
 \caption{Token consumption vs accuracy. Token volume is a poor predictor of performance.}
 
 \label{fig:tokens_accuracy}
@@ -384,7 +384,7 @@ One case---close-value comparison---defeats every model in every seed, and two f
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0.3cm 0.2cm 0.2cm 1.2cm}, clip, width=1.0\columnwidth]{figures/fig5_hard_cases.pdf}
+\includegraphics[trim={0.3cm 0.2cm 0.2cm 1.2cm}, clip, width=1.0\columnwidth]{../figures/fig5_hard_cases.pdf}
 \caption{Category difficulty---mean accuracy across all seven models, sorted by difficulty.}
 
 \label{fig:hard_cases}
@@ -404,7 +404,7 @@ Conversely, the easiest categories are \textbf{habitat analysis} (Claude 100\%, 
 
 \begin{figure}[t]
 \centering
-\includegraphics[trim={0.3cm 0.4cm 0.3cm 0.7cm}, clip, width=1.0\columnwidth]{figures/fig4_category_heatmap.pdf}
+\includegraphics[trim={0.3cm 0.4cm 0.3cm 0.7cm}, clip, width=1.0\columnwidth]{../figures/fig4_category_heatmap.pdf}
 \caption{Accuracy by category across the seven models. Comparison achieves 0\% across every model; the largest category (tool selection, 21 tasks) shows large inter-model variance.}
 
 \label{fig:heatmap}
