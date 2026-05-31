@@ -193,12 +193,17 @@ Output: `paper/figures/fig{1..8}_*.{pdf,png}`
 
 ## 7. Compiling the Paper
 
+The SIGSPATIAL submission and the arXiv variant live in separate folders (see `paper/README.md`):
+
 ```bash
-cd paper
+# SIGSPATIAL 2026 version (acmart)
+cd paper/SIGSPATIAL_2026
 pdflatex geonatureagent_benchmark.tex
 bibtex geonatureagent_benchmark
 pdflatex geonatureagent_benchmark.tex
 pdflatex geonatureagent_benchmark.tex
+
+# arXiv variant (article class) — same commands under paper/arxiv/
 ```
 
 ---
