@@ -69,8 +69,7 @@
 %\acmYear{2018}
 %\acmDOI{XXXXXXX.XXXXXXX}
 %% These commands are for a PROCEEDINGS abstract or paper.
-%\acmConference[34th ACM SIGSPATIAL]{International Conference on Advances in Geographic Information Systems}{November 3--6, 2026}{Riverside, CA, USA}
-\acmConference{}{}{}
+\acmConference[34th ACM SIGSPATIAL]{International Conference on Advances in Geographic Information Systems}{November 3--6, 2026}{Riverside, CA, USA}
 
 %%
 %%  Uncomment \acmBooktitle if the title of the proceedings is different
@@ -438,12 +437,13 @@ Each task is scored by eight check types (see Table~\ref{tab:checks} and Figure~
         \texttt{max\_cost\_usd}\textsuperscript{c} & Estimated token cost $\leq$ per-case budget. \emph{Reported but not gated} on capability pass/fail. \\
         \bottomrule
     \end{tabular}
-    \vspace{2pt}
-    
-    \raggedright\footnotesize
-    \textsuperscript{a}Tool F1 (precision, recall, F1 on unique tool sets) is computed as a continuous metric but is not used as a gate.
-    \textsuperscript{b}A 120-character window after the label is searched for the first \texttt{float\%} pattern; tolerance defaults to $\pm2$\,pp.
-    \textsuperscript{c}Per-case budgets default to $\$0.10$ in the \texttt{v5} task set. The per-case cost is logged and used in cost-accuracy analysis but is excluded from the binary capability score; see ``Capability and cost as orthogonal axes'' below.
+    \medskip
+
+    {\footnotesize
+    \parbox{\linewidth}{
+    \textsuperscript{a}Tool F1 (precision, recall, F1 on unique tool sets) is computed as a continuous metric but is not used as a gate.\\
+    \textsuperscript{b}A 120-character window after the label is searched for the first \texttt{float\%} pattern; tolerance defaults to $\pm2$\,pp.\\
+    \textsuperscript{c}Per-case budgets default to $\$0.10$ in the \texttt{v5} task set. The per-case cost is logged and used in cost-accuracy analysis but is excluded from the binary capability score; see ``Capability and cost as orthogonal axes'' below.}}
 \end{table}
 
 \paragraph{Continuous metrics.} Beyond binary pass/fail, we report: \emph{check score} ---fraction of individual checks passed per case (partial credit); \emph{keyword coverage} ---fraction of \texttt{must\_contain} terms found; \emph{tool F1} ---set-based F1 between expected and actual tools; and \emph{cost utilisation} ---ratio of actual to budgeted cost.
@@ -526,10 +526,11 @@ The mapping from each model's leaderboard entry to its specific Cloud Run output
         7 & Llama 4 Scout    & $26.9\% \pm 2.1\%$ & $\$0.32$  & $0.003$ \\
         \bottomrule
     \end{tabular}
-    \vspace{2pt}
+    \medskip
 
-    \raggedright\footnotesize
-    \textsuperscript{$\dagger$}Claude Sonnet~4 is reported from two temperature-1.0 samples (the Anthropic Messages API does not implement deterministic seeding); the other six models are evaluated under three seeds. The variance estimate for Claude is therefore based on fewer observations and should be interpreted as an indicative measure rather than a precise one. We do not draw a third Claude sample because its two samples already exhibit the tightest run-to-run spread in the group ($\pm 0.8$~pp) while incurring the highest per-run cost (\$11.84); an additional sample would add disproportionate expense for limited variance information.
+    {\footnotesize
+    \parbox{\linewidth}{
+    \textsuperscript{$\dagger$}Claude Sonnet~4 is reported from two temperature-1.0 samples (the Anthropic Messages API does not implement deterministic seeding); the other six models are evaluated under three seeds. The variance estimate for Claude is therefore based on fewer observations and should be interpreted as an indicative measure rather than a precise one. We do not draw a third Claude sample because its two samples already exhibit the tightest run-to-run spread in the group ($\pm 0.8$~pp) while incurring the highest per-run cost (\$11.84); an additional sample would add disproportionate expense for limited variance information.}}
 \end{table}
 
 Table~\ref{tab:leaderboard} and Figure~\ref{fig:leaderboard} summarize the main results aggregated across seeds. \textbf{Claude~Sonnet~4} leads on capability at $60.8\%\pm0.8\%$, with \textbf{DeepSeek~V3.2} a close second at $56.3\%\pm3.1\%$. \textbf{GLM-5} ($50.2\%\pm2.2\%$) and \textbf{Gemini~2.5~Pro} ($48.0\%\pm3.3\%$) form the second tier. \textbf{Qwen3-235B} ($41.2\%\pm4.3\%$), \textbf{GPT-OSS-120B} ($34.1\%\pm1.2\%$), and \textbf{Llama~4~Scout} ($26.9\%\pm2.1\%$) trail. Only two models exceed $55\%$, and none reaches $65\%$, confirming that environmental geospatial tool orchestration remains a significant challenge even for the strongest frontier models. Inter-seed standard deviations are tight ($0.8$--$4.3$ percentage points), so the inter-model ordering is robust to sampling noise.
@@ -538,7 +539,7 @@ Three findings stand out. First, \textbf{the top of the leaderboard is bimodal b
 
 
 
-\paragraph{Partial credit tells a different story.} Even failing cases often demonstrate partial competence: correct tool selection but missing a keyword, or correct keywords but an extra unnecessary tool call. This gap between binary accuracy and partial-credit scores (Figure~\ref{fig:binary_partial}) suggests that many failures are ``near-misses'' addressable through prompt engineering.
+\paragraph{Partial credit tells a different story.} Even failing cases often demonstrate partial competence: correct tool selection but missing a keyword, or correct keywords but an extra unnecessary tool call. This gap between binary accuracy and partial-credit scores (see Figure~\ref{fig:binary_partial}) suggests that many failures are ``near-misses'' addressable through prompt engineering.
 
 \begin{figure}[ht]
     \centering
@@ -560,7 +561,7 @@ Three findings stand out. First, \textbf{the top of the leaderboard is bimodal b
     \label{fig:cost_accuracy}
 \end{figure}
 
-Cost per case varies by more than an order of magnitude across the different models, from $\$0.003$ for Llama~4~Scout to $\$0.127$ for Claude~Sonnet~4 (see Figure~\ref{fig:cost_accuracy}). The cost-accuracy Pareto frontier comprises four models: \textbf{Llama~4~Scout} (cheapest, $26.9\%$ capability), \textbf{Qwen3-235B} ($41.2\%$ at $\$0.010$/case), \textbf{DeepSeek~V3.2} ($56.3\%$ at $\$0.011$/case), and \textbf{Claude~Sonnet~4} (highest capability at $60.8\%$, $\$0.127$/case). Three of these four frontier models are open-weight; closed-source Gemini~2.5~Pro and the open-weight GPT-OSS-120B are dominated (every Pareto-frontier point matches or exceeds their accuracy at lower cost). The DeepSeek~V3.2 entry is particularly notable: it delivers $93\%$ of Claude's capability ($56.3\%$ vs.\ $60.8\%$) at $11.6\times$ lower per-case cost, making it the strongest single-model recommendation for cost-sensitive deployments. Models priced between DeepSeek and Claude ---GLM-5, Gemini~2.5~Pro, and GPT-OSS-120B ---neither match Claude's accuracy nor undercut DeepSeek's price; they are interior to the frontier in the cost-accuracy plane.
+Cost per case varies by more than an order of magnitude across the different models, from $\$0.003$ for Llama~4~Scout to $\$0.127$ for Claude~Sonnet~4 (see Table~\ref{tab:leaderboard}). The cost-accuracy Pareto frontier comprises four models: \textbf{Llama~4~Scout} (cheapest, $26.9\%$ capability), \textbf{Qwen3-235B} ($41.2\%$ at $\$0.010$/case), \textbf{DeepSeek~V3.2} ($56.3\%$ at $\$0.011$/case), and \textbf{Claude~Sonnet~4} (highest capability at $60.8\%$, $\$0.127$/case). Three of these four frontier models are open-weight; closed-source Gemini~2.5~Pro and the open-weight GPT-OSS-120B are dominated (every Pareto-frontier point matches or exceeds their accuracy at lower cost). The DeepSeek~V3.2 entry is particularly notable: it delivers $93\%$ of Claude's capability ($56.3\%$ vs.\ $60.8\%$) at $11.6\times$ lower per-case cost, making it the strongest single-model recommendation for cost-sensitive deployments. Models priced between DeepSeek and Claude ---GLM-5, Gemini~2.5~Pro, and GPT-OSS-120B ---neither match Claude's accuracy nor undercut DeepSeek's price; they are interior to the frontier in the cost-accuracy plane.
 
 \begin{table}[ht]
     \caption{Projected per-query inference cost at $1,000$ queries/day. Daily and monthly data extrapolate the per-case cost reported in Table~\ref{tab:leaderboard}. Sorted by capability accuracy.}
@@ -674,7 +675,7 @@ Our $60.8\%$ best-model accuracy on real API tool calls compares favorably with 
 \subsection{Cross-Dataset Evaluation: BigEarthNet V2}
 \label{sec:validation}
 
-GeoNatureAgent Benchmark is designed to be domain- and geography-agnostic. To demonstrate extensibility beyond Spanish CO$_2$ and erosion indicators, we incorporate BigEarthNet~V2~\citep{clasen2024reben} as a third data domain covering a different country. BigEarthNet~V2 provides 549k labeled Sentinel-2 patches with CLC2018 19-class labels; we aggregate the 75k+ Portuguese patches across 9 mainland districts into a 7-class land cover distribution (Coniferous Forest, Broadleaf Forest, Shrubland, Grassland, Sparse Vegetation, Water, and Urban) queryable via the same \texttt{analyze\_area} tool used for Spanish indicators.
+GeoNatureAgent Benchmark is designed to be domain- and geogra\-phy-agnostic. To demonstrate extensibility beyond Spanish CO$_2$ and erosion indicators, we incorporate BigEarthNet~V2~\citep{clasen2024reben} as a third data domain covering a different country. BigEarthNet~V2 provides 549k labeled Sentinel-2 patches with CLC2018 19-class labels; we aggregate the 75k+ Portuguese patches across 9 mainland districts into a 7-class land cover distribution (Coniferous Forest, Broadleaf Forest, Shrubland, Grassland, Sparse Vegetation, Water, and Urban) queryable via the same \texttt{analyze\_area} tool used for Spanish indicators.
 
 This integration tests whether agents generalize from Spanish environmental data to a different country and data domain. The 20 BigEarthNet benchmark cases (Table~\ref{tab:bigearth_cases}) span seven task patterns: single-district breakdown, cross-indicator synthesis (Portuguese land cover with Spanish CO$_2$/erosion), multi-turn recall, chart generation, legend and layer discovery, temporal context, and two-district comparison. Unlike the CO$_2$ and erosion indicators, where ground truth depends on live raster geometry, BigEarthNet cases have fixed numeric ground truth derived from pre-computed district-level statistics, enabling deterministic scoring.
 
@@ -713,7 +714,7 @@ The inclusion of BigEarthNet~V2 as a queryable layer rather than merely a valida
 We introduce GeoNatureAgent Benchmark, a benchmark for evaluating AI agents on environmental geospatial analysis through structured tool calling against an open, self-hostable API. The benchmark spans three indicators across Spain and Portugal, demonstrating domain and geographic extensibility. Evaluating seven LLMs on $93$ tasks across 18 categories with sixteen tools, under three temperature-1.0 seeds per model and reporting capability and per-case cost as orthogonal axes:
 
 \begin{enumerate}
-    \item \textbf{Environmental geospatial tool orchestration remains open.} The capability leader (Claude~Sonnet~4) achieves $60.8\%\pm0.8\%$, well below the $85$--$97\%$ reported on general GIS benchmarks; only two models exceed $55\%$ and none reaches $65\%$.
+    \item \textbf{Environmental geospatial tool orchestration remains open.} The capability leader (Claude~Sonnet~4) achieves $60.8\% \pm 0.8\%$, well below the $85$--$97\%$ reported on general GIS benchmarks; only two models exceed $55\%$ and none reaches $65\%$.
     \item \textbf{Open-weight models occupy the cost-accuracy Pareto frontier.} Three of the four frontier models (Llama~4~Scout, Qwen3-235B, DeepSeek~V3.2) are open-weight; closed-source Gemini~2.5~Pro and the larger open-weight GPT-OSS-120B are dominated.
     \item \textbf{The capability-cost trade-off is steep.} DeepSeek~V3.2 delivers $93\%$ of Claude's capability ($56.3\%$ vs.\ $60.8\%$) at $11.6\times$ lower per-case cost, making it the strongest single-model recommendation for cost-sensitive production deployment.
     \item \textbf{Systematic failures persist.} Every model scores $0\%$ on close-value comparison; tool-selection variance remains the dominant inter-model spread; parameter scale alone does not predict capability.
