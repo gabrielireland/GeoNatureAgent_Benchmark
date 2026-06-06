@@ -198,7 +198,7 @@ def fig2_cost_accuracy():
                    alpha=0.85, edgecolor=C_DARK, linewidth=0.5, zorder=3)
         txt = ax.text(
             plot_cost[i]-1,
-            plot_acc[i]-6.5,
+            plot_acc[i]-6,
             m,
             fontsize=8,
             fontweight="bold"
@@ -210,7 +210,17 @@ def fig2_cost_accuracy():
             expand_points=(4.0, 4.0),
             force_text=(2.0, 2.0),
             force_points=(2.0, 2.0))
+    
+    for txt in texts:
+        if txt.get_text() == "Qwen3-235B":
+            x, y = txt.get_position()
+            txt.set_position((x+0.1, y))
 
+    for txt in texts:
+        if txt.get_text() == "Llama 4 Scout":
+            x, y = txt.get_position()
+            txt.set_position((x+0.3, y-3))
+    
     # Pareto frontier — computed from the data rather than hard-coded.
     pts = sorted(zip(plot_cost, plot_acc))
     pareto = []
@@ -444,7 +454,7 @@ def fig7_tokens_vs_accuracy():
         ax.scatter(plot_tokens[i], plot_acc[i], s=80, c=plot_colors[i],
                    edgecolor=C_DARK, linewidth=0.5, zorder=3)
         txt = ax.text(
-            plot_tokens[i]-90,
+            plot_tokens[i]-100,
             plot_acc[i]-3,
             m,
             fontsize=9,
@@ -457,6 +467,11 @@ def fig7_tokens_vs_accuracy():
                 expand_points=(4.0, 4.0),
                 force_text=(2.0, 2.0),
                 force_points=(2.0, 2.0))
+                
+    for txt in texts:
+        if txt.get_text() == "Llama 4 Scout":
+            x, y = txt.get_position()
+            txt.set_position((x+10, y-1))
     ax.set_xlabel("Total Tokens (K)", fontsize=11, fontweight='bold')
     ax.set_ylabel("Accuracy (%)", fontsize=11, fontweight='bold')
     ax.set_ylim(0, 65)
