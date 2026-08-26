@@ -363,7 +363,7 @@ The benchmark covers three environmental indicators across two countries:
 
 \begin{itemize}
     \item \textbf{CO$_2$ absorption suitability} (categorical, Spain): legislative pre-screening encoding five MITECO spatial criteria~\citep{spain2025rd214}, producing three classes (Not Eligible, Eligible with Conditions, Eligible). Served as a Cloud Optimized GeoTIFF (COG).
-    \item \textbf{Gully erosion probability} (continuous, Europe): machine learning prediction from LUCAS 2022 soil survey ($0$--$100\%$). Served as a COG.
+    \item \textbf{Gully erosion probability} (continuous, Europe): machine learning prediction from the LUCAS~2022 soil survey~\citep{borrelli2025gully} ($0$--$100\%$). Served as a COG.
     \item \textbf{BigEarthNet~V2 land cover} (categorical, Portugal): 7-class land cover distribution derived from 75k+ labeled Sentinel-2 patches~\citep{clasen2024reben}, aggregated by Portuguese district. Served as pre-computed JSON statistics.
 \end{itemize}
 
@@ -730,7 +730,7 @@ GeoNatureAgent Benchmark, evaluation code, and the full MLOps pipeline are publi
 %% identification of the section in the article metadata, and the
 %% consistent spelling of the heading.
 \begin{acks}
-We thank Darwin Geospatial for infrastructure support for this research and for open-sourcing the code and experiments. We are grateful to Guillermo Perez for his participation as a Darwin Geospatial collaborator on this work.
+We thank Darwin Geospatial for infrastructure support for this research and for open-sourcing the code and experiments. We are grateful to Guillermo Perez for his participation as a Darwin Geospatial collaborator on this work. The Portuguese land-cover statistics derive from BigEarthNet~V2, which contains modified Copernicus Sentinel data (2017--2018); we acknowledge the European Space Agency and the European Commission Copernicus programme.
 \end{acks}
 
 %%
