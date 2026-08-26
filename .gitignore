@@ -48,3 +48,7 @@ CLAUDE.local.md
 .claudeignore
 *.claude.*
 claude_*.local.*
+
+# Private satellite repo (post-acceptance workspace: confidential reviews, emails,
+# compliance notes). Tracked separately in its own PRIVATE git repo — never in this public one.
+/private/
