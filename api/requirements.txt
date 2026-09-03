@@ -9,3 +9,4 @@ rasterio~=1.4.0
 rio-tiler~=6.7.0
 matplotlib~=3.9.0
 python-multipart~=0.0.17
+mcp<2  # MCP server wrapper (agent/mcp_server.py); pin v1 API for reproducibility

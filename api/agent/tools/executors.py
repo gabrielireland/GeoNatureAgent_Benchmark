@@ -107,7 +107,7 @@ VECTOR_DISPLAY_LAYERS = {
 def exec_list_layers(cache_manager, user: Optional[Dict] = None) -> Dict[str, Any]:
     from services.tile_tenant import filter_layers_by_access
 
-    all_layers = cache_manager.list_available_indicators()
+    all_layers = list(cache_manager.entries.values())
     result = []
     for layer in all_layers:
         info = layer if isinstance(layer, dict) else {"indicator": layer}
@@ -223,7 +223,7 @@ def exec_analyze_area(
     if indicator in JSON_INDICATORS:
         return _exec_analyze_area_json(indicator, year, season, aoi)
 
-    layer_info = cache_manager.get_layer_info(indicator, str(year), season)
+    layer_info = cache_manager.layer_metadata(indicator, str(year), season)
     if not layer_info:
         return {"error": f"Layer {indicator}/{year}/{season} not found."}
 
@@ -753,7 +753,7 @@ def exec_toggle_layer(
 ) -> Dict[str, Any]:
     """Resolve layer metadata for a toggle_layer action."""
     # Try COG layers first (from cache_manager)
-    all_layers = cache_manager.list_available_indicators()
+    all_layers = list(cache_manager.entries.values())
     for layer in all_layers:
         info = layer if isinstance(layer, dict) else {"indicator": layer}
         if info.get("indicator") == indicator:
