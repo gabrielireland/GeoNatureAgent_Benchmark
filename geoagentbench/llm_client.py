@@ -143,6 +143,11 @@ class LiteLLMClient(BaseLLMClient):
     @property
     def _is_model_garden_maas(self) -> bool:
         """Model Garden MaaS models use the OpenAI-compatible endpoint, not the publisher endpoint."""
+        # OpenRouter/Gemini go straight to LiteLLM's own provider routing, NOT the Vertex
+        # MaaS endpoint -- guard first so e.g. "openrouter/openai/gpt-4o" is not misread as MaaS
+        # by the "/openai/" substring below.
+        if self.model_id.startswith(("openrouter/", "gemini/")):
+            return False
         maas_publishers = ("/meta/", "/deepseek-ai/", "/openai/", "/zai-org/", "/mistralai/", "/qwen/", "/kimi/", "/minimax/", "/ai21/")
         return any(p in self.model_id for p in maas_publishers)
 
@@ -233,10 +238,13 @@ class LiteLLMClient(BaseLLMClient):
                     )
                 else:
                     vertex_kwargs = {}
-                    if self._vertex_project:
-                        vertex_kwargs["vertex_project"] = self._vertex_project
-                    if self._vertex_region:
-                        vertex_kwargs["vertex_location"] = self._vertex_region
+                    # Vertex project/region only apply to Vertex/Gemini; OpenRouter must not
+                    # receive them (LiteLLM reads OPENROUTER_API_KEY from the env instead).
+                    if not self.model_id.startswith("openrouter/"):
+                        if self._vertex_project:
+                            vertex_kwargs["vertex_project"] = self._vertex_project
+                        if self._vertex_region:
+                            vertex_kwargs["vertex_location"] = self._vertex_region
                     result_holder[0] = self._litellm.completion(
                         model=self.model_id,
                         messages=messages,
@@ -335,6 +343,69 @@ class LiteLLMClient(BaseLLMClient):
                 converted.append(msg)
         return converted
 
+    # Real tool registry names (kept in sync with api/agent/tools/tools.json) plus
+    # aliases models coin from the tool *descriptions* instead of the exact name.
+    # Used by the universal tool-call parser so any model's tool intent resolves to
+    # a canonical tool regardless of the surface format it emits.
+    _TOOL_NAMES = {
+        "list_layers", "get_legend", "analyze_area", "get_layer_bounds",
+        "lookup_province", "lookup_municipality", "compare_areas", "find_top_n",
+        "generate_chart", "analyze_multi_layer", "toggle_layer", "query_erosion_stats",
+        "create_buffer", "select_features_by_spatial_relationship", "get_centroids",
+        "reject_task",
+    }
+    _TOOL_ALIASES = {
+        "analysis": "analyze_area", "analyze": "analyze_area",
+        "analyze_raster": "analyze_area", "analyze_layer": "analyze_area",
+        "province_lookup": "lookup_province", "lookup_province_by_name": "lookup_province",
+        "municipality_lookup": "lookup_municipality",
+        "compare": "compare_areas", "compare_area": "compare_areas",
+        "top_n": "find_top_n", "rank": "find_top_n", "ranking": "find_top_n",
+        "chart": "generate_chart", "legend": "get_legend", "layers": "list_layers",
+        "reject": "reject_task",
+    }
+
+    @classmethod
+    def _canonical_tool(cls, raw_name: str):
+        """Map a model-emitted call name to a real tool name, or None if unknown."""
+        n = raw_name.strip().lower().replace(" ", "_").replace("-", "_")
+        n = re.sub(r"[^a-z0-9_]", "", n)
+        if n in cls._TOOL_NAMES:
+            return n
+        return cls._TOOL_ALIASES.get(n)
+
+    @classmethod
+    def _parse_tool_code_calls(cls, text: str) -> list[dict]:
+        """Parse tool calls from Gemma-style ```tool_code ... ``` fenced blocks.
+
+        Gemma-3 emits tool intent as a fenced ``tool_code`` block containing either
+        a Python list of call strings or bare ``func(k=v, ...)`` calls, e.g.::
+
+            ```tool_code
+            [ "municipality lookup(name='Antequera', province='Malaga')",
+              "analysis(indicator='rf_gully_probability', year='2022', ...)" ]
+            ```
+
+        We extract each ``name(args)``, canonicalise the name against the tool
+        registry (aliases included), and drop anything that does not resolve to a
+        real tool. Only keyword args are kept (all our tools take keyword args).
+        """
+        parsed = []
+        for block in re.findall(r"```tool_code(.*?)```", text, re.DOTALL):
+            for m in re.finditer(r"([A-Za-z][A-Za-z0-9_ .\-]*?)\s*\(([^()]*)\)", block, re.DOTALL):
+                canon = cls._canonical_tool(m.group(1))
+                if not canon:
+                    continue
+                args_str = m.group(2).strip()
+                try:
+                    tree = ast.parse(f"_f({args_str})", mode="eval")
+                    args = {kw.arg: ast.literal_eval(kw.value)
+                            for kw in tree.body.keywords if kw.arg}
+                except Exception:
+                    args = {}
+                parsed.append({"name": canon, "input": args})
+        return parsed
+
     @staticmethod
     def _parse_python_tool_calls(text: str) -> list[dict]:
         """Parse tool calls from <|python_start|>func(k=v, ...)<|python_end|> format.
@@ -385,10 +456,18 @@ class LiteLLMClient(BaseLLMClient):
                     name=tc.function.name,
                     input=args,
                 ))
-        elif choice.message.content and "<|python_start|>" in choice.message.content:
-            # Fallback: parse tool calls from Llama 4 models that emit
-            # Python-style invocations instead of structured tool_calls.
-            parsed_calls = self._parse_python_tool_calls(choice.message.content)
+        elif choice.message.content and (
+            "<|python_start|>" in choice.message.content
+            or "```tool_code" in choice.message.content
+        ):
+            # Universal fallback: some models emit tool intent as text rather than
+            # structured tool_calls. Handle Llama/GPT-OSS <|python_start|> tokens
+            # AND Gemma ```tool_code fenced blocks, so the tool caller is format-
+            # agnostic. Models that emit structured tool_calls never reach here.
+            txt = choice.message.content
+            parsed_calls = self._parse_python_tool_calls(txt)
+            if "```tool_code" in txt:
+                parsed_calls = parsed_calls + self._parse_tool_code_calls(txt)
             if parsed_calls:
                 stop_reason = "tool_use"
                 for pc in parsed_calls:
@@ -435,6 +514,6 @@ def create_client(model_id: str, **kwargs) -> BaseLLMClient:
         model_id: Model identifier. Prefix 'vertex_ai/' routes to LiteLLM.
         **kwargs: Passed to the client constructor (api_key, vertex_project, vertex_region).
     """
-    if model_id.startswith(("vertex_ai/", "gemini/")):
+    if model_id.startswith(("vertex_ai/", "gemini/", "openrouter/")):
         return LiteLLMClient(model_id, **kwargs)
     return AnthropicClient(model_id, **kwargs)

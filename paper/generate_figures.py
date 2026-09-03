@@ -58,7 +58,9 @@ plt.rcParams.update({
     "savefig.pad_inches": 0.05,
 })
 
-# ── ColorBrewer Dark2 — 8-class qualitative, designed for print ──────────
+# ── ColorBrewer Dark2 (8-class) + 1 print-safe extra → 9 classes ──────────
+# Extended to 9 so all nine evaluated models (7 paper + GPT-4o + Gemma-3) get a
+# distinct colour in fig2/fig7.
 DARK2 = [
     "#1b9e77",  # teal-green
     "#d95f02",  # orange
@@ -68,6 +70,7 @@ DARK2 = [
     "#e6ab02",  # ochre
     "#a6761d",  # brown
     "#666666",  # neutral gray (8th class)
+    "#1f78b4",  # steel blue (9th class — ColorBrewer Paired, print-safe)
 ]
 
 # ── Grayscale tones ───────────────────────────────────────────────────────
@@ -113,7 +116,7 @@ tokens_k = [float(r["tokens_per_seed_mean"]) / 1000 for r in _LB]
 
 # Per-model categorical colors — ColorBrewer Dark2, applied in leaderboard order
 # (fig2 cost-accuracy, fig7 tokens-accuracy use these).
-_PALETTE = DARK2[:7]
+_PALETTE = DARK2[:]                     # all 9 classes, one per model
 model_colors = _PALETTE[: len(models)]
 
 # All models go into every figure; no historical exclusion is applied.
@@ -210,7 +213,7 @@ def fig2_cost_accuracy():
             expand_points=(4.0, 4.0),
             force_text=(2.0, 2.0),
             force_points=(2.0, 2.0))
-    
+
     for txt in texts:
         if txt.get_text() == "Qwen3-235B":
             x, y = txt.get_position()
@@ -220,7 +223,7 @@ def fig2_cost_accuracy():
         if txt.get_text() == "Llama 4 Scout":
             x, y = txt.get_position()
             txt.set_position((x+0.3, y-3))
-    
+
     # Pareto frontier — computed from the data rather than hard-coded.
     pts = sorted(zip(plot_cost, plot_acc))
     pareto = []
@@ -467,7 +470,7 @@ def fig7_tokens_vs_accuracy():
                 expand_points=(4.0, 4.0),
                 force_text=(2.0, 2.0),
                 force_points=(2.0, 2.0))
-                
+
     for txt in texts:
         if txt.get_text() == "Llama 4 Scout":
             x, y = txt.get_position()

@@ -1,0 +1,23 @@
+experiment_id: "exp_043_gpt4o_openrouter_v5"
+description: "GPT-4o via OpenRouter — Full v5 benchmark, 3 seeds (R4-W2: adds a proprietary GPT/ChatGPT model)"
+
+model:
+  model_id: "openrouter/openai/gpt-4o"
+  max_tokens: 4096
+
+sampling:
+  temperature: 1.0
+  seeds: [42, 1337, 2024]
+
+agent:
+  architecture:    single_agent
+  prompt_strategy: zero_shot
+  prompt_version:  v3
+  max_turns:       10
+
+tasks:
+  case_set: v5
+
+output:
+  prefix: "GeoNatureAgent/experiments_openrouter"
+  log_to_bigquery: false
