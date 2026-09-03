@@ -12,6 +12,12 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.20450995
     description: "Dataset archive (Zenodo) — concept DOI, resolves to latest version"
+  - type: doi
+    value: 10.1145/3841645.3844198
+    description: "Paper (ACM SIGSPATIAL '26, short paper)"
+  - type: other
+    value: "arXiv:2606.12821"
+    description: "arXiv version (v1 = extended 10-page preprint; v2 = 4-page camera-ready)"
 keywords:
   - geospatial AI
   - LLM agents
@@ -22,7 +28,7 @@ authors:
   - family-names: Diaz-Ireland
     given-names: Gabriel
     affiliation: "Universidad Católica de Ávila; Johns Hopkins University"
-    email: gdiazir1@jh.edu
+    email: gdiazir1@jhu.edu
   - family-names: Jain
     given-names: Devika
     affiliation: "Center for Geographic Analysis, Harvard University"
@@ -36,5 +42,5 @@ authors:
   - family-names: Velázquez
     given-names: Javier
     affiliation: Universidad Católica de Ávila
-date-released: "2026-04-25"
-version: "1.0.0"
+date-released: "2026-09-03"
+version: "1.2.0"
