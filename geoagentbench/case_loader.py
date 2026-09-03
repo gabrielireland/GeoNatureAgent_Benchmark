@@ -10,6 +10,7 @@ _CASES_DIR = Path(__file__).parent / "cases"
 CASE_SETS = {
     "dev": "dev.json",
     "v5": "benchmark_v5.json",
+    "v6": "benchmark_v6_expansion.json",
 }
 
 

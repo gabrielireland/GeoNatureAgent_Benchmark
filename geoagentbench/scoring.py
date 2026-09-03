@@ -188,7 +188,11 @@ def check_numeric_accuracy(case: dict, agent_output: dict) -> List[Dict[str, Any
     for the first float followed by '%'.
     """
     ground_truth = case.get("ground_truth")
-    if not ground_truth:
+    # Structured numeric scoring only applies when ground_truth is a list of
+    # {label, expected_pct} entries. Tasks that store ground_truth as free text
+    # (e.g. the v6 expansion) are scored via must_contain / expected_tools instead;
+    # skip here rather than crash on entry["label"].
+    if not ground_truth or not isinstance(ground_truth, list):
         return []
 
     answer = agent_output.get("answer") or ""

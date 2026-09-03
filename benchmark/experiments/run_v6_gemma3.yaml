@@ -1,0 +1,23 @@
+experiment_id: "exp_v6_gemma3_openrouter"
+description: "Gemma 3 27B via OpenRouter — Full v5 benchmark, 3 seeds (R4-W2: adds the requested open-weight Gemma model)"
+
+model:
+  model_id: "openrouter/google/gemma-3-27b-it"
+  max_tokens: 4096
+
+sampling:
+  temperature: 1.0
+  seeds: [42, 1337, 2024]
+
+agent:
+  architecture:    single_agent
+  prompt_strategy: zero_shot
+  prompt_version:  v3
+  max_turns:       10
+
+tasks:
+  case_set: v6
+
+output:
+  prefix: "GeoNatureAgent/experiments_openrouter"
+  log_to_bigquery: false

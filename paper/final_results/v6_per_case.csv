@@ -1,0 +1,10 @@
+model,V6_01_comparison_close_broadleaf,V6_02_comparison_veryclose_coniferous,V6_03_comparison_moderate_shrubland,V6_04_comparison_moderate_broadleaf,V6_05_comparison_control_largegap,V6_06_legend_dominant_close,V6_07_legend_treebased_classes,V6_08_count_broadleaf_threshold,V6_09_sum_total_forest,V6_10_sum_compare_total_forest
+Qwen3-235B,1.00,0.00,0.00,0.33,0.00,1.00,0.00,0.33,1.00,0.00
+GLM-5,0.67,0.67,0.33,0.00,0.33,1.00,0.00,0.00,0.67,0.00
+DeepSeek V3.2,0.33,0.33,0.00,0.33,0.00,1.00,0.00,0.00,0.67,0.00
+Claude Sonnet 4,0.00,0.00,0.00,0.00,0.00,1.00,0.00,0.00,1.00,0.00
+GPT-4o,1.00,0.33,0.33,0.67,0.67,1.00,0.00,0.00,1.00,0.00
+Gemini 2.5 Pro,0.33,0.67,1.00,1.00,1.00,1.00,0.00,0.00,1.00,0.00
+GPT-OSS-120B,0.00,0.33,0.00,0.33,0.00,1.00,0.00,0.00,0.33,0.00
+Llama 4 Scout,0.00,0.00,0.00,0.33,0.00,0.33,0.33,0.00,0.33,0.00
+Gemma-3-27B,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.33,0.00

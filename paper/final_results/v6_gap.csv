@@ -1,0 +1,7 @@
+case,gap_pp,n,acc_raw,acc_capability
+V6_02_comparison_veryclose_coniferous,0.6,27,0.259,0.667
+V6_01_comparison_close_broadleaf,1.2,27,0.370,0.593
+V6_03_comparison_moderate_shrubland,2.1,27,0.185,0.667
+V6_10_sum_compare_total_forest,3.1,27,0.000,0.000
+V6_04_comparison_moderate_broadleaf,3.2,27,0.333,0.741
+V6_05_comparison_control_largegap,45.1,27,0.222,0.593

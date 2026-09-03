@@ -1,0 +1,21 @@
+experiment_id: "run_v6_gemini"
+description: "Gemini 2.5 Pro via Vertex — v6 (10 close-value tasks), 3 seeds, project local-env-489816-i2"
+model:
+  model_id: "vertex_ai/gemini-2.5-pro"
+  max_tokens: 4096
+sampling:
+  temperature: 1.0
+  seeds: [42, 1337, 2024]
+vertex:
+  project: local-env-489816-i2
+  region: us-central1
+agent:
+  architecture:    single_agent
+  prompt_strategy: zero_shot
+  prompt_version:  v3
+  max_turns:       10
+tasks:
+  case_set: v6
+output:
+  prefix: "GeoNatureAgent/v6"
+  log_to_bigquery: false
