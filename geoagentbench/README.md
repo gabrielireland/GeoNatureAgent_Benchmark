@@ -1,6 +1,6 @@
 # geoagentbench
 
-Benchmarking framework for GeoNatureAgent — evaluates the geospatial AI agent against a structured set of test cases, scores results across multiple dimensions, and produces publication-ready metrics and visualisations.
+Evaluation framework for GeoNatureAgent — scores any LLM you plug in against a structured set of test cases across multiple dimensions, and produces publication-ready metrics and visualisations.
 
 ---
 

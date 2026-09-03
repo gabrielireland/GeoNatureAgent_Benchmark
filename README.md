@@ -1,8 +1,8 @@
 # GeoNatureAgent Benchmark
 
-A benchmark for evaluating LLM agents on environmental geospatial analysis through structured tool calling against a production API.
+A framework and benchmark for choosing which LLM to run your geospatial-engineering agents on — evaluated through structured tool calling against a production API, with open data and everything needed to reproduce it.
 
-**93 tasks** | **18 categories** | **16 tools** | **7 models evaluated**
+**103 tasks** (93-task main suite + 10-task v6 expansion) | **18 categories** | **16 tools** | **9 models evaluated**
 
 > **Paper**: *GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis*
 > Gabriel Diaz-Ireland, Diego Prieto-Herráez, Mario García Peces, Javier Velázquez, Devika Jain (2026)
@@ -11,14 +11,15 @@ A benchmark for evaluating LLM agents on environmental geospatial analysis throu
 
 ## What is GeoNatureAgent Benchmark?
 
-Environmental scientists spend disproportionate effort on data wrangling rather than analysis. GeoNatureAgent Benchmark measures how well AI agents can automate these workflows by orchestrating geospatial tools against a real API serving three environmental indicators across Spain and Portugal.
+Environmental scientists spend disproportionate effort on data wrangling rather than analysis. GeoNatureAgent Benchmark is a framework — and benchmark — for choosing which models best automate these workflows, by orchestrating geospatial tools against a real, open API serving three environmental indicators across Spain and Portugal.
 
 Tasks span municipality-level analysis, multi-turn conversation, spatial reasoning, cross-indicator synthesis, error handling, ranking, comparison, multilingual understanding, habitat analysis, temporal change detection, and more.
 
-**Key findings** (7 models evaluated):
-- Best model (Claude Sonnet 4) achieves 60.8% ± 0.8% accuracy — environmental geospatial tool orchestration remains an open challenge
+**Key findings** (9 models evaluated):
+- Best model (Claude Sonnet 4) achieves 60.8% ± 0.8% on the 93-task main suite (61.7% on the combined 103 tasks) — environmental geospatial tool orchestration remains an open challenge
 - Cost varies by two orders of magnitude: Llama 4 Scout at $0.003/case and DeepSeek V3.2 (56.3%) at $0.011/case vs Claude Sonnet 4 at $0.127/case
-- Comparison and error recovery are universally hard categories
+- The cost-accuracy Pareto frontier is occupied mostly by open-weight models
+- Comparison, temporal change, and interpretation are the universally hard categories
 
 ---
 
@@ -67,12 +68,13 @@ GeoNatureAgent Benchmark/
 ├── geoagentbench/               # Benchmark framework
 │   ├── runner.py                # Experiment runner
 │   ├── scoring.py               # Evaluation checks (8 check types)
-│   ├── llm_client.py            # Multi-backend LLM client (Anthropic + Vertex AI)
+│   ├── llm_client.py            # Multi-backend LLM client (Anthropic + Vertex AI + OpenRouter)
 │   ├── case_loader.py           # Task loader
 │   ├── config.py                # Experiment YAML parser
 │   ├── metrics.py               # Cost calculation, accuracy aggregation
 │   └── cases/                   # Task definitions (JSON)
-│       └── benchmark_v5.json    # 93 tasks, 18 categories (paper)
+│       ├── benchmark_v5.json    # 93 tasks, 18 categories (paper)
+│       └── benchmark_v6_expansion.json  # 10 comparison-heavy tasks (v6)
 ├── api/                         # Agent resources
 │   ├── agent/prompts/v3.md      # System prompt (v3, used in all experiments)
 │   └── data/                    # Pre-computed indicator data
@@ -80,10 +82,10 @@ GeoNatureAgent Benchmark/
 │       └── portugal_districts.json
 ├── benchmark/                   # Experiment configurations
 │   ├── experiment.yaml          # Template
-│   └── experiments/             # Per-model configs (8 v5 experiments)
+│   └── experiments/             # Per-model configs (9 v5 + 7 v6 experiments)
 ├── hf_dataset/                  # HuggingFace dataset
 │   ├── tasks.jsonl              # 93 task definitions
-│   ├── results.jsonl            # 1860 results (93 tasks × seeds × 7 models)
+│   ├── results.jsonl            # 1860 results (7 paper models; 9-model refresh pending)
 │   └── README.md                # Dataset card
 ├── paper/                       # LaTeX manuscript + figures
 │   ├── geonatureagent_benchmark.tex
@@ -109,13 +111,17 @@ Capability and cost are reported as orthogonal axes — `max_cost_usd` is logged
 | 2 | DeepSeek V3.2 | 56.3% ± 3.1 | $0.011 | Vertex AI MaaS |
 | 3 | GLM-5 | 50.2% ± 2.2 | $0.038 | Vertex AI MaaS |
 | 4 | Gemini 2.5 Pro | 48.0% ± 3.3 | $0.052 | Vertex AI native |
-| 5 | Qwen3-235B | 41.2% ± 4.3 | $0.010 | Vertex AI MaaS |
-| 6 | GPT-OSS-120B | 34.1% ± 1.2 | $0.089 | Vertex AI MaaS |
-| 7 | Llama 4 Scout | 26.9% ± 2.1 | $0.003 | Vertex AI MaaS |
+| 5 | GPT-4o | 41.6% ± 2.7 | $0.070 | OpenRouter |
+| 6 | Qwen3-235B | 41.2% ± 4.3 | $0.010 | Vertex AI MaaS |
+| 7 | GPT-OSS-120B | 34.1% ± 1.2 | $0.089 | Vertex AI MaaS |
+| 8 | Llama 4 Scout | 26.9% ± 2.1 | $0.003 | Vertex AI MaaS |
+| 9 | Gemma-3-27B | 15.8% ± 1.6 | $0.062 | OpenRouter |
 
-† Claude Sonnet 4 is reported from two temperature-1.0 samples (the Anthropic Messages API does not implement deterministic seeding); the other six models are evaluated under three seeds {42, 1337, 2024}.
+† Claude Sonnet 4 is reported from two temperature-1.0 samples (the Anthropic Messages API does not implement deterministic seeding); the other eight models are evaluated under three seeds {42, 1337, 2024}.
 
 **Cost–accuracy Pareto frontier:** Llama 4 Scout → Qwen3-235B → DeepSeek V3.2 → Claude Sonnet 4. Three of the four frontier models are open-weight.
+
+**Combined 103-task leaderboard** (main suite + v6 expansion, capability scoring): see `paper/final_results/leaderboard_v5plus6.csv`, regenerated by `python3 -m scripts.aggregate_combined`. Ordering matches the 93-task table above (Qwen3-235B and GPT-4o swap within noise).
 
 ---
 
@@ -124,11 +130,13 @@ Capability and cost are reported as orthogonal axes — `max_cost_usd` is logged
 If you use GeoNatureAgent Benchmark in your research, please cite:
 
 ```bibtex
-@article{diazireland2026geoagentbench,
-  title   = {GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis},
-  author  = {Diaz-Ireland, Gabriel and Prieto-Herr{\'a}ez, Diego and Garc{\'i}a Peces, Mario and Vel{\'a}zquez, Javier and Jain, Devika},
-  year    = {2026},
-  url     = {https://github.com/gabrielireland/GeoNatureAgent_Benchmark}
+@inproceedings{diazireland2026geonatureagent,
+  title     = {GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis Across Frontier and Open-Weight Foundation Models},
+  author    = {Diaz-Ireland, Gabriel and Prieto-Herr{\'a}ez, Diego and Garc{\'i}a Peces, Mario and Vel{\'a}zquez, Javier and Jain, Devika},
+  booktitle = {The 34th ACM International Conference on Advances in Geographic Information Systems (SIGSPATIAL '26)},
+  year      = {2026},
+  publisher = {ACM},
+  doi       = {10.1145/3841645.3844198}
 }
 ```
 

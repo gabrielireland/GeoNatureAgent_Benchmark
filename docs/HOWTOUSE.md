@@ -1,6 +1,6 @@
 # How to Use GeoNatureAgent Benchmark
 
-This guide explains how to use GeoNatureAgent Benchmark to evaluate your own LLM agent on environmental geospatial tasks.
+This guide explains how to use GeoNatureAgent Benchmark to evaluate and choose an LLM for your environmental geospatial agents.
 
 ---
 
