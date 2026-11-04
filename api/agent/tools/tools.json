@@ -357,7 +357,7 @@
   },
   {
     "name": "reject_task",
-    "description": "Call this tool when the user's question cannot be answered with the available tools and data. This prevents hallucinating an answer. Use when: the question requires data you don't have, asks about areas outside Spain, or needs analysis capabilities not available in the current toolset.",
+    "description": "Call this tool when the user's question cannot be answered with the available tools and data. This prevents hallucinating an answer. Use when: the question requires data you don't have, asks about areas outside the data coverage (CO2 suitability: Spain; gully erosion: Europe and the UK; land cover: 9 Portuguese districts), or needs analysis capabilities not available in the current toolset.",
     "input_schema": {
       "type": "object",
       "properties": {

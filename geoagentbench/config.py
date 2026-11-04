@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 
 VALID_ARCHITECTURES = {"single_agent", "multi_agent_planner_worker"}
 VALID_PROMPT_STRATEGIES = {"zero_shot", "chain_of_thought", "few_shot"}
-VALID_PROMPT_VERSIONS = {"v1", "v2", "v3"}
+VALID_PROMPT_VERSIONS = {"v1", "v2", "v3", "v4"}
 VALID_ENABLED_VALUES = {"true", "false", "stop"}
 
 

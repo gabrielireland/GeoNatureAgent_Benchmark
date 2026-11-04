@@ -118,6 +118,21 @@ def exec_list_layers(cache_manager, user: Optional[Dict] = None) -> Dict[str, An
             "description": (info.get("metadata") or {}).get("description_en", ""),
             "access_tier": info.get("access_tier", "guest"),
         })
+    # v7 fix: JSON-backed indicators (e.g. bigearthnet_lulc) are analyzable but are not
+    # COG entries in cache_manager, so they were missing from this list (agents were told
+    # the Portugal land-cover layer does not exist).
+    listed = {r["indicator"] for r in result}
+    for indicator in JSON_INDICATORS:
+        if indicator not in listed:
+            versions = INDICATOR_VERSIONS.get(indicator, {})
+            result.append({
+                "indicator": indicator,
+                "year": versions.get("year", ""),
+                "season": versions.get("season", ""),
+                "description": "Land cover distribution per Portuguese district (BigEarthNet V2, 7 classes; pre-computed statistics)"
+                if indicator == "bigearthnet_lulc" else "Pre-computed statistics",
+                "access_tier": "guest",
+            })
     return {"layers": result}
 
 
@@ -125,7 +140,54 @@ def exec_get_legend(indicator: str) -> Dict[str, Any]:
     from symbology.registry import get_legend_items
 
     items = get_legend_items(indicator)
-    return {"indicator": indicator, "items": items}
+    if items:
+        return {"indicator": indicator, "items": items}
+    # v7 fix: layers without a raster symbology returned an empty legend, so legend questions about
+    # them were only answerable from the system prompt.
+    if indicator in JSON_INDICATORS:            # classes come from the data file itself
+        data = json.loads((Path(__file__).parent.parent.parent / "data" / JSON_INDICATORS[indicator]).read_text())
+        first = next(iter(data.values()), {})
+        return {"indicator": indicator, "type": first.get("type", "categorical"),
+                "items": [{"value": c["value"], "label": c["label"]} for c in first.get("breakdown", [])],
+                "source": first.get("source", "")}
+    if indicator in _DESCRIPTIVE_LEGENDS:
+        return {"indicator": indicator, **_DESCRIPTIVE_LEGENDS[indicator]}
+    return {"indicator": indicator, "items": []}
+
+
+# v7: legends for display-only layers that have no raster symbology. Only documented facts;
+# the INES colour classes are served by the MITECO WMS legend and are not reproduced here.
+_DESCRIPTIVE_LEGENDS: Dict[str, Dict[str, Any]] = {
+    "mfe": {
+        "type": "categorical (vector, display only)",
+        "items": [
+            {"label": "Arbolado", "meaning": "Wooded: tree canopy cover (Fcc) >= 20%"},
+            {"label": "Arbolado ralo", "meaning": "Sparse woodland: 10% <= Fcc < 20%"},
+            {"label": "Arbolado disperso", "meaning": "Scattered trees: 5% <= Fcc < 10%"},
+            {"label": "Desarbolado", "meaning": "Treeless forest land (shrub, grassland): Fcc < 5%"},
+        ],
+        "note": "Spanish Forest Map (MFE), styled by forest land-use type from tree canopy cover; "
+                "stands also carry species composition. Not a continuous scale.",
+        "source": "MITECO, Mapa Forestal de España; Fcc classes as in the Anuario de Estadística Forestal",
+    },
+    "ines_erosion_potencial": {
+        "type": "qualitative (WMS, display only)", "items": [],
+        "note": "Potential sheet and rill erosion: soil loss that climate, soil and relief would cause "
+                "without vegetation cover (RUSLE R·K·LS), in erosion classes of t/ha·year. "
+                "No statistics can be computed; the colour classes are defined by the MITECO WMS legend.",
+        "source": "MITECO, Inventario Nacional de Erosión de Suelos (INES)",
+    },
+    "ines_movimientos_masa": {
+        "type": "qualitative (WMS, display only)", "items": [],
+        "note": "Potential mass movements (landslides, rockfalls) susceptibility. Display only.",
+        "source": "MITECO, Inventario Nacional de Erosión de Suelos (INES)",
+    },
+    "ines_erosion_eolica": {
+        "type": "qualitative (WMS, display only)", "items": [],
+        "note": "Wind erosion risk. Display only.",
+        "source": "MITECO, Inventario Nacional de Erosión de Suelos (INES)",
+    },
+}
 
 
 def _exec_analyze_area_json(
@@ -458,6 +520,22 @@ def exec_lookup_municipality(name: str, province_hint: str = "") -> Dict[str, An
 def exec_get_layer_bounds(
     indicator: str, year: str, season: str, cache_manager,
 ) -> Dict[str, Any]:
+    # v7 fix: JSON-backed indicators have no raster to read; their extent is the union of the
+    # covered districts (previously this tried to open the JSON file as a COG and errored).
+    if indicator in JSON_INDICATORS:
+        data_dir = Path(__file__).parent.parent.parent / "data"
+        covered = json.loads((data_dir / JSON_INDICATORS[indicator]).read_text())
+        districts = json.loads((data_dir / "portugal_districts.json").read_text())["districts"]
+        boxes = [districts[d]["bounds"] for d in covered if d in districts]
+        if not boxes:
+            return {"error": "Layer bounds not available."}
+        return {
+            "bounds": [min(b[0] for b in boxes), min(b[1] for b in boxes),
+                       max(b[2] for b in boxes), max(b[3] for b in boxes)],
+            "crs": "EPSG:4326",
+            "coverage": f"Union of the covered Portuguese districts: {', '.join(covered)}",
+        }
+
     tile_url = cache_manager.get_tile_url(indicator, year, season)
     if not tile_url:
         return {"error": "Layer not found."}

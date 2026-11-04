@@ -73,11 +73,52 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
     JSON string, so the MCP path and the HTTP path produce identical results.
     """
     cache_manager = get_cache_manager()
+    arguments = dict(arguments or {})
+    # v7 fix: the FastAPI agent loop injects the looked-up geometry into analyze_area when aoi
+    # is empty (agent.py, "Phase 2"). The MCP path had no such step, so lookup_province ->
+    # analyze_area(aoi={}) failed with "Unsupported AOI geometry type: None".
+    aoi = arguments.get("aoi")
+    if name == "analyze_area" and not (isinstance(aoi, dict) and aoi.get("type")) and _SESSION.get("aoi"):
+        arguments["aoi"] = _SESSION["aoi"]
+        arguments["_province_name"] = _SESSION.get("name", "")
     # Executors are synchronous (rasterio, file I/O); run off the event loop.
     result_json = await asyncio.to_thread(
-        execute_tool, name, arguments or {}, cache_manager, None
+        execute_tool, name, arguments, cache_manager, None
     )
+    if name in ("lookup_province", "lookup_municipality"):
+        await asyncio.to_thread(_remember_lookup, name, arguments, result_json)
     return [types.TextContent(type="text", text=result_json)]
+
+
+# v7: last looked-up area, per server process (one stdio server = one agent session).
+_SESSION: dict = {}
+
+
+def _remember_lookup(name: str, arguments: dict, result_json: str) -> None:
+    """Mirror agent.py's lookup handling: keep the geometry of the last looked-up area."""
+    try:
+        res = json.loads(result_json)
+    except (TypeError, ValueError):
+        return
+    if not res.get("found"):
+        return
+    if name == "lookup_province":
+        from agent.provinces import lookup_province as _lp
+        prov = _lp(arguments.get("name", ""))
+        if prov:
+            _SESSION.update(aoi=prov["geometry"], name=prov["name"])
+            return
+        b = res.get("bounds")                      # Portuguese district: bbox + name (JSON-backed layer)
+        if b:
+            bbox = {"type": "Polygon", "coordinates": [[[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]], [b[0], b[1]]]]}
+            _SESSION.update(aoi={"type": "Feature", "geometry": bbox,
+                                 "properties": {"name": res.get("name", ""), "district": res.get("name", "")}},
+                            name=res.get("name", ""))
+    elif name == "lookup_municipality" and res.get("code"):
+        from admin_manager import get_admin_manager
+        feat = get_admin_manager().get_geometry("municipality", res["code"])
+        if feat and feat.get("geometry"):
+            _SESSION.update(aoi=feat["geometry"], name=res.get("name", ""))
 
 
 async def _main() -> None:
