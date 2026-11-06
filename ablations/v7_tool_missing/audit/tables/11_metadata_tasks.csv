@@ -1,0 +1,18 @@
+case_id,category,expected_tools,runs,passed,A2_no_tool_from_prompt,A2_otherwise_correct,question
+V5_58_legend_co2_classes,tool_selection,get_legend,26,1,25,25,What do the different colors on the CO2 suitability map represent? What is each class?
+V5_59_legend_erosion_scale,tool_selection,get_legend,26,1,24,24,Explain the color scale used for the gully erosion probability layer. What values do the colors correspond to?
+V5_61_list_layers_analyzable,tool_selection,list_layers,26,0,26,23,Which layers can I actually run statistics on — as opposed to just displaying on the map?
+V5_63_list_layers_all_indicators,tool_selection,list_layers,26,4,9,4,Give me a complete and up-to-date list of all indicators and datasets I can analyze. I want to make sure I am 
+V5_64_layer_bounds_canary_co2,tool_selection,get_layer_bounds,26,2,13,11,Does the CO2 geological storage suitability data cover the Canary Islands? I want to analyze Las Palmas.
+V5_65_layer_bounds_erosion_extent,tool_selection,get_layer_bounds,26,9,17,15,What is the geographic extent of the gully erosion model? Does it cover the whole Iberian Peninsula or just pe
+V5_66_layer_bounds_cross_border,tool_selection,get_layer_bounds,26,2,21,16,I own land near the border of Badajoz with Portugal. Does the CO2 suitability data stop at the Spanish border 
+V5_74_deep_dive_temporal_profile,tool_selection,get_legend,26,11,15,12,Show me the legend for the BigEarthNet land use/land cover layer. What classes does it include?
+V5_76_legend_ines_erosion_visual,tool_selection,get_legend,26,0,23,23,I just turned on the INES erosion potential layer. What do the different shades indicate? What does dark red m
+V5_77_legend_mfe_forest_map,tool_selection,get_legend,26,0,24,24,I can see the forest map is now visible on screen. What do the different colors represent — are they different
+V5_78_legend_two_layers_compare,tool_selection,get_legend,26,0,25,25,I have both the CO2 suitability map and the gully erosion probability map visible. Can you explain what both c
+V5_79_list_layers_display_only,tool_selection,list_layers,26,0,25,17,Which of your layers are only for visualization and cannot be used for statistical analysis? I need to know be
+V5_80_list_layers_before_workflow,tool_selection,list_layers,26,2,12,8,"Before I decide what to run, give me a complete and accurate list of all indicators available and what each on"
+V5_81_list_layers_unavailable_indicator,tool_selection,list_layers,26,2,22,5,Is there a water stress or drought indicator available in the system? I need it for my environmental impact as
+V5_82_layer_bounds_ceuta_melilla,tool_selection,list_layers,26,14,8,8,List all available data layers. I want to confirm that BigEarthNet land cover data is available for analysis.
+V5_83_layer_bounds_balearic_erosion,tool_selection,get_layer_bounds,26,15,11,8,"I want to study gully erosion in the Balearic Islands. Before I run the analysis, does the erosion model actua"
+V5_84_layer_bounds_coverage_comparison,tool_selection,get_layer_bounds,26,3,22,21,"Do all your data layers cover exactly the same geographic area, or do some have more limited coverage than oth"

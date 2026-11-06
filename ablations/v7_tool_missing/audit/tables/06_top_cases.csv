@@ -1,0 +1,26 @@
+case_id,tool_missing_runs_of_27,dominant_subtype,question
+V5_25_tool_selection_chart_type,26,C2_used_a_different_analysis_tool,"Create a stacked bar chart showing the full CO2 class breakdown (eligible, conditional, not eligible) for Madrid and Barcelona."
+V5_61_list_layers_analyzable,26,A2_answered_metadata_from_prompt,Which layers can I actually run statistics on — as opposed to just displaying on the map?
+V5_76_legend_ines_erosion_visual,26,A2_answered_metadata_from_prompt,I just turned on the INES erosion potential layer. What do the different shades indicate? What does dark red mean vs light yellow?
+V5_77_legend_mfe_forest_map,26,A2_answered_metadata_from_prompt,"I can see the forest map is now visible on screen. What do the different colors represent — are they different tree species, forest types, or something else?"
+V5_78_legend_two_layers_compare,26,A2_answered_metadata_from_prompt,I have both the CO2 suitability map and the gully erosion probability map visible. Can you explain what both color scales mean and how to read them together for a combined analysis?
+V5_92_deep_dive_two_provinces_side_by_side,26,C1_skipped_geocoding_step,"Give me a comprehensive side-by-side environmental deep dive of Huelva and Cáceres — all indicators, their current state, and a final recommendation on which province is better suited for a 10-year carbon sequestration project."
+V5_58_legend_co2_classes,25,A2_answered_metadata_from_prompt,What do the different colors on the CO2 suitability map represent? What is each class?
+V5_59_legend_erosion_scale,25,A2_answered_metadata_from_prompt,Explain the color scale used for the gully erosion probability layer. What values do the colors correspond to?
+V5_79_list_layers_display_only,25,A2_answered_metadata_from_prompt,Which of your layers are only for visualization and cannot be used for statistical analysis? I need to know before planning my workflow.
+V5_41_multi_muni_ranking_erosion,24,B1_called_reject_task,Rank the 5 municipalities with the highest gully erosion risk in Malaga province.
+V5_72_interpretation_erosion_project_risk,24,C2_used_a_different_analysis_tool,I want to start a carbon reforestation project in Zaragoza. Should erosion risk be a concern? What does the data suggest I should plan for on the ground?
+V5_81_list_layers_unavailable_indicator,24,A2_answered_metadata_from_prompt,Is there a water stress or drought indicator available in the system? I need it for my environmental impact assessment.
+V5_66_layer_bounds_cross_border,23,A2_answered_metadata_from_prompt,I own land near the border of Badajoz with Portugal. Does the CO2 suitability data stop at the Spanish border or does it extend into Portugal?
+V5_84_layer_bounds_coverage_comparison,23,A2_answered_metadata_from_prompt,"Do all your data layers cover exactly the same geographic area, or do some have more limited coverage than others? I need to know if there are any gaps before designing a cross-indicator study."
+V5_23_deep_dive_full_profile,22,C1_skipped_geocoding_step,"Give me a complete environmental profile of Caceres — analyze both CO2 storage suitability and erosion risk, and create a chart showing the CO2 class breakdown."
+V5_47_error_recovery_fallback_indicator,22,C2_used_a_different_analysis_tool,"Show me the NDVI vegetation index for Murcia. If that is not available, show me the gully erosion risk instead."
+V5_64_layer_bounds_canary_co2,22,A2_answered_metadata_from_prompt,Does the CO2 geological storage suitability data cover the Canary Islands? I want to analyze Las Palmas.
+V5_12_spatial_island_limitations,21,B1_called_reject_task,What is the gully erosion risk in Las Palmas?
+V5_42_multi_muni_ranking_co2,21,B1_called_reject_task,Which municipality in Murcia has the highest percentage of CO2-eligible territory?
+V5_70_interpretation_investor,21,C2_used_a_different_analysis_tool,"I am an investor evaluating reforestation opportunities in Extremadura. Based on CO2 suitability and erosion risk, is this a good region to commit capital to?"
+V5_45_province_aggregation_aragon,20,C2_used_a_different_analysis_tool,What is the combined erosion risk profile for Aragon? Show the average across its provinces.
+V5_75_deep_dive_community_ranking,19,C2_used_a_different_analysis_tool,I need to identify the single best province in Castilla-La Mancha for a large-scale nature-based solutions project. Give me a comprehensive analysis of all relevant indicators and a clear recommendation.
+V5_11_spatial_autonomous_community,18,B1_called_reject_task,Compare CO2 geological storage suitability across the provinces of Castilla y Leon. Which province is best suited and which is worst?
+V5_21_comparison_close_values,17,A4_asked_user_instead,Compare CO2 geological storage suitability between Murcia and Cordoba. Which province is better suited?
+V5_65_layer_bounds_erosion_extent,17,A2_answered_metadata_from_prompt,What is the geographic extent of the gully erosion model? Does it cover the whole Iberian Peninsula or just peninsular Spain?

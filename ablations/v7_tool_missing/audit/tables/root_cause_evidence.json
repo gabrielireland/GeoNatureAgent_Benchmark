@@ -1,0 +1,57 @@
+{
+ "P1": [
+  "US",
+  "Prompt supplies the answer and discourages the tool",
+  "v3.md L11 \"KNOWN DATA (use this instead of calling list_layers or get_legend when possible)\"; L263 conceptual questions \"Do NOT call any tools\"; L264 \"Do NOT call list_layers or get_legend first\"; L265 \"Only call list_layers if the user asks about data you don't recognize above\""
+ ],
+ "P2": [
+  "US",
+  "Prompt states the answer and says to reject",
+  "v3.md L44 \"Las Palmas and Santa Cruz de Tenerife have no erosion data\"; L239 reject_task \"use when ... outside Europe (for erosion)\""
+ ],
+ "P3": [
+  "US",
+  "Prompt mandates a different route than the task expects",
+  "v3.md L151 \"MANDATORY ... you MUST call compare_areas\" / L180 \"use instead of separate lookup_province + analyze_area\"; L276 \"Single province + both indicators: use analyze_multi_layer\" (takes the province name; no lookup needed) vs. L128 \"just call analyze_area for each layer\""
+ ],
+ "G1": [
+  "US",
+  "Ground truth or expected tool is wrong",
+  "V5_47: task note \"No NDVI layer exists\", but tool query_erosion_stats serves NDVI for Murcia municipalities. V5_73/V5_85: expect analyze_multi_layer at municipality level, but its only area parameter is `province`"
+ ],
+ "W1": [
+  "US",
+  "Task wording: \"geological storage\" vs. an absorption layer",
+  "Question says CO2 \"geological storage\"; v3.md L15 and the layer describe CO2 absorption (reforestation) projects, so agents decline"
+ ],
+ "S1": [
+  "SHARED",
+  "Prompt silent; the answer is already in context",
+  "get_layer_bounds is never mentioned in v3.md, but coverage is in KNOWN DATA (L13, L21, L31, L44); agents answer without verifying"
+ ],
+ "S2": [
+  "SHARED",
+  "Task not feasible as specified within the round budget",
+  "Ranking all municipalities of a province (Málaga ~100, Murcia 45) needs 2 calls each; max_rounds = 12 and there is no municipality ranking tool for these metrics"
+ ],
+ "A1": [
+  "AGENT",
+  "Skipped a tool the prompt mandates",
+  "v3.md L42-43 \"use find_top_n ... always call find_top_n\" (find_top_n has filter_provinces); L168 display-only quantitative questions \"ALWAYS toggle the requested layer ON\"; L276 analyze_multi_layer for province deep dives; L36 BigEarthNet \"Call lookup_province ... then analyze_area\""
+ ],
+ "H1": [
+  "US",
+  "Harness did not execute a tool call written as text",
+  "Gemma ```tool_code / JSON call arrays; Llama [analysis(...)] with <|python_start|>; universal parser misses these dialects"
+ ],
+ "H2": [
+  "US",
+  "Infrastructure: timeout or provider error",
+  "error field \"Case timed out after 300s\" (36), litellm InternalServerError (5), API 400 (1)"
+ ],
+ "T2": [
+  "US",
+  "Tool bug: list_layers omits BigEarthNet",
+  "Real list_layers output lists only co2_spain_legislation and rf_gully_probability; agents that checked were told the Portugal layer does not exist"
+ ]
+}

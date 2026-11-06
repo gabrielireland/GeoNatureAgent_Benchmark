@@ -1,0 +1,47 @@
+{
+ "n_failed": 1429,
+ "n_tool_missing": 972,
+ "geo_cases": [
+  "V5_01_municipality_co2_lorca",
+  "V5_11_spatial_autonomous_community",
+  "V5_21_comparison_close_values",
+  "V5_30_single_analysis_co2",
+  "V5_38_cross_indicator_habitat_co2",
+  "V5_50_threshold_dual_indicator",
+  "V5_64_layer_bounds_canary_co2",
+  "V5_68_multi_layer_nbs_profile"
+ ],
+ "rank_published": [
+  "Claude Sonnet 4",
+  "DeepSeek V3.2",
+  "GLM-5",
+  "Gemini 2.5 Pro",
+  "GPT-4o",
+  "Qwen3-235B",
+  "GPT-OSS-120B",
+  "Llama 4 Scout",
+  "Gemma-3-27B"
+ ],
+ "rank_metadata": [
+  "Claude Sonnet 4",
+  "DeepSeek V3.2",
+  "GLM-5",
+  "GPT-4o",
+  "Gemini 2.5 Pro",
+  "Qwen3-235B",
+  "GPT-OSS-120B",
+  "Llama 4 Scout",
+  "Gemma-3-27B"
+ ],
+ "rank_any": [
+  "Claude Sonnet 4",
+  "DeepSeek V3.2",
+  "GLM-5",
+  "GPT-4o",
+  "Gemini 2.5 Pro",
+  "Qwen3-235B",
+  "Llama 4 Scout",
+  "GPT-OSS-120B",
+  "Gemma-3-27B"
+ ]
+}

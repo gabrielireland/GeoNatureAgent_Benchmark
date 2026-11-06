@@ -1,0 +1,10 @@
+model,US,SHARED,AGENT,tool_missing
+Claude Sonnet 4,35,9,3,47
+DeepSeek V3.2,58,6,8,72
+GLM-5,56,15,6,77
+Gemini 2.5 Pro,60,9,8,77
+GPT-4o,73,18,16,107
+Qwen3-235B,72,19,21,112
+GPT-OSS-120B,58,15,42,115
+Llama 4 Scout,114,18,33,165
+Gemma-3-27B,149,17,34,200

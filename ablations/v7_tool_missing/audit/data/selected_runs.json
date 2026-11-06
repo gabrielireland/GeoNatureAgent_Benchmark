@@ -1,0 +1,11 @@
+{
+ "exp_042_claude_sonnet4_v5_seeds5": "<raw_traces>/GeoNatureAgent/experiments/run_20260514_041957/exp_042_claude_sonnet4_v5_seeds5/results.jsonl",
+ "exp_036_deepseek_v32_v5_seeds5": "<raw_traces>/GeoNatureAgent/experiments/run_20260512_205259/exp_036_deepseek_v32_v5_seeds5/results.jsonl",
+ "exp_039_glm5_v5_seeds5": "<raw_traces>/GeoNatureAgent/experiments/run_20260512_205403/exp_039_glm5_v5_seeds5/results.jsonl",
+ "exp_038_gpt_oss_120b_v5_seeds5": "<raw_traces>/GeoNatureAgent/experiments/run_20260512_205327/exp_038_gpt_oss_120b_v5_seeds5/results.jsonl",
+ "exp_035_gemini25_pro_v5_seeds5": "<raw_traces>/GeoNatureAgent/experiments/run_20260512_205246/exp_035_gemini25_pro_v5_seeds5/results.jsonl",
+ "exp_041_llama4_scout_v5_seeds5": "<raw_traces>/GeoNatureAgent/experiments/run_20260512_211239/exp_041_llama4_scout_v5_seeds5/results.jsonl",
+ "exp_040_qwen3_235b_v5_seeds5": "<raw_traces>/GeoNatureAgent/experiments/run_20260512_205350/exp_040_qwen3_235b_v5_seeds5/results.jsonl",
+ "gpt4o_openrouter_v5": "results/run_gpt4o_openrouter_v5/results.jsonl",
+ "gemma3_openrouter_v5": "results/run_gemma3_openrouter_v5/results.jsonl"
+}

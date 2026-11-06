@@ -1,0 +1,76 @@
+row_id,label,correct_content,note
+0,A1,N,Empty answer; no tools executed
+1,A1,N,Empty answer; no tools executed
+2,A1,N,Empty answer; no tools executed
+3,A1,N,Empty answer; no tools executed
+4,A1,N,Empty answer; no tools executed
+5,A2,Y,Coverage answered from prompt: CO2 layer Spain-only
+6,A2,Y,Analyzable layers listed from prompt KNOWN DATA
+7,A2,unclear,Says no drought layer from prompt; mentions bsi/ndwi alternatives
+8,A2,Y,Display-only layers listed from prompt
+9,A2,Y,CO2 legend classes recited from prompt
+10,A3,N,Bracketed plan of lookups/analyses; never executed
+11,T1,N,Python-style province lookup call written as text
+12,A3,N,Announced lookup then analysis; stopped
+13,A3,N,Said it would look up Pontevedra; stopped
+14,A3,N,Said it would analyze Alava; stopped
+15,A4,N,Corrected geological-storage premise and asked user to confirm
+16,A4,N,Asked for clarification on geological vs absorption
+17,A4,N,Clarification on geological storage instead of analyzing
+18,A5,N,Claimed no municipal ranking tool; could analyze municipalities
+19,A4,N,Generic deflection asking whether to analyze an area
+20,A5,N,Falsely claimed no BigEarthNet district data
+21,A5,N,Claimed no geological storage data; offered alternative
+22,A5,Y,Canary Islands outside erosion coverage; correct limitation
+23,A5,Y,Correct coverage limitation for Las Palmas
+24,A3,Y,Correctly refused INES stats; said it would toggle but didn't
+25,A6,N,Fabricated land cover and erosion numbers without tools
+26,A6,N,Fabricated ranking; Cartagena listed as province
+27,A6,N,Fabricated BigEarthNet percentages
+28,A6,N,Fabricated BigEarthNet percentages
+29,A6,N,Fabricated land cover and erosion numbers
+30,T1,N,Tool calls listed as bracketed text only
+31,A5,N,Claimed geological storage unsupported; no analysis
+32,A5,N,Falsely claimed cannot retrieve Lisboa geometry
+33,A3,N,Listed provinces from memory then stopped before analysis
+34,A5,N,Falsely claimed cannot get Evora boundary
+35,C2,Y,Used analyze_area instead of get_layer_bounds; reported coverage correctly
+36,B1,N,Repeated reject_task; could rank via municipality analyses
+37,B1,Y,Rejected; Canary Islands correctly outside erosion coverage
+38,B1,N,Rejected answerable municipal CO2 question
+39,B1,Y,Rejected with correct coverage limitation
+40,C3,unclear,Toggled layer; described legend from general knowledge without get_legend
+41,C3,Y,Ranking computed correctly but no chart generated
+42,B2,N,Ran out of steps after lookups
+43,B2,N,Ran out of steps after lookups
+44,B2,N,Ran out of steps; partial district numbers only
+45,C2,Y,Used analyze_multi_layer instead of analyze_area
+46,C1,unclear,Skipped lookup; used analyze_area instead of multi_layer
+47,C2,unclear,Used analyze_area on few provinces instead of find_top_n
+48,T1,N,Final answer is leaked tool-call JSON
+49,C3,N,No chart; answer is leaked raw reasoning
+50,C1,Y,Skipped lookup only; full comparison delivered
+51,C1,Y,Skipped lookup only; profile and chart delivered
+52,C4,N,Province mean only; no municipal ranking
+53,C1,Y,Skipped lookup only; profile delivered
+54,C1,Y,Skipped lookup only; profile delivered
+55,C2,unclear,Analyzed Aragon as one area instead of find_top_n averaging
+56,C4,Y,find_top_n only; no multi-layer analysis or chart
+57,C2,Y,Used compare_areas instead of lookup+analyze_area
+58,C2,unclear,Used query_erosion_stats for NDVI instead of analyze_area
+59,C2,unclear,Used query_erosion_stats for NDVI instead of analyze_area
+60,B3,N,Reported processing issue and gave up
+61,C2,N,Analyzed gully layer and misreported as INES erosion
+62,C2,N,Gave gully figure instead of explaining INES display-only
+63,B3,N,Reported data issue; only Portalegre returned
+64,C2,Y,Analyzed Las Palmas instead of get_layer_bounds; coverage implied
+65,C4,N,Toggled CO2 layer then asked which municipalities
+66,C4,N,Lookup only; vague qualitative answer without analysis
+67,T1,N,Answer is leaked tool-call JSON
+68,C4,N,Looked up Lorca then asked which indicator
+69,T1,N,Answer is leaked tool-call JSON
+70,T1,N,Tool definitions/calls written in tool_code block
+71,A3,N,Described planned calls in text then stopped
+72,T1,N,analyze_multi_layer call written as JSON text
+73,T1,N,compare_areas call written as text with invented numbers
+74,T1,N,Province lookup calls written as text

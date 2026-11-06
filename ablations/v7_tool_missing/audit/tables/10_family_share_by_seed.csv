@@ -1,0 +1,4 @@
+seed,tool_missing_runs,1 Answer already in the prompt (metadata tasks),2 Harness / format (call not executed),3 Agent chose not to act,4 Chain broke or took another route
+1337,326,33.4,19.3,19.9,27.3
+2024,310,33.2,19.4,23.5,23.9
+42,336,32.7,19.9,20.5,26.8

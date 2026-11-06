@@ -1,0 +1,9 @@
+case_id,runs,pass_rate_pct,answers_contrasting_geological_vs_absorption,question
+V5_01_municipality_co2_lorca,26,38.5,16,Analyze CO2 geological storage suitability for the municipality of Lorca in Murcia.
+V5_11_spatial_autonomous_community,26,3.8,14,Compare CO2 geological storage suitability across the provinces of Castilla y Leon. Which province i
+V5_21_comparison_close_values,26,0.0,13,Compare CO2 geological storage suitability between Murcia and Cordoba. Which province is better suit
+V5_30_single_analysis_co2,26,34.6,12,Analyze CO2 geological storage suitability in Guadalajara and show the breakdown by class.
+V5_38_cross_indicator_habitat_co2,26,46.2,4,"Compare the land cover composition of Evora (Portugal, BigEarthNet) with the CO2 geological storage "
+V5_50_threshold_dual_indicator,26,76.9,1,Find provinces where mean gully erosion exceeds 65% AND CO2 eligibility exceeds 60%. These would be 
+V5_64_layer_bounds_canary_co2,26,7.7,10,Does the CO2 geological storage suitability data cover the Canary Islands? I want to analyze Las Pal
+V5_68_multi_layer_nbs_profile,26,42.3,5,Build an environmental profile comparing Lisboa (Portugal) land cover from BigEarthNet with Madrid (

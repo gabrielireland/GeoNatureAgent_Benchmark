@@ -1,0 +1,2117 @@
+[
+ {
+  "case": "V5_25_tool_selection_chart_type",
+  "cat": "tool_selection",
+  "q": "Create a stacked bar chart showing the full CO2 class breakdown (eligible, conditional, not eligible) for Madrid and Barcelona.",
+  "exp": [
+   "lookup_province",
+   "analyze_area",
+   "generate_chart"
+  ],
+  "note": "Madrid eligible 44.7%, Barcelona 39.0%. Agent should use stacked_bar chart type. Increased budget from v3 to allow for multi-province analysis + chart.",
+  "runs": 26,
+  "passed": 0,
+  "tm": 26,
+  "verdicts": [
+   [
+    "US (prompt recommended another route)",
+    17
+   ],
+   [
+    "US (harness)",
+    6
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    3
+   ]
+  ],
+  "main": "US (prompt recommended another route)",
+  "reason": "L180: compare_areas \"use instead of separate lookup_province + analyze_area\"",
+  "seqs": [
+   [
+    "compare_areas → generate_chart",
+    16
+   ],
+   [
+    "(no tool executed)",
+    6
+   ],
+   [
+    "compare_areas → generate_chart → toggle_layer",
+    1
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "compare_areas",
+    "{\"area_a\": \"Madrid\", \"area_b\": \"Barcelona\", \"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\"}",
+    "{\"area_a\": {\"name\": \"Madrid\", \"stats\": {\"type\": \"categorical\", \"total_pixels\": 801197, \"breakdown\": [{\"value\": 0, \"label\": \"Not eligible\", \"pixel_count\": 212575"
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"stacked_bar\", \"title\": \"CO2 Absorption Project Eligibility: Madrid vs Barcelona\", \"data\": [{\"label\": \"Madrid\", \"Eligible\": 44.7, \"Cond",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001/visualizations/co2_absorption_project_eligibility_madrid_vs_barcelona.png\", \"filename\": \"c"
+   ]
+  ],
+  "answer": "Madrid shows significantly better CO2 project potential with 73.5% of territory eligible or conditionally eligible, compared to Barcelona's 47.3%. Barcelona's high exclusion rate (52.7%) reflects its dense urban development and protected areas that block carbon project registration under MITECO criteria. **Chart generated:** [CO2 Eligibility Comparison](gs://geonature-agent-results/poc/experiments/exp_poc_001/visuali",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_61_list_layers_analyzable",
+  "cat": "tool_selection",
+  "q": "Which layers can I actually run statistics on — as opposed to just displaying on the map?",
+  "exp": [
+   "list_layers"
+  ],
+  "note": "Agent must call list_layers to enumerate analyzable rasters vs display-only WMS layers. Should distinguish: co2_spain_legislation, rf_gully_probability, bigearthnet_lulc (analyzable) vs ines_erosion_potencial, mfe, burnt_areas (display only).",
+  "runs": 26,
+  "passed": 0,
+  "tm": 26,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    26
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L264-265: \"Do NOT call list_layers or get_legend first\"; \"Only call list_layers if the user asks about data you don't recognize above\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    26
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "I can run zonal statistics (analysis) on these raster layers: **1. co2_spain_legislation** (Spain coverage) - CO2 absorption project eligibility screening - Categorical: Not eligible (0), Conditional (1), Eligible (2) - Returns pixel counts and percentages per category **2. rf_gully_probability** (Europe + UK coverage) - Gully erosion risk prediction - Continuous: 0-100% probability - Returns min, max, mean, median, ",
+  "otherwise": 23
+ },
+ {
+  "case": "V5_76_legend_ines_erosion_visual",
+  "cat": "tool_selection",
+  "q": "I just turned on the INES erosion potential layer. What do the different shades indicate? What does dark red mean vs light yellow?",
+  "exp": [
+   "get_legend"
+  ],
+  "note": "Agent must call get_legend for ines_erosion_potencial rather than guessing the color encoding. Should explain the qualitative risk classes (low / medium / high / very high potential erosion) corresponding to the WMS color ramp.",
+  "runs": 26,
+  "passed": 0,
+  "tm": 26,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    26
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L263-265: \"use KNOWN DATA instead of calling list_layers or get_legend\"; \"Do NOT call list_layers or get_legend first\"; conceptual questions: \"Do NOT call any tools\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    23
+   ],
+   [
+    "toggle_layer",
+    2
+   ],
+   [
+    "toggle_layer → toggle_layer → toggle_layer",
+    1
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "I can see you've toggled on the INES erosion potential layer. This layer shows **potential sheet and rill erosion** - what erosion would look like if vegetation cover were removed from the landscape. The color scheme typically follows this pattern: - **Light yellow/green shades** = Low erosion potential - stable terrain with minimal risk even without vegetation - **Orange/red shades** = Moderate to high erosion poten",
+  "otherwise": 26
+ },
+ {
+  "case": "V5_77_legend_mfe_forest_map",
+  "cat": "tool_selection",
+  "q": "I can see the forest map is now visible on screen. What do the different colors represent — are they different tree species, forest types, or something else?",
+  "exp": [
+   "get_legend"
+  ],
+  "note": "Agent must call get_legend for the mfe (Mapa Forestal de España) layer. Should explain that colors represent forest stand types / species groups, not a continuous scale.",
+  "runs": 26,
+  "passed": 0,
+  "tm": 26,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    26
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L263-265: \"use KNOWN DATA instead of calling list_layers or get_legend\"; \"Do NOT call list_layers or get_legend first\"; conceptual questions: \"Do NOT call any tools\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    24
+   ],
+   [
+    "toggle_layer",
+    2
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "The MFE (Spanish Forest Map) uses colors to represent different **land use categories**, not individual tree species. Here's what the main colors indicate: - **Dark green** = \"Arbolado\" (Dense forest) - areas with good tree cover - **Light green** = \"Arbolado ralo\" (Sparse forest) - areas with scattered trees or low canopy cover - **Brown/tan** = \"Desarbolado\" (Non-forested) - shrubland, grassland, or areas without t",
+  "otherwise": 26
+ },
+ {
+  "case": "V5_78_legend_two_layers_compare",
+  "cat": "tool_selection",
+  "q": "I have both the CO2 suitability map and the gully erosion probability map visible. Can you explain what both color scales mean and how to read them together for a combined analysis?",
+  "exp": [
+   "get_legend"
+  ],
+  "note": "Agent should call get_legend twice — once for co2_spain_legislation and once for rf_gully_probability. Should then explain how to read them together: categorical CO2 classes vs continuous erosion probability, and what combinations imply for project risk.",
+  "runs": 26,
+  "passed": 0,
+  "tm": 26,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    25
+   ],
+   [
+    "US (harness)",
+    1
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L263-265: \"use KNOWN DATA instead of calling list_layers or get_legend\"; \"Do NOT call list_layers or get_legend first\"; conceptual questions: \"Do NOT call any tools\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    26
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "I can explain both color scales and how to interpret them together for comprehensive land suitability analysis. **CO2 Suitability Map (co2_spain_legislation)** The color scale represents eligibility for carbon absorption projects under Spanish legislation: - **Red zones (0)**: Not eligible — hard exclusions apply (recent fires, protected areas, or incompatible land cover history) - **Yellow zones (1)**: Eligible with",
+  "otherwise": 25
+ },
+ {
+  "case": "V5_92_deep_dive_two_provinces_side_by_side",
+  "cat": "deep_dive",
+  "q": "Give me a comprehensive side-by-side environmental deep dive of Huelva and Cáceres — all indicators, their current state, and a final recommendation on which province is better suited for a 10-year carbon sequestration project.",
+  "exp": [
+   "lookup_province",
+   "analyze_multi_layer",
+   "generate_chart"
+  ],
+  "note": "Agent must run analyze_multi_layer for both Huelva and Cáceres, generate a comparative chart, and deliver a structured recommendation. Cáceres: CO2 58.8%, erosion ~50%. Huelva: lower erosion risk, similar CO2 eligibility. Agent must weigh both and justify a clear recommendation — not hedge.",
+  "runs": 26,
+  "passed": 0,
+  "tm": 26,
+  "verdicts": [
+   [
+    "US (prompt recommended another route)",
+    17
+   ],
+   [
+    "US (harness)",
+    5
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    4
+   ]
+  ],
+  "main": "US (prompt recommended another route)",
+  "reason": "L180: compare_areas \"use instead of separate lookup_province + analyze_area\"",
+  "seqs": [
+   [
+    "analyze_multi_layer → analyze_multi_layer → generate_chart",
+    8
+   ],
+   [
+    "(no tool executed)",
+    6
+   ],
+   [
+    "compare_areas → compare_areas → generate_chart",
+    4
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "compare_areas",
+    "{\"area_a\": \"Huelva\", \"area_b\": \"Cáceres\", \"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\"}",
+    "{\"area_a\": {\"name\": \"Huelva\", \"stats\": {\"type\": \"categorical\", \"total_pixels\": 1004196, \"breakdown\": [{\"value\": 0, \"label\": \"Not eligible\", \"pixel_count\": 34863"
+   ],
+   [
+    "compare_areas",
+    "{\"area_a\": \"Huelva\", \"area_b\": \"Cáceres\", \"indicator\": \"rf_gully_probability\", \"year\": \"2022\", \"season\": \"annual\"}",
+    "{\"area_a\": {\"name\": \"Huelva\", \"stats\": {\"type\": \"continuous\", \"total_pixels\": 2103545, \"statistics\": {\"min\": 0.0, \"max\": 100.4, \"mean\": 60.9, \"median\": 100.4, \""
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"grouped_bar\", \"title\": \"Huelva vs Cáceres - Environmental Suitability Comparison\", \"x_label\": \"Province\", \"y_label\": \"Percentage (%)\",",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001/visualizations/huelva_caceres_environmental_comparison.png\", \"filename\": \"huelva_caceres_e"
+   ]
+  ],
+  "answer": "## Comprehensive Environmental Analysis: Huelva vs Cáceres **CO2 Absorption Eligibility Assessment:** Cáceres emerges as the clear winner with 58.8% directly eligible territory compared to Huelva's 42.7%. Cáceres also shows superior regulatory compliance with only 11.4% ineligible land versus Huelva's concerning 34.7% exclusion rate. The higher ineligibility in Huelva likely stems from coastal protected areas, recent",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_58_legend_co2_classes",
+  "cat": "tool_selection",
+  "q": "What do the different colors on the CO2 suitability map represent? What is each class?",
+  "exp": [
+   "get_legend"
+  ],
+  "note": "Agent must call get_legend for co2_spain_legislation rather than answering from memory. Should report the three classes: Eligible, Eligible with conditions, Not eligible — and their visual encoding.",
+  "runs": 26,
+  "passed": 1,
+  "tm": 25,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    25
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L263-265: \"use KNOWN DATA instead of calling list_layers or get_legend\"; \"Do NOT call list_layers or get_legend first\"; conceptual questions: \"Do NOT call any tools\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    25
+   ]
+  ],
+  "pseqs": [
+   [
+    "get_legend",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "The CO2 suitability map uses a 3-class system based on MITECO's legislative criteria for carbon footprint registry inscription: **Red (Value 0) - Not Eligible**: Hard exclusion applies due to recent fire in the exclusion period, protected area restrictions that block eligibility, or incompatible land cover history based on Corine Land Cover analysis from 1990-2018. **Yellow (Value 1) - Eligible with Conditions**: Pas",
+  "otherwise": 25
+ },
+ {
+  "case": "V5_59_legend_erosion_scale",
+  "cat": "tool_selection",
+  "q": "Explain the color scale used for the gully erosion probability layer. What values do the colors correspond to?",
+  "exp": [
+   "get_legend"
+  ],
+  "note": "Agent must call get_legend for rf_gully_probability. Should report that it is a continuous 0–100% scale and explain the color ramp (low to high risk).",
+  "runs": 26,
+  "passed": 1,
+  "tm": 25,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    25
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L263-265: \"use KNOWN DATA instead of calling list_layers or get_legend\"; \"Do NOT call list_layers or get_legend first\"; conceptual questions: \"Do NOT call any tools\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    24
+   ],
+   [
+    "toggle_layer",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "get_legend",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "The gully erosion probability layer (rf_gully_probability) uses a continuous color scale that represents the statistical likelihood of gully erosion occurrence, expressed as percentages from 0% to 100%. The color progression typically follows this pattern: - **Green/Blue tones (0-25%)**: Low probability zones with stable terrain and minimal erosion risk - **Yellow/Orange tones (25-50%)**: Moderate probability areas w",
+  "otherwise": 24
+ },
+ {
+  "case": "V5_79_list_layers_display_only",
+  "cat": "tool_selection",
+  "q": "Which of your layers are only for visualization and cannot be used for statistical analysis? I need to know before planning my workflow.",
+  "exp": [
+   "list_layers"
+  ],
+  "note": "Agent should call list_layers and distinguish: analyzable rasters (co2_spain_legislation, rf_gully_probability, bigearthnet_lulc) vs display-only WMS (ines_erosion_potencial, ines_movimientos_masa, mfe, burnt_areas).",
+  "runs": 26,
+  "passed": 0,
+  "tm": 25,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    25
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L264-265: \"Do NOT call list_layers or get_legend first\"; \"Only call list_layers if the user asks about data you don't recognize above\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    25
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "The **display-only layers** that I can show on the map but cannot compute statistics for are: **INES layers (Spain, qualitative maps at 1:50,000 scale):** - `ines_erosion_potencial` — Potential sheet/rill erosion without vegetation cover - `ines_movimientos_masa` — Mass movement susceptibility zones - `ines_erosion_eolica` — Wind erosion risk in deflation areas **Vector/PMTiles layers:** - `mfe` — Spanish Forest Map ",
+  "otherwise": 17
+ },
+ {
+  "case": "V5_41_multi_muni_ranking_erosion",
+  "cat": "multi_municipality_ranking",
+  "q": "Rank the 5 municipalities with the highest gully erosion risk in Malaga province.",
+  "exp": [
+   "lookup_municipality",
+   "analyze_area"
+  ],
+  "note": "Agent must look up multiple municipalities in Malaga and analyze erosion for each, then rank. This requires several lookup_municipality + analyze_area cycles. No pre-computed municipality rankings exist.",
+  "runs": 26,
+  "passed": 2,
+  "tm": 24,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    22
+   ],
+   [
+    "US (prompt recommended another route)",
+    1
+   ],
+   [
+    "US (harness)",
+    1
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "analyze_area: L126: standard workflow step 2; lookup_municipality: L138/L144: lookup_municipality for named municipalities",
+  "seqs": [
+   [
+    "reject_task",
+    6
+   ],
+   [
+    "(no tool executed)",
+    4
+   ],
+   [
+    "lookup_province → select_features_by_spatial_relationship → query_erosion_stats → reject_task",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "create_buffer → select_features_by_spatial_relationship → query_erosion_stats → lookup_municipality → analyze_area → lookup_municipality → analyze_area → lookup_municipality → analyze_area → lookup_municipality",
+    1
+   ],
+   [
+    "list_layers → query_erosion_stats → lookup_province → select_features_by_spatial_relationship → analyze_area → toggle_layer → lookup_municipality → analyze_area → lookup_municipality → analyze_area",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "lookup_province",
+    "{\"name\": \"Málaga\"}",
+    "{\"name\": \"Málaga\", \"code\": \"29\", \"bounds\": [-5.6083, 36.3104, -3.7681, 37.2776], \"found\": true}'}"
+   ],
+   [
+    "select_features_by_spatial_relationship",
+    "{\"target_type\": \"municipalities\", \"spatial_predicates\": [\"within\"], \"reference_area\": \"Málaga\", \"reference_type\": \"province\"}",
+    "{\"reference\": \"Málaga\", \"predicates\": [\"within\"], \"target_type\": \"municipalities\", \"count\": 64, \"features\": [{\"name\": \"Riogordo\"}, {\"name\": \"Salares\"}, {\"name\":"
+   ],
+   [
+    "query_erosion_stats",
+    "{\"query_type\": \"ranking\", \"indices\": [\"bsi\"], \"year_start\": 2022, \"year_end\": 2022}",
+    "{\"query_type\": \"ranking\", \"year_range\": [2022, 2022], \"indices\": [\"bsi\"], \"rankings\": {\"bsi\": [{\"nombre\": \"Yecla\", \"bsi_mean\": 0.22310000658035278, \"rank\": 1}, "
+   ],
+   [
+    "reject_task",
+    "{\"reason\": \"Municipality-level gully erosion ranking for Málaga province requires analyzing 64 individual municipalities, which exceeds the available ",
+    "{\"rejected\": true, \"reason\": \"Municipality-level gully erosion ranking for Málaga province requires analyzing 64 individual municipalities, which exceeds the av"
+   ]
+  ],
+  "answer": "I cannot complete a comprehensive ranking of all 64 municipalities in Málaga province for gully erosion risk. This would require individual analysis of each municipality, which exceeds my tool capacity. Additionally, the pre-computed erosion statistics I have access to only cover Murcia region municipalities. However, I can help you in these alternative ways: 1. **Analyze specific municipalities** - If you can name 3",
+  "otherwise": 7
+ },
+ {
+  "case": "V5_72_interpretation_erosion_project_risk",
+  "cat": "interpretation",
+  "q": "I want to start a carbon reforestation project in Zaragoza. Should erosion risk be a concern? What does the data suggest I should plan for on the ground?",
+  "exp": [
+   "lookup_province",
+   "analyze_area"
+  ],
+  "note": "Zaragoza has high erosion (69.7%) and reasonable CO2 eligibility (66.4%). Agent must analyse rf_gully_probability and interpret the high risk in reforestation project terms: soil stabilisation, terracing, phased approach, species selection for erosion-prone land. Must NOT just report a number — practical recommendations are required.",
+  "runs": 26,
+  "passed": 1,
+  "tm": 24,
+  "verdicts": [
+   [
+    "US (prompt recommended another route)",
+    20
+   ],
+   [
+    "US (harness)",
+    3
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    1
+   ]
+  ],
+  "main": "US (prompt recommended another route)",
+  "reason": "L276 recommends analyze_multi_layer for one province + both layers (no lookup needed)",
+  "seqs": [
+   [
+    "analyze_multi_layer → generate_chart",
+    11
+   ],
+   [
+    "lookup_province → analyze_multi_layer → generate_chart",
+    7
+   ],
+   [
+    "(no tool executed)",
+    3
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_province → analyze_area",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "lookup_province",
+    "{\"name\": \"Zaragoza\"}",
+    "{\"name\": \"Zaragoza\", \"code\": \"50\", \"bounds\": [-2.1705, 40.9386, 0.3857, 42.744036], \"found\": true}'}"
+   ],
+   [
+    "analyze_multi_layer",
+    "{\"province\": \"Zaragoza\", \"indicators\": [{\"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\"}, {\"indicator\": \"rf_gully_probabilit",
+    "{\"province\": \"Zaragoza\", \"results\": {\"co2_spain_legislation\": {\"type\": \"categorical\", \"total_pixels\": 1725284, \"breakdown\": [{\"value\": 0, \"label\": \"Not eligible"
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"grouped_bar\", \"title\": \"Zaragoza Carbon Project Suitability & Erosion Risk\", \"data\": [{\"label\": \"CO2 Eligible\", \"value\": 66.4}, {\"labe",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001/visualizations/zaragoza_carbon_project_suitability_erosion_risk.png\", \"filename\": \"zaragoz"
+   ]
+  ],
+  "answer": "Zaragoza shows excellent CO2 project potential with 66% directly eligible territory and another 20% eligible with conditions, but erosion risk is a significant concern at 70% mean probability — among the highest in Spain. For ground planning, prioritize soil stabilization measures before tree planting: establish contour terracing on slopes, plant erosion-resistant nurse species (Mediterranean shrubs) first, and consi",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_81_list_layers_unavailable_indicator",
+  "cat": "tool_selection",
+  "q": "Is there a water stress or drought indicator available in the system? I need it for my environmental impact assessment.",
+  "exp": [
+   "list_layers"
+  ],
+  "note": "Agent should call list_layers to verify available indicators, confirm water stress / drought is not available, and report what IS available as alternatives. Must NOT fabricate a water stress result.",
+  "runs": 26,
+  "passed": 2,
+  "tm": 24,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    22
+   ],
+   [
+    "US (harness)",
+    2
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L264-265: \"Do NOT call list_layers or get_legend first\"; \"Only call list_layers if the user asks about data you don't recognize above\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    24
+   ]
+  ],
+  "pseqs": [
+   [
+    "list_layers",
+    1
+   ],
+   [
+    "list_layers → reject_task",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "I don't have water stress or drought indicators available in my current dataset. My system specializes in CO2 absorption project suitability, soil erosion risk assessment, and land cover analysis for Spain and parts of Europe. The available indicators I can analyze are: - **CO2 absorption project eligibility** (Spain) - based on MITECO legislation - **Gully erosion probability** (Europe-wide) - soil stability assessm",
+  "otherwise": 6
+ },
+ {
+  "case": "V5_66_layer_bounds_cross_border",
+  "cat": "tool_selection",
+  "q": "I own land near the border of Badajoz with Portugal. Does the CO2 suitability data stop at the Spanish border or does it extend into Portugal?",
+  "exp": [
+   "get_layer_bounds"
+  ],
+  "note": "Agent must call get_layer_bounds for co2_spain_legislation to verify boundary extent. Should confirm coverage is Spanish territory only and not guess about cross-border areas.",
+  "runs": 26,
+  "passed": 2,
+  "tm": 23,
+  "verdicts": [
+   [
+    "SHARED (prompt silent; answer in context)",
+    23
+   ]
+  ],
+  "main": "SHARED (prompt silent; answer in context)",
+  "reason": "prompt never mentions get_layer_bounds",
+  "seqs": [
+   [
+    "(no tool executed)",
+    21
+   ],
+   [
+    "lookup_province → analyze_area",
+    2
+   ]
+  ],
+  "pseqs": [
+   [
+    "get_layer_bounds",
+    2
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "I can clarify the coverage for you. The CO2 suitability data (co2_spain_legislation layer) covers Spain only and stops at the Spanish border - it does not extend into Portugal. This layer is specifically designed for Spanish territory based on MITECO's regulatory criteria for carbon footprint registry projects under Spanish legislation. However, I do have some land cover data for Portugal through the BigEarthNet data",
+  "otherwise": 18
+ },
+ {
+  "case": "V5_84_layer_bounds_coverage_comparison",
+  "cat": "tool_selection",
+  "q": "Do all your data layers cover exactly the same geographic area, or do some have more limited coverage than others? I need to know if there are any gaps before designing a cross-indicator study.",
+  "exp": [
+   "get_layer_bounds"
+  ],
+  "note": "Agent should call get_layer_bounds for multiple layers to compare their extents. Should report whether co2_spain_legislation, rf_gully_probability, and bigearthnet_lulc share the same bounding box or differ. Must not claim all layers are identical without checking.",
+  "runs": 26,
+  "passed": 3,
+  "tm": 23,
+  "verdicts": [
+   [
+    "SHARED (prompt silent; answer in context)",
+    23
+   ]
+  ],
+  "main": "SHARED (prompt silent; answer in context)",
+  "reason": "prompt never mentions get_layer_bounds",
+  "seqs": [
+   [
+    "(no tool executed)",
+    22
+   ],
+   [
+    "list_layers",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "get_layer_bounds → get_layer_bounds → list_layers",
+    1
+   ],
+   [
+    "list_layers → get_layer_bounds → get_layer_bounds",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "Great question for study design! My data layers have **different geographic coverages**, so you'll need to plan around these limitations: **Spain-only coverage:** - CO2 absorption suitability (co2_spain_legislation) - Spain only - INES erosion layers (potential erosion, mass movements, wind erosion) - Spain only - Spanish Forest Map (MFE) - Spain only - All the Spanish administrative lookup tools (provinces, municipa",
+  "otherwise": 22
+ },
+ {
+  "case": "V5_23_deep_dive_full_profile",
+  "cat": "deep_dive",
+  "q": "Give me a complete environmental profile of Caceres — analyze both CO2 storage suitability and erosion risk, and create a chart showing the CO2 class breakdown.",
+  "exp": [
+   "lookup_province",
+   "analyze_multi_layer",
+   "generate_chart"
+  ],
+  "note": "Caceres: CO2 eligible 58.8%, conditional 29.8%, not eligible 11.4%. Erosion mean 50.1%.",
+  "runs": 26,
+  "passed": 0,
+  "tm": 22,
+  "verdicts": [
+   [
+    "US (prompt recommended another route)",
+    17
+   ],
+   [
+    "US (harness)",
+    5
+   ]
+  ],
+  "main": "US (prompt recommended another route)",
+  "reason": "L276 recommends analyze_multi_layer for one province + both layers (no lookup needed)",
+  "seqs": [
+   [
+    "analyze_multi_layer → generate_chart",
+    14
+   ],
+   [
+    "(no tool executed)",
+    4
+   ],
+   [
+    "analyze_multi_layer → generate_chart → generate_chart",
+    2
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "DeepSeek V3.2",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "analyze_multi_layer",
+    "{\"province\": \"Cáceres\", \"indicators\": [{\"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\"}, {\"indicator\": \"rf_gully_probability",
+    "{\"province\": \"Cáceres\", \"results\": {\"co2_spain_legislation\": {\"type\": \"categorical\", \"total_pixels\": 1985452, \"breakdown\": [{\"value\": 0, \"label\": \"Not eligible\""
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"stacked_bar\", \"title\": \"Cáceres CO2 Project Eligibility Breakdown\", \"data\": [{\"label\": \"Cáceres\", \"Eligible\": 58.8, \"Conditional\": 29.",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001_murcia_cordoba_jaen/visualizations/c_ceres_co2_project_eligibility_breakdown.png\", \"filena"
+   ]
+  ],
+  "answer": "I've analyzed Cáceres and created a complete environmental profile. Here's my assessment: **CO2 Absorption Suitability:** Cáceres shows strong carbon project potential with 58.8% of territory directly eligible for carbon registry inscription. An additional 29.8% is conditionally eligible, requiring field verification of specific criteria like Natura 2000 proximity or ambiguous land cover transitions. **Erosion Risk:*",
+  "otherwise": 1
+ },
+ {
+  "case": "V5_47_error_recovery_fallback_indicator",
+  "cat": "error_recovery",
+  "q": "Show me the NDVI vegetation index for Murcia. If that is not available, show me the gully erosion risk instead.",
+  "exp": [
+   "lookup_province",
+   "analyze_area"
+  ],
+  "note": "No NDVI layer exists. Agent should recognize NDVI unavailability and fall back to rf_gully_probability for Murcia as instructed.",
+  "runs": 26,
+  "passed": 4,
+  "tm": 22,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    18
+   ],
+   [
+    "US (harness)",
+    3
+   ],
+   [
+    "US (prompt recommended another route)",
+    1
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "analyze_area: L126: standard workflow step 2; lookup_province: L132: \"first call lookup_province ... then call analyze_area\"",
+  "seqs": [
+   [
+    "query_erosion_stats",
+    9
+   ],
+   [
+    "(no tool executed)",
+    6
+   ],
+   [
+    "query_erosion_stats → generate_chart",
+    4
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_province → analyze_area",
+    2
+   ],
+   [
+    "query_erosion_stats → query_erosion_stats → lookup_province → analyze_area",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "1337",
+  "flow": [
+   [
+    "query_erosion_stats",
+    "{\"query_type\": \"seasonal\", \"indices\": [\"ndvi\"]}",
+    "{\"query_type\": \"seasonal\", \"scope\": \"Murcia (province)\", \"year_range\": [2018, 2025], \"indices\": [\"ndvi\"], \"patterns\": {\"ndvi\": [{\"month\": \"jan\", \"ndvi_mean\": 0."
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"bar\", \"title\": \"NDVI Seasonal Pattern - Murcia Province (2018-2025)\", \"x_label\": \"Month\", \"y_label\": \"NDVI (Vegetation Index)\", \"data\"",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001/visualizations/ndvi_seasonal_pattern_murcia_province_2018_2025.png\", \"filename\": \"ndvi_sea"
+   ]
+  ],
+  "answer": "I've successfully retrieved and visualized the NDVI vegetation data for Murcia. The chart shows the clear Mediterranean seasonal pattern with winter vegetation peaks and summer minimums. Chart saved to: gs://geonature-agent-results/poc/experiments/exp_poc_001/visualizations/ndvi_seasonal_pattern_murcia_province_2018_2025.png The data reveals that Murcia's vegetation follows a drought-adapted cycle, which is important",
+  "otherwise": 2
+ },
+ {
+  "case": "V5_64_layer_bounds_canary_co2",
+  "cat": "tool_selection",
+  "q": "Does the CO2 geological storage suitability data cover the Canary Islands? I want to analyze Las Palmas.",
+  "exp": [
+   "get_layer_bounds"
+  ],
+  "note": "Agent must call get_layer_bounds for co2_spain_legislation to check spatial extent. CO2 layer coverage of Canary Islands / Ceuta / Melilla is uncertain — agent should retrieve actual bounds rather than guessing.",
+  "runs": 26,
+  "passed": 2,
+  "tm": 22,
+  "verdicts": [
+   [
+    "SHARED (prompt silent; answer in context)",
+    11
+   ],
+   [
+    "US (task wording)",
+    10
+   ],
+   [
+    "US (harness)",
+    1
+   ]
+  ],
+  "main": "SHARED (prompt silent; answer in context)",
+  "reason": "prompt never mentions get_layer_bounds",
+  "seqs": [
+   [
+    "(no tool executed)",
+    14
+   ],
+   [
+    "lookup_province → analyze_area",
+    6
+   ],
+   [
+    "lookup_province → analyze_area → reject_task",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_province → get_layer_bounds",
+    1
+   ],
+   [
+    "get_layer_bounds",
+    1
+   ]
+  ],
+  "rep_model": "DeepSeek V3.2",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "lookup_province",
+    "{\"name\": \"Las Palmas\"}",
+    "{\"name\": \"Las Palmas\", \"code\": \"35\", \"bounds\": [-15.8345, 27.7346, -13.4195, 29.415619], \"found\": true}'}"
+   ],
+   [
+    "analyze_area",
+    "{\"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\", \"aoi\": {\"type\": \"MultiPolygon\", \"coordinates\": [[[[-13.890506, 28.756853], ",
+    "{\"type\": \"categorical\", \"total_pixels\": 388606, \"breakdown\": [{\"value\": 0, \"label\": \"Not eligible\", \"pixel_count\": 39716, \"percentage\": 10.2}, {\"value\": 1, \"lab"
+   ]
+  ],
+  "answer": "Las Palmas shows moderately good CO₂ absorption project potential, with 49.0% of the province directly eligible for carbon project registration. However, 40.8% falls into the \"eligible with conditions\" category, which typically means these areas are near regulatory boundaries (like Natura 2000 zones or ambiguous land cover transitions) and require field verification. The Canary Islands have unique ecological consider",
+  "otherwise": 19
+ },
+ {
+  "case": "V5_12_spatial_island_limitations",
+  "cat": "spatial_reasoning",
+  "q": "What is the gully erosion risk in Las Palmas?",
+  "exp": [
+   "lookup_province",
+   "analyze_area"
+  ],
+  "note": "rf_gully_probability may not cover Canary Islands. Agent should gracefully handle missing data.",
+  "runs": 26,
+  "passed": 5,
+  "tm": 21,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    21
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "analyze_area: L126: standard workflow step 2; lookup_province: L132: \"first call lookup_province ... then call analyze_area\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    11
+   ],
+   [
+    "reject_task",
+    9
+   ],
+   [
+    "lookup_province → find_top_n",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_province → analyze_area",
+    5
+   ]
+  ],
+  "rep_model": "GLM-5",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "reject_task",
+    "{\"reason\": \"Las Palmas (Canary Islands) is outside the European gully probability raster coverage. The erosion model only covers continental Europe an",
+    "{\"rejected\": true, \"reason\": \"Las Palmas (Canary Islands) is outside the European gully probability raster coverage. The erosion model only covers continental E"
+   ]
+  ],
+  "answer": "I can't analyze gully erosion risk for Las Palmas because the Canary Islands are outside the European gully probability raster coverage. The erosion model only covers continental Europe and the UK, excluding the Canary Islands archipelago. For erosion assessment in Las Palmas, you would need alternative data sources such as local erosion inventories from the Canary Islands government or field survey data. I can, howe",
+  "otherwise": 16
+ },
+ {
+  "case": "V5_42_multi_muni_ranking_co2",
+  "cat": "multi_municipality_ranking",
+  "q": "Which municipality in Murcia has the highest percentage of CO2-eligible territory?",
+  "exp": [
+   "lookup_municipality",
+   "analyze_area"
+  ],
+  "note": "Agent must analyze multiple Murcia municipalities. No pre-computed rankings — requires sequential lookup + analyze cycles. Major municipalities: Murcia, Cartagena, Lorca, Caravaca de la Cruz.",
+  "runs": 26,
+  "passed": 5,
+  "tm": 21,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    17
+   ],
+   [
+    "US (harness)",
+    3
+   ],
+   [
+    "US (prompt recommended another route)",
+    1
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "analyze_area: L126: standard workflow step 2; lookup_municipality: L138/L144: lookup_municipality for named municipalities",
+  "seqs": [
+   [
+    "reject_task",
+    7
+   ],
+   [
+    "(no tool executed)",
+    7
+   ],
+   [
+    "find_top_n",
+    2
+   ]
+  ],
+  "pseqs": [
+   [
+    "find_top_n → query_erosion_stats → lookup_municipality → analyze_area → lookup_municipality → analyze_area → lookup_municipality → analyze_area → generate_chart",
+    1
+   ],
+   [
+    "select_features_by_spatial_relationship → analyze_multi_layer → analyze_area → lookup_municipality → analyze_area → lookup_municipality → analyze_area → lookup_municipality → analyze_area → lookup_municipality",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "toggle_layer",
+    "{\"indicator\": \"co2_spain_legislation\", \"visible\": true}",
+    "{\"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\", \"visible\": true, \"display_name\": \"Suitability map of Spanish territory for CO2 absorp"
+   ]
+  ],
+  "answer": "Now you can see the CO2 eligibility map displayed. The green areas represent eligible territory, yellow shows conditional eligibility, and red indicates non-eligible zones. Which specific municipalities in Murcia would you like me to analyze? Some major ones include Lorca, Cartagena, Murcia (city), Caravaca de la Cruz, or others you're interested in. I can analyze and compare their CO2 eligibility percentages once yo",
+  "otherwise": 6
+ },
+ {
+  "case": "V5_70_interpretation_investor",
+  "cat": "interpretation",
+  "q": "I am an investor evaluating reforestation opportunities in Extremadura. Based on CO2 suitability and erosion risk, is this a good region to commit capital to?",
+  "exp": [
+   "lookup_province",
+   "analyze_area"
+  ],
+  "note": "Agent should analyse both Extremadura provinces (Caceres: CO2 58.8%, Badajoz: ~62%). Must go beyond raw numbers: interpret eligibility % in investment terms, flag erosion as execution risk, mention pre-screening nature of the CO2 layer, and recommend next steps (cadastral overlay, field survey, formal registration).",
+  "runs": 26,
+  "passed": 0,
+  "tm": 21,
+  "verdicts": [
+   [
+    "US (prompt recommended another route)",
+    17
+   ],
+   [
+    "US (harness)",
+    4
+   ]
+  ],
+  "main": "US (prompt recommended another route)",
+  "reason": "L180: compare_areas \"use instead of separate lookup_province + analyze_area\"",
+  "seqs": [
+   [
+    "analyze_multi_layer → analyze_multi_layer → generate_chart",
+    6
+   ],
+   [
+    "(no tool executed)",
+    3
+   ],
+   [
+    "compare_areas → compare_areas → generate_chart",
+    2
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "compare_areas",
+    "{\"area_a\": \"Badajoz\", \"area_b\": \"Cáceres\", \"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\"}",
+    "{\"area_a\": {\"name\": \"Badajoz\", \"stats\": {\"type\": \"categorical\", \"total_pixels\": 2173026, \"breakdown\": [{\"value\": 0, \"label\": \"Not eligible\", \"pixel_count\": 1551"
+   ],
+   [
+    "compare_areas",
+    "{\"area_a\": \"Badajoz\", \"area_b\": \"Cáceres\", \"indicator\": \"rf_gully_probability\", \"year\": \"2022\", \"season\": \"annual\"}",
+    "{\"area_a\": {\"name\": \"Badajoz\", \"stats\": {\"type\": \"continuous\", \"total_pixels\": 4424197, \"statistics\": {\"min\": 0.0, \"max\": 100.4, \"mean\": 57.9, \"median\": 100.4, "
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"grouped_bar\", \"title\": \"Extremadura Reforestation Investment Analysis\", \"x_label\": \"Province\", \"y_label\": \"Percentage (%)\", \"data\": [{",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001/visualizations/extremadura_reforestation_investment_analysis.png\", \"filename\": \"extremadur"
+   ]
+  ],
+  "answer": "**Investment Assessment: Extremadura presents a strong reforestation opportunity with complementary risk profiles between provinces.** Badajoz offers superior CO2 project eligibility (69.1% directly eligible) while Cáceres provides better soil stability (50.1% mean erosion risk vs 57.9% in Badajoz). **Strategic recommendation:** Diversify capital allocation — prioritize Badajoz for maximum carbon credit generation an",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_45_province_aggregation_aragon",
+  "cat": "province_aggregation",
+  "q": "What is the combined erosion risk profile for Aragon? Show the average across its provinces.",
+  "exp": [
+   "find_top_n"
+  ],
+  "note": "Aragon has 3 provinces: Huesca, Teruel, Zaragoza. Zaragoza has the highest erosion at 69.7%. Agent should retrieve and aggregate across all three.",
+  "runs": 26,
+  "passed": 5,
+  "tm": 20,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    15
+   ],
+   [
+    "US (harness)",
+    5
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "find_top_n: L43: \"always call find_top_n\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    8
+   ],
+   [
+    "analyze_multi_layer → analyze_multi_layer → analyze_multi_layer → generate_chart",
+    2
+   ],
+   [
+    "compare_areas → compare_areas → generate_chart",
+    2
+   ]
+  ],
+  "pseqs": [
+   [
+    "find_top_n → generate_chart",
+    2
+   ],
+   [
+    "find_top_n → find_top_n → generate_chart",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "select_features_by_spatial_relationship",
+    "{\"target_type\": \"provinces\", \"reference_area\": \"Aragón\", \"reference_type\": \"province\", \"spatial_predicates\": [\"within\", \"intersects\"]}",
+    "{\"reference\": \"Tarragona\", \"predicates\": [\"within\", \"intersects\"], \"target_type\": \"provinces\", \"count\": 6, \"features\": [{\"name\": \"Tarragona\"}, {\"name\": \"Barcelo"
+   ],
+   [
+    "compare_areas",
+    "{\"area_a\": \"Huesca\", \"area_b\": \"Teruel\", \"indicator\": \"rf_gully_probability\", \"year\": \"2022\", \"season\": \"annual\"}",
+    "{\"area_a\": {\"name\": \"Huesca\", \"stats\": {\"type\": \"continuous\", \"total_pixels\": 2624350, \"statistics\": {\"min\": 0.0, \"max\": 100.4, \"mean\": 54.9, \"median\": 30.6, \"s"
+   ],
+   [
+    "analyze_area",
+    "{\"indicator\": \"rf_gully_probability\", \"year\": \"2022\", \"season\": \"annual\", \"aoi\": {}}",
+    "{\"error\": \"Unsupported AOI geometry type: None\"}'}"
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Zaragoza\"}",
+    "{\"name\": \"Zaragoza\", \"code\": \"50\", \"bounds\": [-2.1705, 40.9386, 0.3857, 42.744036], \"found\": true}'}"
+   ],
+   [
+    "analyze_area",
+    "{\"indicator\": \"rf_gully_probability\", \"year\": \"2022\", \"season\": \"annual\", \"aoi\": {\"type\": \"MultiPolygon\", \"coordinates\": [[[[-0.909105, 42.744036], [-",
+    "{\"type\": \"continuous\", \"total_pixels\": 4190950, \"statistics\": {\"min\": 0.0, \"max\": 100.4, \"mean\": 69.7, \"median\": 100.4, \"std\": 38.1, \"unit\": \"%\"}}'}"
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"grouped_bar\", \"title\": \"Erosion Risk Profile - Aragón Provinces\", \"x_label\": \"Province\", \"y_label\": \"Gully Erosion Probability (%)\", \"",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001/visualizations/erosion_risk_profile_arag_n_provinces.png\", \"filename\": \"erosion_risk_profi"
+   ]
+  ],
+  "answer": "**Aragón Regional Erosion Risk Profile:** The combined analysis shows significant erosion pressure across Aragón with a **regional average of 62.5%** gully erosion probability. Zaragoza province has the highest risk (69.7% mean), followed by Teruel (63.0%) and Huesca (54.9%). All three provinces show maximum risk zones reaching 100%, indicating widespread erosion hotspots throughout the region. This high regional ero",
+  "otherwise": 4
+ },
+ {
+  "case": "V5_75_deep_dive_community_ranking",
+  "cat": "deep_dive",
+  "q": "I need to identify the single best province in Castilla-La Mancha for a large-scale nature-based solutions project. Give me a comprehensive analysis of all relevant indicators and a clear recommendation.",
+  "exp": [
+   "find_top_n",
+   "analyze_multi_layer",
+   "generate_chart"
+  ],
+  "note": "Castilla-La Mancha has 5 provinces: Albacete, Ciudad Real, Cuenca, Guadalajara, Toledo. Agent should use find_top_n and/or analyze_multi_layer to compare CO2 + erosion across all five, then produce a chart and a clear recommendation. Ciudad Real (CO2: 78.9%, lowest erosion in the group) is the correct answer.",
+  "runs": 26,
+  "passed": 2,
+  "tm": 19,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    18
+   ],
+   [
+    "US (harness)",
+    1
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "analyze_multi_layer: L276: \"Single province + both indicators: use analyze_multi_layer\"",
+  "seqs": [
+   [
+    "find_top_n → find_top_n → generate_chart",
+    8
+   ],
+   [
+    "find_top_n → find_top_n",
+    3
+   ],
+   [
+    "(no tool executed)",
+    3
+   ]
+  ],
+  "pseqs": [
+   [
+    "select_features_by_spatial_relationship → find_top_n → analyze_multi_layer → generate_chart → generate_chart",
+    1
+   ],
+   [
+    "find_top_n → analyze_multi_layer → generate_chart → generate_chart",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "find_top_n",
+    "{\"metric\": \"co2_eligible_pct\", \"filter_provinces\": [\"Albacete\", \"Ciudad Real\", \"Cuenca\", \"Guadalajara\", \"Toledo\"], \"n\": 5}",
+    "{\"metric\": \"co2_eligible_pct\", \"order\": \"desc\", \"results\": [{\"province\": \"Ciudad Real\", \"value\": 78.9, \"rank\": 1}, {\"province\": \"Albacete\", \"value\": 72.9, \"rank"
+   ],
+   [
+    "find_top_n",
+    "{\"metric\": \"erosion_mean_pct\", \"filter_provinces\": [\"Albacete\", \"Ciudad Real\", \"Cuenca\", \"Guadalajara\", \"Toledo\"], \"n\": 5, \"order\": \"asc\"}",
+    "{\"metric\": \"erosion_mean_pct\", \"order\": \"asc\", \"results\": [{\"province\": \"Ciudad Real\", \"value\": 47.8, \"rank\": 1}, {\"province\": \"Cuenca\", \"value\": 49.1, \"rank\": "
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"grouped_bar\", \"title\": \"Castilla-La Mancha: CO2 Eligibility vs Erosion Risk\", \"x_label\": \"Province\", \"y_label\": \"Percentage (%)\", \"dat",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001/visualizations/castilla_la_mancha_co2_eligibility_vs_erosion_risk.png\", \"filename\": \"casti"
+   ]
+  ],
+  "answer": "## RECOMMENDATION: Ciudad Real **Ciudad Real emerges as the clear winner** for large-scale nature-based solutions in Castilla-La Mancha, ranking #1 in both critical metrics: highest CO2 project eligibility (78.9%) and lowest soil erosion risk (47.8%). **Key advantages:** - **Maximum carbon potential**: Nearly 4 out of 5 hectares qualify for MITECO carbon registry inscription - **Stable terrain**: Lowest erosion press",
+  "otherwise": 1
+ },
+ {
+  "case": "V5_11_spatial_autonomous_community",
+  "cat": "spatial_reasoning",
+  "q": "Compare CO2 geological storage suitability across the provinces of Castilla y Leon. Which province is best suited and which is worst?",
+  "exp": [
+   "find_top_n"
+  ],
+  "note": "Castilla y Leon: Valladolid 69.1%, Salamanca 68.9%, Zamora 63.2%, Segovia 62.1%, Burgos 55.1%, Palencia 54.3%, Soria 49.1%, Avila 52.1%, Leon 52.3%. Agent needs geographic knowledge of which provinces belong to the community.",
+  "runs": 26,
+  "passed": 1,
+  "tm": 18,
+  "verdicts": [
+   [
+    "US (task wording)",
+    12
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    5
+   ],
+   [
+    "US (harness)",
+    1
+   ]
+  ],
+  "main": "US (task wording)",
+  "reason": "question says CO2 \"geological storage\"; prompt L15 and the layer describe CO2 absorption projects, so the agent refused",
+  "seqs": [
+   [
+    "reject_task",
+    11
+   ],
+   [
+    "(no tool executed)",
+    7
+   ]
+  ],
+  "pseqs": [
+   [
+    "find_top_n → generate_chart",
+    1
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "reject_task",
+    "{\"reason\": \"CO2 geological storage suitability data is not available in this system. I only have CO2 absorption project suitability data (for forest-b",
+    "{\"rejected\": true, \"reason\": \"CO2 geological storage suitability data is not available in this system. I only have CO2 absorption project suitability data (for "
+   ]
+  ],
+  "answer": "I don't have CO2 geological storage suitability data in my system. I specialize in forest-based carbon absorption projects, soil erosion risk assessment, and land cover analysis. However, I can analyze **CO2 absorption project suitability** across Castilla y León provinces if you're interested in forest-based carbon sequestration opportunities. This would show which provinces have the most territory eligible for regi",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_21_comparison_close_values",
+  "cat": "comparison",
+  "q": "Compare CO2 geological storage suitability between Murcia and Cordoba. Which province is better suited?",
+  "exp": [
+   "compare_areas"
+  ],
+  "note": "Values differ by only 0.1%. Agent should use compare_areas for direct comparison. lookup_province+analyze_area also acceptable.",
+  "runs": 26,
+  "passed": 0,
+  "tm": 17,
+  "verdicts": [
+   [
+    "US (task wording)",
+    10
+   ],
+   [
+    "US (harness)",
+    4
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    3
+   ]
+  ],
+  "main": "US (task wording)",
+  "reason": "question says CO2 \"geological storage\"; prompt L15 and the layer describe CO2 absorption projects, so the agent refused",
+  "seqs": [
+   [
+    "(no tool executed)",
+    14
+   ],
+   [
+    "reject_task",
+    3
+   ]
+  ],
+  "pseqs": [],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "I need to clarify something important about the available data. I have CO2 **absorption** project suitability data (for forest-based carbon sequestration), but not CO2 **geological storage** suitability data. These are very different types of carbon projects: - **CO2 absorption projects**: Tree planting and forest management to sequester carbon in biomass and soil - **CO2 geological storage**: Underground injection o",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_65_layer_bounds_erosion_extent",
+  "cat": "tool_selection",
+  "q": "What is the geographic extent of the gully erosion model? Does it cover the whole Iberian Peninsula or just peninsular Spain?",
+  "exp": [
+   "get_layer_bounds"
+  ],
+  "note": "Agent must call get_layer_bounds for rf_gully_probability to report the actual bounding box / spatial extent. Should clarify whether it covers only mainland Spain, includes islands, or extends to Portugal.",
+  "runs": 26,
+  "passed": 9,
+  "tm": 17,
+  "verdicts": [
+   [
+    "SHARED (prompt silent; answer in context)",
+    17
+   ]
+  ],
+  "main": "SHARED (prompt silent; answer in context)",
+  "reason": "prompt never mentions get_layer_bounds",
+  "seqs": [
+   [
+    "(no tool executed)",
+    17
+   ]
+  ],
+  "pseqs": [
+   [
+    "get_layer_bounds",
+    9
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "The gully erosion model (rf_gully_probability layer) covers **all of Europe plus the UK**, so yes, it includes the entire Iberian Peninsula - both Spain and Portugal. This dataset was generated from the LUCAS 2022 field survey, which is a European Union-wide land monitoring program. The Random Forest classifier was trained on gully observations from across Europe and produces probability predictions at 100-meter reso",
+  "otherwise": 15
+ },
+ {
+  "case": "V5_01_municipality_co2_lorca",
+  "cat": "municipality",
+  "q": "Analyze CO2 geological storage suitability for the municipality of Lorca in Murcia.",
+  "exp": [
+   "lookup_municipality",
+   "analyze_area"
+  ],
+  "note": "Municipality-level CO2 analysis — values depend on Lorca's specific geometry",
+  "runs": 26,
+  "passed": 10,
+  "tm": 16,
+  "verdicts": [
+   [
+    "US (task wording)",
+    10
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    5
+   ],
+   [
+    "US (harness)",
+    1
+   ]
+  ],
+  "main": "US (task wording)",
+  "reason": "question says CO2 \"geological storage\"; prompt L15 and the layer describe CO2 absorption projects, so the agent refused",
+  "seqs": [
+   [
+    "(no tool executed)",
+    9
+   ],
+   [
+    "reject_task",
+    7
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_municipality → analyze_area",
+    8
+   ],
+   [
+    "lookup_municipality → analyze_area → generate_chart",
+    1
+   ]
+  ],
+  "rep_model": "Gemini 2.5 Pro",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "reject_task",
+    "{\"reason\": \"My capabilities are focused on land-based CO2 absorption projects, like reforestation, based on land use and legislative criteria. I do no",
+    "{\"rejected\": true, \"reason\": \"My capabilities are focused on land-based CO2 absorption projects, like reforestation, based on land use and legislative criteria."
+   ]
+  ],
+  "answer": "I'm sorry, but I can't analyze geological storage suitability. My expertise is in land-based CO2 absorption projects, such as reforestation, based on land use and legislative criteria. I do not have data on geological formations required for assessing CO2 storage. However, I can analyze the suitability of that same area for land-based CO2 absorption projects. Would you like me to proceed with that analysis for the mu",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_62_list_layers_habitat_years",
+  "cat": "tool_selection",
+  "q": "Create a chart ranking Beja, Faro, Lisboa, and Portalegre by their total forest cover (coniferous + broadleaf) using the BigEarthNet data.",
+  "exp": [
+   "lookup_province",
+   "analyze_area",
+   "generate_chart"
+  ],
+  "note": "Forest totals: Portalegre 75.2%, Lisboa 45.2%, Beja 36.5%, Faro 37.0%. Agent must analyze all four and produce a ranked chart.",
+  "runs": 26,
+  "passed": 6,
+  "tm": 15,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    10
+   ],
+   [
+    "US (harness)",
+    5
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "generate_chart: L189/L208/L244: \"ALWAYS call generate_chart\" / \"MANDATORY\"; lookup_province: L132: \"first call lookup_province ... then call analyze_area\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    5
+   ],
+   [
+    "analyze_area → query_erosion_stats → list_layers",
+    1
+   ],
+   [
+    "find_top_n → analyze_area → lookup_province → analyze_area → lookup_province → analyze_area → lookup_province → analyze_area → lookup_province → analyze_area",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_province → analyze_area → lookup_province → analyze_area → lookup_province → analyze_area → lookup_province → analyze_area → generate_chart",
+    5
+   ],
+   [
+    "lookup_province → lookup_province → lookup_province → lookup_province → analyze_area → analyze_area → analyze_area → analyze_area → generate_chart",
+    1
+   ]
+  ],
+  "rep_model": "DeepSeek V3.2",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "analyze_area",
+    "{\"indicator\": \"bigearthnet_lulc\", \"year\": \"2018\", \"season\": \"annual\", \"aoi\": {}}",
+    "{\"error\": \"Could not determine district name from AOI. bigearthnet_lulc covers Portugal districts: Beja, Castelo Branco, Faro, Leiria, Lisboa, Portalegre, Santa"
+   ],
+   [
+    "query_erosion_stats",
+    "{\"query_type\": \"ranking\", \"indices\": [\"ndvi\"]}",
+    "{\"query_type\": \"ranking\", \"year_range\": [2018, 2025], \"indices\": [\"ndvi\"], \"rankings\": {\"ndvi\": [{\"nombre\": \"Moratalla\", \"ndvi_mean\": 0.6593000292778015, \"rank\""
+   ],
+   [
+    "list_layers",
+    "{}",
+    "{\"layers\": [{\"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\", \"description\": \"Suitability map of Spanish territory for CO2 absorption p"
+   ]
+  ],
+  "answer": "I can see the BigEarthNet layer isn't listed in the available layers, but based on my known data, it exists for specific Portuguese districts. However, I realize I cannot directly analyze Portuguese districts with the current toolset since they require specific district boundaries that aren't available through the province/municipality lookup tools. For the Portuguese districts you mentioned (Beja, Faro, Lisboa, Port",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_74_deep_dive_temporal_profile",
+  "cat": "tool_selection",
+  "q": "Show me the legend for the BigEarthNet land use/land cover layer. What classes does it include?",
+  "exp": [
+   "get_legend"
+  ],
+  "note": "Agent must call get_legend for bigearthnet_lulc. Expected classes: Coniferous Forest, Broadleaf Forest, Shrubland, Grassland, Sparse Vegetation, Water, Urban.",
+  "runs": 26,
+  "passed": 11,
+  "tm": 15,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    15
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L263-265: \"use KNOWN DATA instead of calling list_layers or get_legend\"; \"Do NOT call list_layers or get_legend first\"; conceptual questions: \"Do NOT call any tools\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    15
+   ]
+  ],
+  "pseqs": [
+   [
+    "get_legend",
+    9
+   ],
+   [
+    "get_legend → list_layers",
+    1
+   ]
+  ],
+  "rep_model": "DeepSeek V3.2",
+  "rep_seed": "1337",
+  "flow": [],
+  "answer": "I don't have the legend information for the BigEarthNet land use/land cover layer in my current system configuration. While I know this dataset covers 9 Portuguese mainland districts with a 7-class scheme (Coniferous Forest, Broadleaf Forest, Shrubland, Grassland, Sparse Vegetation, Water, Urban), I can't retrieve the detailed value-to-class mapping. However, I can help you analyze actual land cover distribution for ",
+  "otherwise": 12
+ },
+ {
+  "case": "V5_85_multi_layer_municipality_lorca",
+  "cat": "cross_indicator",
+  "q": "For the municipality of Lorca in Murcia, run all available indicators simultaneously in a single analysis operation.",
+  "exp": [
+   "lookup_municipality",
+   "analyze_multi_layer"
+  ],
+  "note": "First test of analyze_multi_layer at municipality level. Agent calls lookup_municipality (Lorca, Murcia) then analyze_multi_layer for co2_spain_legislation, rf_gully_probability, and bigearthnet_lulc using the municipality AOI — not the full province.",
+  "runs": 26,
+  "passed": 11,
+  "tm": 15,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    6
+   ],
+   [
+    "US (harness)",
+    5
+   ],
+   [
+    "US (prompt recommended another route)",
+    4
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "analyze_multi_layer: L276: \"Single province + both indicators: use analyze_multi_layer\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    7
+   ],
+   [
+    "lookup_municipality",
+    3
+   ],
+   [
+    "lookup_municipality → analyze_area → analyze_area",
+    3
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_municipality → analyze_multi_layer → analyze_area → analyze_area → generate_chart",
+    6
+   ],
+   [
+    "lookup_municipality → analyze_multi_layer → generate_chart",
+    2
+   ]
+  ],
+  "rep_model": "Gemini 2.5 Pro",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "lookup_municipality",
+    "{\"name\": \"Lorca\", \"province\": \"Murcia\"}",
+    "{\"name\": \"Lorca\", \"code\": \"30024\", \"province_name\": \"Murcia\", \"ccaa_name\": \"Región de Murcia\", \"bounds\": [-2.011781655999926, 37.421020499000065, -1.39623549999"
+   ]
+  ],
+  "answer": "I can perform a multi-layer analysis for provinces, but for a municipality like Lorca, I need to analyze each indicator individually. I have located the municipality of Lorca and am ready to proceed. Which indicator would you like me to analyze first? I can analyze CO2 absorption suitability or gully erosion risk.",
+  "otherwise": 4
+ },
+ {
+  "case": "V5_30_single_analysis_co2",
+  "cat": "single_analysis",
+  "q": "Analyze CO2 geological storage suitability in Guadalajara and show the breakdown by class.",
+  "exp": [
+   "lookup_province",
+   "analyze_area"
+  ],
+  "note": "Guadalajara: eligible 53.5%, conditional 19.7%, not eligible 26.8%",
+  "runs": 26,
+  "passed": 9,
+  "tm": 14,
+  "verdicts": [
+   [
+    "US (task wording)",
+    7
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    4
+   ],
+   [
+    "US (harness)",
+    3
+   ]
+  ],
+  "main": "US (task wording)",
+  "reason": "question says CO2 \"geological storage\"; prompt L15 and the layer describe CO2 absorption projects, so the agent refused",
+  "seqs": [
+   [
+    "(no tool executed)",
+    10
+   ],
+   [
+    "reject_task",
+    3
+   ],
+   [
+    "lookup_province",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_province → analyze_area",
+    6
+   ],
+   [
+    "lookup_province → analyze_area → generate_chart",
+    3
+   ]
+  ],
+  "rep_model": "Claude Sonnet 4",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "I need to clarify what type of CO2 analysis you're looking for. I have access to CO2 **absorption** suitability data (for forest-based carbon sequestration projects), but I don't have CO2 **geological storage** suitability data. The available CO2 dataset covers land-based absorption projects under Spanish legislation - it identifies areas suitable for reforestation and afforestation projects that can register for car",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_73_deep_dive_municipality",
+  "cat": "deep_dive",
+  "q": "Give me a complete environmental profile of the municipality of Lorca in Murcia: CO2 storage suitability, gully erosion risk, and current land cover composition.",
+  "exp": [
+   "lookup_municipality",
+   "analyze_multi_layer"
+  ],
+  "note": "First municipality-level multi-indicator profile. Agent should call lookup_municipality (Lorca, Murcia) then analyze_multi_layer for co2_spain_legislation, rf_gully_probability, and bigearthnet_lulc. Must synthesise all three into a coherent environmental narrative, not just list numbers.",
+  "runs": 26,
+  "passed": 12,
+  "tm": 13,
+  "verdicts": [
+   [
+    "US (prompt recommended another route)",
+    7
+   ],
+   [
+    "US (harness)",
+    4
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    2
+   ]
+  ],
+  "main": "US (prompt recommended another route)",
+  "reason": "L128: \"For combined carbon + erosion analysis, just call analyze_area for each layer\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    6
+   ],
+   [
+    "lookup_municipality → analyze_area → analyze_area",
+    4
+   ],
+   [
+    "lookup_municipality → analyze_area → analyze_area → query_erosion_stats → generate_chart",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_municipality → analyze_multi_layer → analyze_area → analyze_area → generate_chart → toggle_layer",
+    4
+   ],
+   [
+    "lookup_municipality → analyze_multi_layer → analyze_area → analyze_area → list_layers → generate_chart → toggle_layer → toggle_layer",
+    1
+   ]
+  ],
+  "rep_model": "DeepSeek V3.2",
+  "rep_seed": "2024",
+  "flow": [
+   [
+    "lookup_municipality",
+    "{\"name\": \"Lorca\", \"province\": \"Murcia\"}",
+    "{\"name\": \"Lorca\", \"code\": \"30024\", \"province_name\": \"Murcia\", \"ccaa_name\": \"Región de Murcia\", \"bounds\": [-2.011781655999926, 37.421020499000065, -1.39623549999"
+   ],
+   [
+    "analyze_area",
+    "{\"aoi\": {\"type\": \"Polygon\", \"coordinates\": [[[-1.974224, 37.868471999000064], [-1.970759323999971, 37.88113510000005], [-1.890404510999929, 37.9298136",
+    "{\"type\": \"categorical\", \"total_pixels\": 167334, \"breakdown\": [{\"value\": 0, \"label\": \"Not eligible\", \"pixel_count\": 16679, \"percentage\": 10.0}, {\"value\": 1, \"lab"
+   ],
+   [
+    "analyze_area",
+    "{\"aoi\": {\"type\": \"Polygon\", \"coordinates\": [[[-1.974224, 37.868471999000064], [-1.970759323999971, 37.88113510000005], [-1.890404510999929, 37.9298136",
+    "{\"type\": \"continuous\", \"total_pixels\": 320124, \"statistics\": {\"min\": 1.2, \"max\": 100.4, \"mean\": 62.6, \"median\": 36.9, \"std\": 37.3, \"unit\": \"%\"}}'}"
+   ],
+   [
+    "query_erosion_stats",
+    "{\"query_type\": \"seasonal\", \"indices\": [\"ndvi\", \"bsi\", \"fvc\"], \"municipality\": \"Lorca\", \"year_start\": 2018, \"year_end\": 2025}",
+    "{\"query_type\": \"seasonal\", \"scope\": \"Lorca\", \"year_range\": [2018, 2025], \"indices\": [\"ndvi\", \"bsi\", \"fvc\"], \"patterns\": {\"ndvi\": [{\"month\": \"jan\", \"ndvi_mean\": "
+   ],
+   [
+    "generate_chart",
+    "{\"chart_type\": \"grouped_bar\", \"title\": \"Lorca Municipality Environmental Profile - CO2 Eligibility & Erosion Risk\", \"data\": [{\"label\": \"Lorca\", \"CO2 E",
+    "{\"gcs_uri\": \"gs://geonature-agent-results/poc/experiments/exp_poc_001_murcia_cordoba_jaen/visualizations/lorca_municipality_environmental_profile_co2_eligibilit"
+   ]
+  ],
+  "answer": "## Complete Environmental Profile of Lorca Municipality **CO2 Storage Suitability:** Lorca shows strong potential for carbon absorption projects with **67.4% of the municipality directly eligible** for CO2 registry inscription. Another 22.6% is conditionally eligible requiring field verification, primarily near regulatory boundaries. Only 10% is ineligible due to regulatory exclusions. This makes Lorca highly attract",
+  "otherwise": 5
+ },
+ {
+  "case": "V5_68_multi_layer_nbs_profile",
+  "cat": "cross_indicator",
+  "q": "Build an environmental profile comparing Lisboa (Portugal) land cover from BigEarthNet with Madrid (Spain) CO2 geological storage suitability. Highlight complementary insights.",
+  "exp": [
+   "lookup_province",
+   "analyze_area"
+  ],
+  "note": "Agent must analyze bigearthnet_lulc for Lisboa and co2_spain_legislation for Madrid. Tests cross-country, cross-indicator reasoning.",
+  "runs": 26,
+  "passed": 11,
+  "tm": 12,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    7
+   ],
+   [
+    "US (harness)",
+    4
+   ],
+   [
+    "US (task wording)",
+    1
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "analyze_area: L126: standard workflow step 2; lookup_province: L132: \"first call lookup_province ... then call analyze_area\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    10
+   ],
+   [
+    "lookup_province",
+    2
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_province → analyze_area → lookup_province → analyze_area → generate_chart",
+    3
+   ],
+   [
+    "lookup_province → analyze_area → lookup_province → analyze_area",
+    2
+   ]
+  ],
+  "rep_model": "Qwen3-235B",
+  "rep_seed": "1337",
+  "flow": [],
+  "answer": "I'm Darwin Geo AI · Beagle 1.0. I can help you with geospatial analysis — would you like to analyze an area?",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_80_list_layers_before_workflow",
+  "cat": "tool_selection",
+  "q": "Before I decide what to run, give me a complete and accurate list of all indicators available and what each one measures.",
+  "exp": [
+   "list_layers"
+  ],
+  "note": "Agent should call list_layers to provide an accurate inventory. Key: must mention all three analyzable indicators (co2_spain_legislation, rf_gully_probability, bigearthnet_lulc) with brief descriptions of what each measures. Should not rely solely on system prompt knowledge when the tool provides authoritative metadata.",
+  "runs": 26,
+  "passed": 2,
+  "tm": 12,
+  "verdicts": [
+   [
+    "US (prompt discouraged the tool)",
+    12
+   ]
+  ],
+  "main": "US (prompt discouraged the tool)",
+  "reason": "L11, L264-265: \"Do NOT call list_layers or get_legend first\"; \"Only call list_layers if the user asks about data you don't recognize above\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    12
+   ]
+  ],
+  "pseqs": [
+   [
+    "list_layers → generate_chart",
+    1
+   ],
+   [
+    "list_layers",
+    1
+   ]
+  ],
+  "rep_model": "GPT-4o",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "Here are the indicators available for analysis: 1. **co2_spain_legislation** - **Year**: 2026 - **Season**: Annual - **Coverage**: Spain - **Type**: Categorical - **Resolution**: 100 m - **Description**: Pre-screening map of Spanish territory for CO2 absorption projects, based on MITECO criteria for registering projects in the national carbon footprint registry. - **Legend**: - 0: Not eligible — hard exclusion applie",
+  "otherwise": 8
+ },
+ {
+  "case": "V5_90_interpretation_bank_risk_assessment",
+  "cat": "interpretation",
+  "q": "A bank is considering financing large-scale reforestation projects in southern Spain. Based on CO2 eligibility and erosion risk, which provinces represent the lowest combined risk and best return potential? Give a structured risk assessment.",
+  "exp": [
+   "find_top_n"
+  ],
+  "note": "Agent should retrieve CO2 and erosion data for southern Spain provinces (Andalucía + Murcia + Extremadura), then reframe results as a financial risk/return matrix: high CO2 eligibility = return potential, high erosion = execution risk, low erosion + high eligibility = optimal. Provinces like Huelva and Badajoz are low-erosion + high-eligibility candidates. Must produce an interpretive narrative, not just numbers.",
+  "runs": 26,
+  "passed": 14,
+  "tm": 11,
+  "verdicts": [
+   [
+    "US (harness)",
+    8
+   ],
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    3
+   ]
+  ],
+  "main": "US (harness)",
+  "reason": "empty answer (timeout / provider error)",
+  "seqs": [
+   [
+    "(no tool executed)",
+    8
+   ],
+   [
+    "lookup_province → lookup_province → lookup_province → analyze_area → analyze_area",
+    1
+   ],
+   [
+    "analyze_area → analyze_area → generate_chart",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "find_top_n → find_top_n → generate_chart",
+    10
+   ],
+   [
+    "find_top_n → find_top_n → analyze_multi_layer → analyze_multi_layer → analyze_multi_layer → generate_chart",
+    2
+   ]
+  ],
+  "rep_model": "DeepSeek V3.2",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "",
+  "otherwise": 3
+ },
+ {
+  "case": "V5_93_deep_dive_national_policy_brief",
+  "cat": "habitat_analysis",
+  "q": "Compare the forest cover between Setubal and Faro districts in Portugal using BigEarthNet data. Which has more total forest? Generate a chart comparing the two.",
+  "exp": [
+   "lookup_province",
+   "analyze_area",
+   "generate_chart"
+  ],
+  "note": "Total forest: Setubal 58.1% (8.1+50.0) vs Faro 37.0% (2.0+35.0). Setubal has significantly more forest. Agent should analyze both and produce comparative chart.",
+  "runs": 26,
+  "passed": 13,
+  "tm": 11,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    6
+   ],
+   [
+    "US (harness)",
+    5
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "generate_chart: L189/L208/L244: \"ALWAYS call generate_chart\" / \"MANDATORY\"; lookup_province: L132: \"first call lookup_province ... then call analyze_area\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    6
+   ],
+   [
+    "compare_areas → analyze_area → analyze_area → analyze_area",
+    1
+   ],
+   [
+    "lookup_province → lookup_province → analyze_area → analyze_area → analyze_area → lookup_province → lookup_province",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "lookup_province → analyze_area → lookup_province → analyze_area → generate_chart",
+    4
+   ],
+   [
+    "lookup_province → lookup_province → analyze_area → analyze_area → generate_chart",
+    4
+   ]
+  ],
+  "rep_model": "DeepSeek V3.2",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "compare_areas",
+    "{\"area_a\": \"Setúbal\", \"area_b\": \"Faro\", \"indicator\": \"bigearthnet_lulc\", \"year\": \"2018\", \"season\": \"annual\"}",
+    "{\"area_a\": {\"name\": \"Setúbal\", \"stats\": {\"error\": \"Province \\'Setúbal\\' not found.\"}}, \"area_b\": {\"name\": \"Faro\", \"stats\": {\"error\": \"Province \\'Faro\\' not foun"
+   ],
+   [
+    "analyze_area",
+    "{\"aoi\": {}, \"indicator\": \"bigearthnet_lulc\", \"year\": \"2018\", \"season\": \"annual\"}",
+    "{\"error\": \"Could not determine district name from AOI. bigearthnet_lulc covers Portugal districts: Beja, Castelo Branco, Faro, Leiria, Lisboa, Portalegre, Santa"
+   ],
+   [
+    "analyze_area",
+    "{\"aoi\": {}, \"indicator\": \"bigearthnet_lulc\", \"year\": \"2018\", \"season\": \"annual\"}",
+    "{\"error\": \"Could not determine district name from AOI. bigearthnet_lulc covers Portugal districts: Beja, Castelo Branco, Faro, Leiria, Lisboa, Portalegre, Santa"
+   ],
+   [
+    "analyze_area",
+    "{\"aoi\": {}, \"indicator\": \"bigearthnet_lulc\", \"year\": \"2018\", \"season\": \"annual\"}",
+    "{\"error\": \"Could not determine district name from AOI. bigearthnet_lulc covers Portugal districts: Beja, Castelo Branco, Faro, Leiria, Lisboa, Portalegre, Santa"
+   ]
+  ],
+  "answer": "Let me clarify the situation. The BigEarthNet dataset covers specific Portuguese districts, but I need the user to draw or specify an area within those districts. Since you've asked about Setúbal and Faro districts specifically, I need you to: 1. Draw an area on the map that covers the Setúbal district in Portugal 2. Then I can analyze that area for BigEarthNet land cover data 3. After that, draw another area coverin",
+  "otherwise": 0
+ },
+ {
+  "case": "V5_17_error_ines_stats_fabrication",
+  "cat": "error_handling",
+  "q": "Give me the average erosion potential percentage for Madrid from the INES erosion map.",
+  "exp": [
+   "toggle_layer"
+  ],
+  "note": "ines_erosion_potencial is display-only WMS. Agent must NOT fabricate pixel statistics — should toggle and explain limitation.",
+  "runs": 26,
+  "passed": 10,
+  "tm": 11,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    11
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "toggle_layer: L168: display-only quantitative questions: \"ALWAYS toggle the requested layer ON\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    9
+   ],
+   [
+    "lookup_province → analyze_area",
+    2
+   ]
+  ],
+  "pseqs": [
+   [
+    "toggle_layer",
+    9
+   ],
+   [
+    "lookup_province → toggle_layer",
+    1
+   ]
+  ],
+  "rep_model": "GPT-4o",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "I can't provide average erosion potential percentages for Madrid from the INES erosion map because this layer is display-only and doesn't support quantitative analysis. Instead, I can show you this layer on the map for visual context, and if you are interested, I can analyze other data layers like the gully erosion probability for a numerical assessment. Would you like me to display the INES erosion layer on the map ",
+  "otherwise": 9
+ },
+ {
+  "case": "V5_83_layer_bounds_balearic_erosion",
+  "cat": "tool_selection",
+  "q": "I want to study gully erosion in the Balearic Islands. Before I run the analysis, does the erosion model actually cover the islands?",
+  "exp": [
+   "get_layer_bounds"
+  ],
+  "note": "Agent must call get_layer_bounds for rf_gully_probability before attempting analysis. Illes Balears has the highest erosion score (90.1%) so the data likely does cover it — agent should confirm via get_layer_bounds rather than assume.",
+  "runs": 26,
+  "passed": 15,
+  "tm": 11,
+  "verdicts": [
+   [
+    "SHARED (prompt silent; answer in context)",
+    11
+   ]
+  ],
+  "main": "SHARED (prompt silent; answer in context)",
+  "reason": "prompt never mentions get_layer_bounds",
+  "seqs": [
+   [
+    "(no tool executed)",
+    11
+   ]
+  ],
+  "pseqs": [
+   [
+    "get_layer_bounds",
+    12
+   ],
+   [
+    "get_layer_bounds → lookup_province → analyze_area",
+    1
+   ]
+  ],
+  "rep_model": "GPT-4o",
+  "rep_seed": "42",
+  "flow": [],
+  "answer": "The gully erosion model does not cover the Balearic Islands. The rf_gully_probability layer, which predicts gully erosion risk, is limited to mainland Europe and the UK. Unfortunately, the Canary Islands and Balearic Islands fall outside of this raster coverage.",
+  "otherwise": 8
+ },
+ {
+  "case": "V5_44_province_aggregation_andalucia",
+  "cat": "province_aggregation",
+  "q": "What is the average CO2 storage eligibility percentage across all provinces in Andalucia?",
+  "exp": [
+   "find_top_n"
+  ],
+  "note": "Andalucia has 8 provinces: Almeria, Cadiz, Cordoba, Granada, Huelva, Jaen, Malaga, Sevilla. Agent should use find_top_n to get rankings, filter to Andalucia provinces, and compute average. Requires geographic knowledge of community membership.",
+  "runs": 26,
+  "passed": 14,
+  "tm": 10,
+  "verdicts": [
+   [
+    "AGENT (skipped a tool the prompt mandates)",
+    6
+   ],
+   [
+    "US (harness)",
+    4
+   ]
+  ],
+  "main": "AGENT (skipped a tool the prompt mandates)",
+  "reason": "find_top_n: L43: \"always call find_top_n\"",
+  "seqs": [
+   [
+    "(no tool executed)",
+    4
+   ],
+   [
+    "lookup_province → lookup_province → lookup_province → lookup_province → lookup_province → lookup_province → lookup_province → lookup_province → analyze_area → analyze_area",
+    1
+   ],
+   [
+    "select_features_by_spatial_relationship → lookup_province → lookup_province → lookup_province → lookup_province → lookup_province → lookup_province → lookup_province → lookup_province → analyze_multi_layer",
+    1
+   ]
+  ],
+  "pseqs": [
+   [
+    "find_top_n → generate_chart",
+    8
+   ],
+   [
+    "find_top_n",
+    5
+   ]
+  ],
+  "rep_model": "Qwen3-235B",
+  "rep_seed": "42",
+  "flow": [
+   [
+    "select_features_by_spatial_relationship",
+    "{\"target_type\": \"provinces\", \"spatial_predicates\": [\"within\"], \"reference_area\": \"Andalucia\", \"reference_type\": \"ccaa\"}",
+    "{\"error\": \"Ccaa \\'Andalucia\\' not found.\"}'}"
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Huelva\"}",
+    "{\"name\": \"Huelva\", \"code\": \"21\", \"bounds\": [-7.5228, 36.7987, -6.1217, 38.204441], \"found\": true}'}"
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Sevilla\"}",
+    "{\"name\": \"Sevilla\", \"code\": \"41\", \"bounds\": [-6.5361, 36.8422, -4.6533, 38.195777], \"found\": true}'}"
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Cádiz\"}",
+    "{\"name\": \"Cádiz\", \"code\": \"11\", \"bounds\": [-6.4428, 36.0001, -5.0868, 37.050394], \"found\": true}'}"
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Córdoba\"}",
+    "{\"name\": \"Córdoba\", \"code\": \"14\", \"bounds\": [-5.5856, 37.1843, -4.0008, 38.726189], \"found\": true}'}"
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Málaga\"}",
+    "{\"name\": \"Málaga\", \"code\": \"29\", \"bounds\": [-5.6083, 36.3104, -3.7681, 37.2776], \"found\": true}'}"
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Jaén\"}",
+    ""
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Granada\"}",
+    ""
+   ],
+   [
+    "lookup_province",
+    "{\"name\": \"Almería\"}",
+    ""
+   ],
+   [
+    "analyze_multi_layer",
+    "{\"province\": \"Huelva\", \"indicators\": [{\"indicator\": \"co2_spain_legislation\", \"year\": \"2026\", \"season\": \"annual\"}]}",
+    ""
+   ]
+  ],
+  "answer": "I wasn't able to fully complete the analysis within the allowed steps. Provinces located: Huelva, Sevilla, Cádiz, Córdoba, Málaga, Jaén, Granada, Almería. Try asking a more specific question or break it into smaller steps.",
+  "otherwise": 3
+ }
+]

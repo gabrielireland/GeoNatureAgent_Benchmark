@@ -1,0 +1,8 @@
+expected_tool,prompt_status,tasks,runs,runs_calling_it,call_rate_pct,task_pass_rate_pct
+get_legend,discouraged in prompt,6,156,13,8.3,8.3
+list_layers,discouraged in prompt,6,156,51,32.7,14.1
+get_layer_bounds,not mentioned in prompt,5,130,34,26.2,23.8
+analyze_area,analysis tool (baseline),39,1014,673,66.4,48.7
+lookup_province,analysis tool (baseline),34,884,571,64.6,45.5
+find_top_n,analysis tool (baseline),16,416,303,72.8,40.4
+compare_areas,analysis tool (baseline),4,104,78,75.0,25.0

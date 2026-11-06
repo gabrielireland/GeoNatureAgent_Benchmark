@@ -1,0 +1,10 @@
+model,runs,tool_missing,1 Answer already in the prompt (metadata tasks),2 Harness / format (call not executed),3 Agent chose not to act,4 Chain broke or took another route
+Claude Sonnet 4,186,47,22,2,8,15
+DeepSeek V3.2,279,72,21,10,0,41
+GLM-5,279,77,28,3,16,30
+Gemini 2.5 Pro,279,77,27,1,21,28
+GPT-4o,279,107,49,0,20,38
+Qwen3-235B,279,112,47,5,34,26
+GPT-OSS-120B,279,115,32,1,34,48
+Llama 4 Scout,279,165,48,66,40,11
+Gemma-3-27B,279,200,48,102,34,16

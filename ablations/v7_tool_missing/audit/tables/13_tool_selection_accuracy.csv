@@ -1,0 +1,10 @@
+model,runs,published_pct,if_metadata_from_prompt_counted_pct
+Claude Sonnet 4,42,33.3,76.2
+DeepSeek V3.2,63,30.2,57.1
+GLM-5,63,27.0,69.8
+Gemini 2.5 Pro,63,36.5,73.0
+GPT-4o,63,12.7,82.5
+Qwen3-235B,63,17.5,66.7
+GPT-OSS-120B,63,25.4,68.3
+Llama 4 Scout,63,6.3,76.2
+Gemma-3-27B,63,4.8,65.1

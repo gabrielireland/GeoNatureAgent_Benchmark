@@ -1,0 +1,6 @@
+{
+ "code_dir": "checkout of commit 6576859 (+ the MCP lookup -> analyze_area injection only)",
+ "cases_file": "geoagentbench/cases/benchmark_v5.json + benchmark_v6_expansion.json (103 tasks)",
+ "prompt_file": "api/agent/prompts/v3.md",
+ "server": "api/agent/mcp_server.py"
+}

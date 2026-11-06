@@ -1,0 +1,12 @@
+tool,runs_where_missing
+analyze_area,341
+lookup_province,313
+get_legend,143
+find_top_n,113
+list_layers,105
+get_layer_bounds,96
+lookup_municipality,83
+generate_chart,74
+analyze_multi_layer,69
+compare_areas,26
+toggle_layer,14
