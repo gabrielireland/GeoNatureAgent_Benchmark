@@ -50,7 +50,7 @@ See [`geoagentbench/README.md`](geoagentbench/README.md) for full CLI reference 
 | [`docs/HOWTOUSE.md`](docs/HOWTOUSE.md) | How to evaluate your own agent, add tasks, extend the benchmark |
 | [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) | End-to-end reproduction guide (experiments, figures, paper) |
 | [`docs/DATA_README.md`](docs/DATA_README.md) | Data archive specs (COGs, boundaries, sources) |
-| [`ablations/v7_tool_missing/`](ablations/v7_tool_missing/README.md) | Post-publication ablation: how much of `tool_missing` was benchmark-induced, and a before/after test of the v7 fix |
+| [`benchmark/ablations/v7_tool_missing/`](benchmark/ablations/v7_tool_missing/README.md) | Post-publication ablation: how much of `tool_missing` was benchmark-induced, and a before/after test of the v7 fix |
 | [`geoagentbench/README.md`](geoagentbench/README.md) | CLI reference, output format, metrics |
 | [`geoagentbench/cases/README.md`](geoagentbench/cases/README.md) | Task definitions, categories, JSON schema |
 | [`hf_dataset/README.md`](hf_dataset/README.md) | HuggingFace dataset card |
@@ -63,7 +63,6 @@ See [`geoagentbench/README.md`](geoagentbench/README.md) for full CLI reference 
 GeoNatureAgent Benchmark/
 ├── README.md                    # This file
 ├── docs/                        # HOWTOUSE, REPRODUCIBILITY, DATA_README, PENDING
-├── ablations/                   # Post-publication ablations (v7_tool_missing)
 ├── LICENSE                      # Apache 2.0
 ├── CITATION.cff                 # Citation metadata
 ├── pyproject.toml               # Python package config
@@ -84,7 +83,8 @@ GeoNatureAgent Benchmark/
 │       └── portugal_districts.json
 ├── benchmark/                   # Experiment configurations
 │   ├── experiment.yaml          # Template
-│   └── experiments/             # Per-model configs (9 v5 + 7 v6 experiments)
+│   ├── experiments/             # Per-model configs (9 v5 + 7 v6 experiments)
+│   └── ablations/               # Post-publication ablations (v7_tool_missing)
 ├── hf_dataset/                  # HuggingFace dataset
 │   ├── tasks.jsonl              # 93 task definitions
 │   ├── results.jsonl            # 1860 results (7 paper models; 9-model refresh pending)

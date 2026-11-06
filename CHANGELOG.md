@@ -13,7 +13,7 @@ layer metadata and told agents not to call the metadata tools some tasks require
 incomplete results, and some tasks were mis-specified. With the same model before and after (Claude Opus 5.5,
 local MCP, one run), `tool_missing` fell from 23 to 3 and passes rose from 51 to 57 of 103 (0 and 58 with three
 task changes made after seeing the results). v7 scores are not comparable with v5/v6. Audit, locked criteria and raw
-results: [`ablations/v7_tool_missing/`](ablations/v7_tool_missing/README.md).
+results: [`benchmark/ablations/v7_tool_missing/`](benchmark/ablations/v7_tool_missing/README.md).
 
 - **Tools:** `list_layers` includes `bigearthnet_lulc`; `get_legend` returns classes for `bigearthnet_lulc`
   and `mfe` and a description for the INES layers; `get_layer_bounds` works for `bigearthnet_lulc`;

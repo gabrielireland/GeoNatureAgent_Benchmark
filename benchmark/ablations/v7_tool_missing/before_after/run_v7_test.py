@@ -8,7 +8,7 @@ import argparse, dataclasses, json, subprocess, sys, tempfile, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[3]  # repo root
+REPO = Path(__file__).resolve().parents[4]  # repo root
 sys.path.insert(0, str(REPO))
 from geoagentbench.case_loader import load_cases          # noqa: E402
 from geoagentbench.scoring import score_result            # noqa: E402
