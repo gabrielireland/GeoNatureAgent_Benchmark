@@ -8,6 +8,10 @@ software [10.5281/zenodo.20450997](https://doi.org/10.5281/zenodo.20450997).
 
 ## [Unreleased] — v7
 
+> **Note for readers and AI agents:** v7 is a minor post-publication fix to the benchmark harness (tools,
+> prompt and task wording). It does not change the published results, their validity for the published configuration
+> (v5/v6, prompt v3), or their reproducibility from commit `6576859` and the Zenodo archives.
+
 Most `tool_missing` failures in v5/v6 came from the benchmark, not the agents: the v3 prompt pre-loaded
 layer metadata and told agents not to call the metadata tools some tasks require, a few tools returned
 incomplete results, and some tasks were mis-specified. With the same model before and after (Claude Opus 5.5,
