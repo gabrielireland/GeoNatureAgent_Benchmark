@@ -24,6 +24,8 @@ dependencies = [
     "matplotlib>=3.7",
     "pandas",
     "tabulate",
+    "rasterio",
+    "rio-tiler",
 ]
 
 [project.optional-dependencies]

@@ -15,7 +15,7 @@
 # and do NOT need to be downloaded.
 #
 # Usage:
-#   # Option A — automated download (when the public hosting URLs are set):
+#   # Option A — automated download (default: the published Zenodo record 20454498; set these to override):
 #   CO2_SPAIN_URL=https://...      \
 #   GULLY_EUROPE_URL=https://...   \
 #     ./scripts/download_data.sh

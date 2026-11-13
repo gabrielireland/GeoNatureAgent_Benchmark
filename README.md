@@ -11,7 +11,7 @@ A framework and benchmark for choosing which LLM to run your geospatial-engineer
 > **Paper**: *GeoNatureAgent Benchmark: Benchmarking LLM Agents for Environmental Geospatial Analysis*
 > Gabriel Diaz-Ireland, Diego Prieto-Herráez, Mario García Peces, Javier Velázquez, Devika Jain (2026)
 
-**Run it in one command:** `pip install -e . && python -m geoagentbench --cases dev` (6-case smoke test; full suite in [Quick Start](#quick-start)).
+**Run it in one command:** `pip install -e . && ./scripts/download_data.sh && python -m geoagentbench --cases dev` (installs, fetches the two rasters from [Zenodo](https://zenodo.org/records/20454498), runs the 6-case smoke test; full suite in [Quick Start](#quick-start)).
 **Cite it:** Diaz-Ireland et al., ACM SIGSPATIAL '26, [doi:10.1145/3841645.3844198](https://doi.org/10.1145/3841645.3844198) ([BibTeX](#citation)).
 
 **Leaderboard:** [9 models](#capability-leaderboard-v5-93-tasks-mean--std-across-seeds). [Submit yours](#submit-your-results).
@@ -37,6 +37,9 @@ Tasks span municipality-level analysis, multi-turn conversation, spatial reasoni
 ```bash
 # Install
 pip install -e .
+
+# Fetch the two raster COGs (co2_spain.tif, gully_europe.tif, about 540 MB) from Zenodo
+./scripts/download_data.sh
 
 # Smoke test (6 dev cases)
 python -m geoagentbench --cases dev
